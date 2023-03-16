@@ -1,3 +1,5 @@
 # SlimProject
-Test Project
-test
+
+add vendor
+add public
+add core
