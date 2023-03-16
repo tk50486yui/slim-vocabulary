@@ -1,4 +1,4 @@
 # 忽略 vendor 目錄下的所有檔案
-/vendor/*
+/api/vendor/*
 # 但排除 vendor/autoload.php 這個檔案
-!/vendor/autoload.php
+!/api/vendor/autoload.php
