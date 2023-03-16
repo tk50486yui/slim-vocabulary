@@ -5,7 +5,7 @@ require '../vendor/autoload.php';
 /*use core\Model as C;
 
 C::begin();*/
-
+//begin
 $app = new Slim\App();
 
 /*$app->add(new \Slim\Middleware\Session([
