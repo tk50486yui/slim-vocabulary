@@ -1,6 +1,6 @@
 # SlimProject
 
-## node v18.15.0
+### node v18.15.0
 
 ## Composer 
     composer install
@@ -12,3 +12,8 @@
     slim-session 
 ### Autoload  
     composer dump-autoload
+
+### Git
+    git add .
+    git commit -m ""
+    git push
