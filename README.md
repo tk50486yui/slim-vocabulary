@@ -1,5 +1,7 @@
 # SlimProject
 
+## node v18.15.0
+
 ## Composer 
     composer install
     composer update

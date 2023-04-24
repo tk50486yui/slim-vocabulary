@@ -1,9 +1,82 @@
 <?php 
 
+$app->group('/words', function() {
+   
+    $this->get('', 'WordsController:findAll');
+    $this->get('/{id}', 'WordsController:find');
+    $this->post('', 'WordsController:add');
+    $this->put('/{id}', 'WordsController:edit');    
+  
+});
 
+$app->group('/categories', function() {
+   
+    $this->get('', 'CategoriesController:findAll');
+    $this->get('/{id}', 'CategoriesController:find');
+    $this->post('', 'CategoriesController:add');
+    $this->put('/{id}', 'CategoriesController:edit');    
+  
+});
 
-$app->group('/hello', function() {
+$app->group('/tags', function() {
+   
+    $this->get('', 'TagsController:findAll');
+    $this->get('/{id}', 'TagsController:find');
+    $this->post('', 'TagsController:add');
+    $this->put('/{id}', 'TagsController:edit');    
+  
+});
 
-    $this->get('/{name}', 'TestMain:Test2');  
+$app->group('/articles', function() {
+   
+    $this->get('', 'ArticlesController:findAll');
+    $this->get('/{id}', 'ArticlesController:find');
+    $this->post('', 'ArticlesController:add');
+    $this->put('/{id}', 'ArticlesController:edit');    
+  
+});
+
+$app->group('/wordsgroups', function() {
+   
+    $this->get('', 'WordsGroupsController:findAll');
+    $this->get('/{id}', 'WordsGroupsController:find');
+    $this->post('', 'WordsGroupsController:add');
+    $this->put('/{id}', 'WordsGroupsController:edit');
+  
+});
+
+$app->group('/wordstags', function() {
+   
+    $this->get('', 'WordsTagsController:findAll');
+    $this->get('/{id}', 'WordsTagsController:find');
+    $this->post('', 'WordsTagsController:add');
+    $this->put('/{id}', 'WordsTagsController:edit');
+  
+});
+
+$app->group('/articlestags', function() {
+   
+    $this->get('', 'ArticlesTagsController:findAll');
+    $this->get('/{id}', 'ArticlesTagsController:find');
+    $this->post('', 'ArticlesTagsController:add');
+    $this->put('/{id}', 'ArticlesTagsController:edit');
+  
+});
+
+$app->group('/articleswords', function() {
+   
+    $this->get('', 'ArticlesWordsController:findAll');
+    $this->get('/{id}', 'ArticlesWordsController:find');
+    $this->post('', 'ArticlesWordsController:add');
+    $this->put('/{id}', 'ArticlesWordsController:edit');
+  
+});
+
+$app->group('/wordsgroupsdatails', function() {
+   
+    $this->get('', 'WordsGroupsDetailsController:findAll');
+    $this->get('/{id}', 'WordsGroupsDetailsController:find');
+    $this->post('', 'WordsGroupsDetailsController:add');
+    $this->put('/{id}', 'WordsGroupsDetailsController:edit');
   
 });
