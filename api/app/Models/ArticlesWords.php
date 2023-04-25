@@ -8,18 +8,21 @@ use \RedBeanPHP\R as R;
 
 class ArticlesWords
 {
+    const TABLE_NAME = 'articles_words';
+
     /* 查詢單一資料 articles_words  id = ? */
     public function find($id)
     {
-        $result = R::findOne('articles_words', ' id = ? ', array($id));
+        $result = R::findOne(SELF::TABLE_NAME, ' id = ? ', array($id));
 
         return $result;
     }
+
     /* 查詢所有資料 articles_words */
     public function findAll()
     {
 
-        $result = R::findAll('articles_words');
+        $result = R::findAll(SELF::TABLE_NAME);
 
         return $result;
     }
@@ -31,9 +34,9 @@ class ArticlesWords
         /* Transaction */
         R::begin();
         try {
-            $articles_words = R::dispense('articles_words');            
+            $articles_words = R::dispense(SELF::TABLE_NAME);
             $articles_words->arti_id = is_numeric($data['arti_id']) ? (int)$data['arti_id'] : null;
-            $articles_words->ws_id = is_numeric($data['ws_id']) ? (int)$data['ws_id'] : null;         
+            $articles_words->ws_id = is_numeric($data['ws_id']) ? (int)$data['ws_id'] : null;
             R::store($articles_words);
             R::commit();
             R::close();
@@ -45,19 +48,17 @@ class ArticlesWords
 
         return $result;
     }
-    /* 修改edit資料 articles_words */
-    public function edit($data, $id)
+
+    /* 刪除關聯資料 articles_words */
+    public function delete($id)
     {
         $result = false;
         /* Transaction */
         R::begin();
-        try {
 
-            $articles_words = R::load('articles_words', $id);
-            $articles_words->arti_id = is_numeric($data['arti_id']) ? (int)$data['arti_id'] : null;
-            $articles_words->ws_id = is_numeric($data['ws_id']) ? (int)$data['ws_id'] : null;             
-            $articles_words->updated_at = Time::getNow();
-            R::store($articles_words);
+        try {
+            $articles_words = R::load(SELF::TABLE_NAME, $id);
+            R::trash($articles_words);
             R::commit();
             R::close();
             $result = true;

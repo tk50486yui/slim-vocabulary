@@ -8,18 +8,21 @@ use \RedBeanPHP\R as R;
 
 class ArticlesTags
 {
+    const TABLE_NAME = 'articles_tags';
+
     /* 查詢單一資料 articles_tags  id = ? */
     public function find($id)
     {
-        $result = R::findOne('articles_tags', ' id = ? ', array($id));
+        $result = R::findOne(SELF::TABLE_NAME, ' id = ? ', array($id));
 
         return $result;
     }
+
     /* 查詢所有資料 articles_tags */
     public function findAll()
     {
 
-        $result = R::findAll('articles_tags');
+        $result = R::findAll(SELF::TABLE_NAME);
 
         return $result;
     }
@@ -31,7 +34,7 @@ class ArticlesTags
         /* Transaction */
         R::begin();
         try {
-            $articles_tags = R::dispense('articles_tags');            
+            $articles_tags = R::dispense(SELF::TABLE_NAME);            
             $articles_tags->arti_id = is_numeric($data['arti_id']) ? (int)$data['arti_id'] : null;
             $articles_tags->ts_id = is_numeric($data['ts_id']) ? (int)$data['ts_id'] : null;         
             R::store($articles_tags);
@@ -45,22 +48,21 @@ class ArticlesTags
 
         return $result;
     }
-    /* 修改edit資料 articles_tags */
-    public function edit($data, $id)
+
+    /* 刪除關聯資料 articles_tags */
+    public function delete($id)
     {
         $result = false;
         /* Transaction */
         R::begin();
-        try {
 
-            $articles_tags = R::load('articles_tags', $id);
-            $articles_tags->arti_id = is_numeric($data['arti_id']) ? (int)$data['arti_id'] : null;
-            $articles_tags->ts_id = is_numeric($data['ts_id']) ? (int)$data['ts_id'] : null;             
-            $articles_tags->updated_at = Time::getNow();
-            R::store($articles_tags);
+        try {
+            $articles_tags = R::load(SELF::TABLE_NAME, $id);
+            R::trash($articles_tags);
             R::commit();
             R::close();
             $result = true;
+
         } catch (Exception $e) {
             R::rollback();
             $result = false;

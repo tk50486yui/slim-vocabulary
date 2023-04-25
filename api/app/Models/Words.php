@@ -8,31 +8,36 @@ use \RedBeanPHP\R as R;
 
 class Words
 {
+    const TABLE_NAME = 'words';
+
     /* 查詢單一資料 words id = ? */
     public function find($id)
     {
-        $result = R::findOne('words', ' id = ? ', array($id));
+        $result = R::findOne(SELF::TABLE_NAME, ' id = ? ', array($id));
 
         return $result;
     }
+
     /* 查詢所有資料 words */
     public function findAll()
     {
 
-        $result = R::findAll('words');
+        $result = R::findAll(SELF::TABLE_NAME);
 
         return $result;
     }
+
     /* 以 ws_name 查詢 words 表 */
     public function findByName($ws_name)
     {
         $result = false;
-        $row = R::findOne('words', ' ws_name = ? ', array($ws_name));
+        $row = R::findOne(SELF::TABLE_NAME, ' ws_name = ? ', array($ws_name));
         if ($row == null) { 
             $result = true;
         }
         return $result;
     }
+
     /* 新增單一資料 words */
     public function add($data)
     {
@@ -40,7 +45,7 @@ class Words
         /* Transaction */
         R::begin();
         try {
-            $words = R::dispense('words');
+            $words = R::dispense(SELF::TABLE_NAME);
             $words->ws_name = $data['ws_name'];
             $words->ws_definition = $data['ws_definition'];
             $words->ws_pronunciation = $data['ws_pronunciation'];
@@ -65,7 +70,8 @@ class Words
 
         return $result;
     }
-    /* 修改edit資料 words */
+
+    /* 修改 edit 資料 words */
     public function edit($data, $id)
     {
         $result = false;
@@ -73,7 +79,7 @@ class Words
         R::begin();
         try {
 
-            $words = R::load('words', $id);
+            $words = R::load(SELF::TABLE_NAME, $id);
             $words->ws_name = $data['ws_name'];
             $words->ws_definition = $data['ws_definition'];
             $words->ws_pronunciation = $data['ws_pronunciation'];
@@ -94,6 +100,28 @@ class Words
             $result = true;
         } catch (Exception $e) {
             R::rollback();            
+            $result = false;
+        }
+
+        return $result;
+    }
+
+    /* 刪除資料 words */
+    public function delete($id)
+    {
+        $result = false;
+        /* Transaction */
+        R::begin();
+
+        try {
+            $words = R::load(SELF::TABLE_NAME, $id);
+            R::trash($words);
+            R::commit();
+            R::close();
+            $result = true;
+
+        } catch (Exception $e) {
+            R::rollback();
             $result = false;
         }
 

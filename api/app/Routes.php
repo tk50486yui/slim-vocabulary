@@ -50,7 +50,7 @@ $app->group('/wordstags', function() {
     $this->get('', 'WordsTagsController:findAll');
     $this->get('/{id}', 'WordsTagsController:find');
     $this->post('', 'WordsTagsController:add');
-    $this->put('/{id}', 'WordsTagsController:edit');
+    $this->delete('/{id}', 'WordsTagsController:delete');
   
 });
 
@@ -59,7 +59,7 @@ $app->group('/articlestags', function() {
     $this->get('', 'ArticlesTagsController:findAll');
     $this->get('/{id}', 'ArticlesTagsController:find');
     $this->post('', 'ArticlesTagsController:add');
-    $this->put('/{id}', 'ArticlesTagsController:edit');
+    $this->delete('/{id}', 'ArticlesTagsController:delete');
   
 });
 
@@ -68,7 +68,7 @@ $app->group('/articleswords', function() {
     $this->get('', 'ArticlesWordsController:findAll');
     $this->get('/{id}', 'ArticlesWordsController:find');
     $this->post('', 'ArticlesWordsController:add');
-    $this->put('/{id}', 'ArticlesWordsController:edit');
+    $this->delete('/{id}', 'ArticlesWordsController:delete');
   
 });
 
@@ -77,6 +77,6 @@ $app->group('/wordsgroupsdatails', function() {
     $this->get('', 'WordsGroupsDetailsController:findAll');
     $this->get('/{id}', 'WordsGroupsDetailsController:find');
     $this->post('', 'WordsGroupsDetailsController:add');
-    $this->put('/{id}', 'WordsGroupsDetailsController:edit');
+    $this->delete('/{id}', 'WordsGroupsDetailsController:delete');
   
 });

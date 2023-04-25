@@ -86,10 +86,9 @@ class WordsGroupsDetailsController
        
     }
 
-    /* 修改edit資料 WordsGroupsDetails */ 
+    /* 刪除關聯資料 WordsGroupsDetails */ 
     public function edit($request, $response, $args)
-    {
-        $data = $request->getParsedBody();        
+    {              
         $WordsGroupsDetailsModel = new WordsGroupsDetails();
         $MsgHandler = new MsgHandler();
         $Msg = new Msg();
@@ -99,7 +98,13 @@ class WordsGroupsDetailsController
 
         try {
 
-            $result = $WordsGroupsDetailsModel->edit($data, $args['id']);
+            /* 檢查 id 是否存在 */
+            $check = $WordsGroupsDetailsModel->find($args['id']);
+            if ($check == false) {
+                return $MsgHandler->handleNotFound($response, $Msg->msg);
+            }
+
+            $result = $WordsGroupsDetailsModel->delete($args['id']);
 
             if($result == true){
                 return $MsgHandler->handleSuccess($response, $Msg->msg);

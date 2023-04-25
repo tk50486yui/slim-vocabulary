@@ -86,10 +86,9 @@ class ArticlesWordsController
        
     }
 
-    /* 修改edit資料 ArticlesWords */ 
-    public function edit($request, $response, $args)
-    {
-        $data = $request->getParsedBody();        
+    /* 刪除關聯資料 ArticlesWords */ 
+    public function delete($request, $response, $args)
+    {               
         $ArticlesWordsModel = new ArticlesWords();
         $MsgHandler = new MsgHandler();
         $Msg = new Msg();
@@ -99,7 +98,13 @@ class ArticlesWordsController
 
         try {
 
-            $result = $ArticlesWordsModel->edit($data, $args['id']);
+            /* 檢查 id 是否存在 */
+            $check =  $ArticlesWordsModel->find($args['id']);
+            if ($check == false) {
+                return $MsgHandler->handleNotFound($response, $Msg->msg);
+            }
+
+            $result = $ArticlesWordsModel->delete($args['id']);
 
             if($result == true){
                 return $MsgHandler->handleSuccess($response, $Msg->msg);

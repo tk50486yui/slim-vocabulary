@@ -11,6 +11,14 @@ class MsgHandler
         return $response->withJson($msg);
     }
 
+     /* 查無該筆資料 */ 
+     function handleNotFound($response, $msg) {
+        $response = $response->withStatus(404);
+        $msg['error']  = 'Data not found';
+        $msg['success']  = false;
+        return $response->withJson($msg);
+    }
+
     /* 資料重複 */ 
     function handleDuplicate($response, $msg) {
         $response = $response->withStatus(409);
