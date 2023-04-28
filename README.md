@@ -9,10 +9,10 @@
     composer install
     composer update
 -----    
-    slim
-    autoload
-    redbean   
-    slim-session 
+slim
+autoload
+redbean   
+slim-session 
 
 #### Autoload
 
