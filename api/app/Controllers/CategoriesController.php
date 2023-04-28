@@ -3,22 +3,17 @@
 namespace app\Controllers;
 
 use app\Models\Categories;
-use libs\Responses\Msg;
 use libs\Responses\MsgHandler;
 use Exception;
 
 class CategoriesController
-{
-    protected $CategoriesModel;
-    protected $MsgHandler;
-    protected $Msg;
+{    
     
     /* 查詢單一資料 Categories id = ? */ 
     public function find($request, $response, $args)
     {
         $CategoriesModel = new Categories();
-        $MsgHandler = new MsgHandler();
-        $Msg = new Msg();      
+        $MsgHandler = new MsgHandler();             
 
         try {
 
@@ -26,7 +21,7 @@ class CategoriesController
 
         } catch (Exception $e) {           
              /* 出錯統一用 Internal Server Error */           
-             return $MsgHandler->handleServerError($response, $Msg->msg);
+             return $MsgHandler->handleServerError($response);
         }
 
         return $response->withJson($result, 200);
@@ -37,7 +32,6 @@ class CategoriesController
     {
         $CategoriesModel = new Categories();
         $MsgHandler = new MsgHandler();
-        $Msg = new Msg();       
 
         try {
 
@@ -45,7 +39,7 @@ class CategoriesController
 
         } catch (Exception $e) {  
             /* 出錯統一用 Internal Server Error */           
-            return $MsgHandler->handleServerError($response, $Msg->msg);
+            return $MsgHandler->handleServerError($response);
         }
 
         return $response->withJson($result, 200);
@@ -56,28 +50,27 @@ class CategoriesController
     {
         $data = $request->getParsedBody();        
         $CategoriesModel = new Categories();
-        $MsgHandler = new MsgHandler();
-        $Msg = new Msg();       
+        $MsgHandler = new MsgHandler();  
 
         try {
             /* 檢查有沒有重複的名稱 */
             $check = $CategoriesModel->findByName($data['cate_name']);
             if($check == false){
-                return $MsgHandler->handleDuplicate($response, $Msg->msg);
+                return $MsgHandler->handleDuplicate($response);
             }
             /* 新增 */ 
             $result = $CategoriesModel->add($data);
 
             if($result == true){
-                return $MsgHandler->handleSuccess($response, $Msg->msg);
+                return $MsgHandler->handleSuccess($response);
             }else{
-                return $MsgHandler->handleDataFaild($response, $Msg->msg);
+                return $MsgHandler->handleDataFaild($response);
             }
             
 
         } catch (Exception $e) {  
             /* 出錯統一用 Internal Server Error */           
-            return $MsgHandler->handleServerError($response, $Msg->msg);
+            return $MsgHandler->handleServerError($response);
         }
        
     }
@@ -87,22 +80,21 @@ class CategoriesController
     {
         $data = $request->getParsedBody();        
         $CategoriesModel = new Categories();
-        $MsgHandler = new MsgHandler();
-        $Msg = new Msg();
+        $MsgHandler = new MsgHandler();    
       
         try {
 
             $result = $CategoriesModel->edit($data, $args['id']);
 
             if($result == true){
-                return $MsgHandler->handleSuccess($response, $Msg->msg);
+                return $MsgHandler->handleSuccess($response);
             }else{
-                return $MsgHandler->handleDataFaild($response, $Msg->msg);
+                return $MsgHandler->handleDataFaild($response);
             }
 
         } catch (Exception $e) {   
             /* 出錯統一用 Internal Server Error */
-            return $MsgHandler->handleServerError($response, $Msg->msg);
+            return $MsgHandler->handleServerError($response);
         }
        
     }
@@ -111,8 +103,7 @@ class CategoriesController
     public function findWordsByID($request, $response, $args)
     {
         $CategoriesModel = new Categories();
-        $MsgHandler = new MsgHandler();
-        $Msg = new Msg();
+        $MsgHandler = new MsgHandler();     
        
         try {
 
@@ -120,7 +111,7 @@ class CategoriesController
 
         } catch (Exception $e) {  
             /* 出錯統一用 Internal Server Error */           
-            return $MsgHandler->handleServerError($response, $Msg->msg);
+            return $MsgHandler->handleServerError($response);
         }
 
         return $response->withJson($result, 200);

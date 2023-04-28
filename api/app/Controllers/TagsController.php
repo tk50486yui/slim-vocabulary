@@ -3,22 +3,17 @@
 namespace app\Controllers;
 
 use app\Models\Tags;
-use libs\Responses\Msg;
 use libs\Responses\MsgHandler;
 use Exception;
 
 class TagsController
 {
-    protected $TagsModel;
-    protected $MsgHandler;
-    protected $Msg;
-
+  
     /* 查詢單一資料 Tags id = ? */ 
     public function find($request, $response, $args)
     {
         $TagsModel = new Tags();
-        $MsgHandler = new MsgHandler();
-        $Msg = new Msg();
+        $MsgHandler = new MsgHandler();     
        
         try {
 
@@ -26,7 +21,7 @@ class TagsController
 
         } catch (Exception $e) {           
              /* 出錯統一用 Internal Server Error */           
-             return $MsgHandler->handleServerError($response, $Msg->msg);
+             return $MsgHandler->handleServerError($response);
         }
 
         return $response->withJson($result, 200);
@@ -36,8 +31,7 @@ class TagsController
     public function findAll($request, $response, $args)
     {
         $TagsModel = new Tags();
-        $MsgHandler = new MsgHandler();
-        $Msg = new Msg();
+        $MsgHandler = new MsgHandler();      
       
         try {
 
@@ -45,7 +39,7 @@ class TagsController
 
         } catch (Exception $e) {  
             /* 出錯統一用 Internal Server Error */           
-            return $MsgHandler->handleServerError($response, $Msg->msg);
+            return $MsgHandler->handleServerError($response);
         }
 
         return $response->withJson($result, 200);
@@ -56,28 +50,27 @@ class TagsController
     {
         $data = $request->getParsedBody();        
         $TagsModel = new Tags();
-        $MsgHandler = new MsgHandler();
-        $Msg = new Msg();      
+        $MsgHandler = new MsgHandler();    
 
         try {
             /* 檢查有沒有重複的標籤名稱 */
             $check = $TagsModel->findByName($data['ts_name']);
             if($check == false){
-                return $MsgHandler->handleDuplicate($response, $Msg->msg);
+                return $MsgHandler->handleDuplicate($response);
             }
             /* 新增 */ 
             $result = $TagsModel->add($data);
 
             if($result == true){
-                return $MsgHandler->handleSuccess($response, $Msg->msg);
+                return $MsgHandler->handleSuccess($response);
             }else{
-                return $MsgHandler->handleDataFaild($response, $Msg->msg);
+                return $MsgHandler->handleDataFaild($response);
             }
             
 
         } catch (Exception $e) {  
             /* 出錯統一用 Internal Server Error */           
-            return $MsgHandler->handleServerError($response, $Msg->msg);
+            return $MsgHandler->handleServerError($response);
         }
        
     }
@@ -87,22 +80,21 @@ class TagsController
     {
         $data = $request->getParsedBody();        
         $TagsModel = new Tags();
-        $MsgHandler = new MsgHandler();
-        $Msg = new Msg();
+        $MsgHandler = new MsgHandler();    
        
         try {
 
             $result = $TagsModel->edit($data, $args['id']);
 
             if($result == true){
-                return $MsgHandler->handleSuccess($response, $Msg->msg);
+                return $MsgHandler->handleSuccess($response);
             }else{
-                return $MsgHandler->handleDataFaild($response, $Msg->msg);
+                return $MsgHandler->handleDataFaild($response);
             }
 
         } catch (Exception $e) {   
             /* 出錯統一用 Internal Server Error */
-            return $MsgHandler->handleServerError($response, $Msg->msg);
+            return $MsgHandler->handleServerError($response);
         }
        
     }

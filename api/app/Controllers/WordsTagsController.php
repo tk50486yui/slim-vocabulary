@@ -5,7 +5,6 @@ namespace app\Controllers;
 use app\Models\WordsTags;
 use app\Models\Words;
 use app\Models\Tags;
-use libs\Responses\Msg;
 use libs\Responses\MsgHandler;
 use Exception;
 
@@ -16,8 +15,7 @@ class WordsTagsController
     public function find($request, $response, $args)
     {
         $WordsTagsModel = new WordsTags();
-        $MsgHandler = new MsgHandler();
-        $Msg = new Msg();        
+        $MsgHandler = new MsgHandler();             
 
         try {
 
@@ -25,7 +23,7 @@ class WordsTagsController
 
         } catch (Exception $e) {
             /* 出錯統一用 Internal Server Error */
-            return $MsgHandler->handleServerError($response, $Msg->msg);
+            return $MsgHandler->handleServerError($response);
         }
 
         return $response->withJson($result, 200);
@@ -35,8 +33,7 @@ class WordsTagsController
     public function findAll($request, $response, $args)
     {
         $WordsTagsModel = new WordsTags();
-        $MsgHandler = new MsgHandler();
-        $Msg = new Msg();      
+        $MsgHandler = new MsgHandler();          
 
         try {
 
@@ -44,7 +41,7 @@ class WordsTagsController
 
         } catch (Exception $e) {
             /* 出錯統一用 Internal Server Error */
-            return $MsgHandler->handleServerError($response, $Msg->msg);
+            return $MsgHandler->handleServerError($response);
         }
 
         return $response->withJson($result, 200);
@@ -57,8 +54,7 @@ class WordsTagsController
         $WordsTagsModel = new WordsTags();
         $WordsModel = new Words();
         $TagsModel = new Tags();
-        $MsgHandler = new MsgHandler();
-        $Msg = new Msg();
+        $MsgHandler = new MsgHandler();   
 
         try {
 
@@ -66,13 +62,13 @@ class WordsTagsController
             $result = $WordsTagsModel->add($data);
 
             if ($result == true) {
-                return $MsgHandler->handleSuccess($response, $Msg->msg);
+                return $MsgHandler->handleSuccess($response);
             } else {
-                return $MsgHandler->handleDataFaild($response, $Msg->msg);
+                return $MsgHandler->handleDataFaild($response);
             }
         } catch (Exception $e) {
             /* 出錯統一用 Internal Server Error */
-            return $MsgHandler->handleServerError($response, $Msg->msg);
+            return $MsgHandler->handleServerError($response);
         }
     }
 
@@ -80,28 +76,27 @@ class WordsTagsController
     public function delete($request, $response, $args)
     {        
         $WordsTagsModel = new WordsTags();
-        $MsgHandler = new MsgHandler();
-        $Msg = new Msg();       
+        $MsgHandler = new MsgHandler();         
 
         try {
             
             /* 檢查 id 是否存在 */
             $check = $WordsTagsModel->find($args['id']);
             if ($check == false) {
-                return $MsgHandler->handleNotFound($response, $Msg->msg);
+                return $MsgHandler->handleNotFound($response);
             }
 
             $result = $WordsTagsModel->delete($args['id']);
 
             if ($result == true) {
-                return $MsgHandler->handleSuccess($response, $Msg->msg);
+                return $MsgHandler->handleSuccess($response);
             } else {
-                return $MsgHandler->handleDataFaild($response, $Msg->msg);
+                return $MsgHandler->handleDataFaild($response);
             }
 
         } catch (Exception $e) {
             /* 出錯統一用 Internal Server Error */
-            return $MsgHandler->handleServerError($response, $Msg->msg);
+            return $MsgHandler->handleServerError($response);
         }
     }
 }

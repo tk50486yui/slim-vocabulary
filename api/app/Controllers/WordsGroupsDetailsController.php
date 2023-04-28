@@ -3,22 +3,17 @@
 namespace app\Controllers;
 
 use app\Models\WordsGroupsDetails;
-use libs\Responses\Msg;
 use libs\Responses\MsgHandler;
 use Exception;
 
 class WordsGroupsDetailsController
 {
-    protected $WordsGroupsDetailsModel;
-    protected $MsgHandler;
-    protected $Msg;
-
+   
     /* 查詢單一資料 WordsGroupsDetails id = ? */ 
     public function find($request, $response, $args)
     {
         $WordsGroupsDetailsModel = new WordsGroupsDetails();
-        $MsgHandler = new MsgHandler();
-        $Msg = new Msg();
+        $MsgHandler = new MsgHandler();     
       
         try {
 
@@ -26,7 +21,7 @@ class WordsGroupsDetailsController
 
         } catch (Exception $e) {           
              /* 出錯統一用 Internal Server Error */           
-             return $MsgHandler->handleServerError($response, $Msg->msg);
+             return $MsgHandler->handleServerError($response);
         }
 
         return $response->withJson($result, 200);
@@ -37,7 +32,6 @@ class WordsGroupsDetailsController
     {
         $WordsGroupsDetailsModel = new WordsGroupsDetails();
         $MsgHandler = new MsgHandler();
-        $Msg = new Msg();
        
         try {
 
@@ -45,7 +39,7 @@ class WordsGroupsDetailsController
 
         } catch (Exception $e) {  
             /* 出錯統一用 Internal Server Error */           
-            return $MsgHandler->handleServerError($response, $Msg->msg);
+            return $MsgHandler->handleServerError($response);
         }
 
         return $response->withJson($result, 200);
@@ -56,8 +50,7 @@ class WordsGroupsDetailsController
     {
         $data = $request->getParsedBody();        
         $WordsGroupsDetailsModel = new WordsGroupsDetails();
-        $MsgHandler = new MsgHandler();
-        $Msg = new Msg();
+        $MsgHandler = new MsgHandler();      
 
         try {
            
@@ -65,15 +58,15 @@ class WordsGroupsDetailsController
             $result = $WordsGroupsDetailsModel->add($data);
 
             if($result == true){
-                return $MsgHandler->handleSuccess($response, $Msg->msg);
+                return $MsgHandler->handleSuccess($response);
             }else{
-                return $MsgHandler->handleDataFaild($response, $Msg->msg);
+                return $MsgHandler->handleDataFaild($response);
             }
             
 
         } catch (Exception $e) {  
             /* 出錯統一用 Internal Server Error */           
-            return $MsgHandler->handleServerError($response, $Msg->msg);
+            return $MsgHandler->handleServerError($response);
         }
        
     }
@@ -82,28 +75,27 @@ class WordsGroupsDetailsController
     public function edit($request, $response, $args)
     {              
         $WordsGroupsDetailsModel = new WordsGroupsDetails();
-        $MsgHandler = new MsgHandler();
-        $Msg = new Msg();
+        $MsgHandler = new MsgHandler();   
        
         try {
 
             /* 檢查 id 是否存在 */
             $check = $WordsGroupsDetailsModel->find($args['id']);
             if ($check == false) {
-                return $MsgHandler->handleNotFound($response, $Msg->msg);
+                return $MsgHandler->handleNotFound($response);
             }
 
             $result = $WordsGroupsDetailsModel->delete($args['id']);
 
             if($result == true){
-                return $MsgHandler->handleSuccess($response, $Msg->msg);
+                return $MsgHandler->handleSuccess($response);
             }else{
-                return $MsgHandler->handleDataFaild($response, $Msg->msg);
+                return $MsgHandler->handleDataFaild($response);
             }
 
         } catch (Exception $e) {   
             /* 出錯統一用 Internal Server Error */
-            return $MsgHandler->handleServerError($response, $Msg->msg);
+            return $MsgHandler->handleServerError($response);
         }
        
     }

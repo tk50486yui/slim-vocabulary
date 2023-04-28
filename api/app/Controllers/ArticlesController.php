@@ -3,22 +3,17 @@
 namespace app\Controllers;
 
 use app\Models\Articles;
-use libs\Responses\Msg;
 use libs\Responses\MsgHandler;
 use Exception;
 
 class ArticlesController
-{
-    protected $ArticlesModel;
-    protected $MsgHandler;
-    protected $Msg;
+{ 
 
     /* 查詢單一資料 Articles id = ? */
     public function find($request, $response, $args)
     {
         $ArticlesModel = new Articles();
-        $MsgHandler = new MsgHandler();
-        $Msg = new Msg();      
+        $MsgHandler = new MsgHandler();            
 
         try {
 
@@ -26,7 +21,7 @@ class ArticlesController
 
         } catch (Exception $e) {           
              /* 出錯統一用 Internal Server Error */           
-             return $MsgHandler->handleServerError($response, $Msg->msg);
+             return $MsgHandler->handleServerError($response);
         }
 
         return $response->withJson($result, 200);
@@ -36,8 +31,7 @@ class ArticlesController
     public function findAll($request, $response, $args)
     {
         $ArticlesModel = new Articles();
-        $MsgHandler = new MsgHandler();
-        $Msg = new Msg();
+        $MsgHandler = new MsgHandler();        
        
         try {
 
@@ -45,7 +39,7 @@ class ArticlesController
 
         } catch (Exception $e) {  
             /* 出錯統一用 Internal Server Error */           
-            return $MsgHandler->handleServerError($response, $Msg->msg);
+            return $MsgHandler->handleServerError($response);
         }
 
         return $response->withJson($result, 200);
@@ -56,8 +50,7 @@ class ArticlesController
     {
         $data = $request->getParsedBody();        
         $ArticlesModel = new Articles();
-        $MsgHandler = new MsgHandler();
-        $Msg = new Msg();      
+        $MsgHandler = new MsgHandler();          
 
         try {
            
@@ -65,15 +58,15 @@ class ArticlesController
             $result = $ArticlesModel->add($data);
 
             if($result == true){
-                return $MsgHandler->handleSuccess($response, $Msg->msg);
+                return $MsgHandler->handleSuccess($response);
             }else{
-                return $MsgHandler->handleDataFaild($response, $Msg->msg);
+                return $MsgHandler->handleDataFaild($response);
             }
             
 
         } catch (Exception $e) {  
             /* 出錯統一用 Internal Server Error */           
-            return $MsgHandler->handleServerError($response, $Msg->msg);
+            return $MsgHandler->handleServerError($response);
         }
        
     }
@@ -83,22 +76,21 @@ class ArticlesController
     {
         $data = $request->getParsedBody();        
         $ArticlesModel = new Articles();
-        $MsgHandler = new MsgHandler();
-        $Msg = new Msg();        
+        $MsgHandler = new MsgHandler();          
 
         try {
 
             $result = $ArticlesModel->edit($data, $args['id']);
 
             if($result == true){
-                return $MsgHandler->handleSuccess($response, $Msg->msg);
+                return $MsgHandler->handleSuccess($response);
             }else{
-                return $MsgHandler->handleDataFaild($response, $Msg->msg);
+                return $MsgHandler->handleDataFaild($response);
             }
 
         } catch (Exception $e) {   
             /* 出錯統一用 Internal Server Error */
-            return $MsgHandler->handleServerError($response, $Msg->msg);
+            return $MsgHandler->handleServerError($response);
         }
        
     }

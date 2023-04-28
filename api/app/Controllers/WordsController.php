@@ -3,22 +3,17 @@
 namespace app\Controllers;
 
 use app\Models\Words;
-use libs\Responses\Msg;
 use libs\Responses\MsgHandler;
 use Exception;
 
 class WordsController
 {
-    protected $WordsModel;
-    protected $MsgHandler;
-    protected $Msg;   
-
+   
     /* 查詢單一資料 words id = ? */ 
     public function find($request, $response, $args)
     {
         $WordsModel = new Words();
-        $MsgHandler = new MsgHandler();
-        $Msg = new Msg();       
+        $MsgHandler = new MsgHandler();         
 
         try {
 
@@ -26,7 +21,7 @@ class WordsController
 
         } catch (Exception $e) {           
              /* 出錯統一用 Internal Server Error */           
-             return $MsgHandler->handleServerError($response, $Msg->msg);
+             return $MsgHandler->handleServerError($response);
         }
 
         return $response->withJson($result, 200);
@@ -36,8 +31,7 @@ class WordsController
     public function findAll($request, $response, $args)
     {
         $WordsModel = new Words();
-        $MsgHandler = new MsgHandler();
-        $Msg = new Msg();    
+        $MsgHandler = new MsgHandler();       
 
         try {
 
@@ -45,7 +39,7 @@ class WordsController
 
         } catch (Exception $e) {  
             /* 出錯統一用 Internal Server Error */           
-            return $MsgHandler->handleServerError($response, $Msg->msg);
+            return $MsgHandler->handleServerError($response);
         }
 
         return $response->withJson($result, 200);
@@ -56,28 +50,27 @@ class WordsController
     {
         $data = $request->getParsedBody();        
         $WordsModel = new Words();
-        $MsgHandler = new MsgHandler();
-        $Msg = new Msg();
+        $MsgHandler = new MsgHandler();    
 
         try {
             /* 檢查有沒有重複的單詞 */
             $check = $WordsModel->findByName($data['ws_name']);
             if($check == false){
-                return $MsgHandler->handleDuplicate($response, $Msg->msg);
+                return $MsgHandler->handleDuplicate($response);
             }
             /* 新增 */ 
             $result = $WordsModel->add($data);
 
             if($result == true){
-                return $MsgHandler->handleSuccess($response, $Msg->msg);
+                return $MsgHandler->handleSuccess($response);
             }else{
-                return $MsgHandler->handleDataFaild($response, $Msg->msg);
+                return $MsgHandler->handleDataFaild($response);
             }
             
 
         } catch (Exception $e) {  
             /* 出錯統一用 Internal Server Error */           
-            return $MsgHandler->handleServerError($response, $Msg->msg);
+            return $MsgHandler->handleServerError($response);
         }
        
     }
@@ -87,22 +80,21 @@ class WordsController
     {
         $data = $request->getParsedBody();        
         $WordsModel = new Words();
-        $MsgHandler = new MsgHandler();
-        $Msg = new Msg();       
+        $MsgHandler = new MsgHandler();          
 
         try {
 
             $result = $WordsModel->edit($data, $args['id']);
 
             if($result == true){
-                return $MsgHandler->handleSuccess($response, $Msg->msg);
+                return $MsgHandler->handleSuccess($response);
             }else{
-                return $MsgHandler->handleDataFaild($response, $Msg->msg);
+                return $MsgHandler->handleDataFaild($response);
             }
 
         } catch (Exception $e) {   
             /* 出錯統一用 Internal Server Error */
-            return $MsgHandler->handleServerError($response, $Msg->msg);
+            return $MsgHandler->handleServerError($response);
         }
        
     }
@@ -112,15 +104,14 @@ class WordsController
     {    
         $WordsModel = new Words();
         $MsgHandler = new MsgHandler();
-        $Msg = new Msg();      
-
+     
         try {
 
             $result = $WordsModel->findCategoriesAll();           
 
         } catch (Exception $e) {   
             /* 出錯統一用 Internal Server Error */           
-            return $MsgHandler->handleServerError($response, $Msg->msg);
+            return $MsgHandler->handleServerError($response);
         }
        
         return $response->withJson($result, 200);
