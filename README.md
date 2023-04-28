@@ -1,8 +1,11 @@
 # SlimProject
 
-### node v18.15.0
+使用PHP Slim 3 + Redbean ORM 來建立後端api
 
-## Composer 
+
+## Node v18.15.0
+
+## Composer v2.5.4
     composer install
     composer update
 -----    
@@ -10,7 +13,11 @@
     autoload
     redbean   
     slim-session 
-### Autoload  
+
+#### Autoload
+
+添加新的目錄要在composer.json 的 autoload 同步新增並執行
+
     composer dump-autoload
 
 ### Git
