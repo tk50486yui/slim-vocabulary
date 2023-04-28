@@ -3,9 +3,8 @@
 namespace app\Controllers;
 
 use app\Models\Articles;
-use app\Msg;
-use app\DatabaseManager;
-use app\MsgHandler;
+use libs\Responses\Msg;
+use libs\Responses\MsgHandler;
 use Exception;
 
 class ArticlesController
@@ -13,15 +12,13 @@ class ArticlesController
     protected $ArticlesModel;
     protected $MsgHandler;
     protected $Msg;
-    /* 查詢單一資料 Articles id = ? */ 
+
+    /* 查詢單一資料 Articles id = ? */
     public function find($request, $response, $args)
     {
         $ArticlesModel = new Articles();
         $MsgHandler = new MsgHandler();
-        $Msg = new Msg();
-        if (!DatabaseManager::checkConnection()){
-            return $MsgHandler->handleConnetFaild($response, $Msg->msg);
-        }
+        $Msg = new Msg();      
 
         try {
 
@@ -34,16 +31,14 @@ class ArticlesController
 
         return $response->withJson($result, 200);
     }
+
     /* 查詢所有資料 Articles */ 
     public function findAll($request, $response, $args)
     {
         $ArticlesModel = new Articles();
         $MsgHandler = new MsgHandler();
         $Msg = new Msg();
-        if (!DatabaseManager::checkConnection()){
-            return $MsgHandler->handleConnetFaild($response, $Msg->msg);
-        }
-
+       
         try {
 
             $result = $ArticlesModel->findAll();
@@ -55,17 +50,14 @@ class ArticlesController
 
         return $response->withJson($result, 200);
     }
+    
     /* 新增單一資料 Articles */ 
     public function add($request, $response, $args)
     {
         $data = $request->getParsedBody();        
         $ArticlesModel = new Articles();
         $MsgHandler = new MsgHandler();
-        $Msg = new Msg();
-
-        if (!DatabaseManager::checkConnection()){
-            return $MsgHandler->handleConnetFaild($response, $Msg->msg);
-        }
+        $Msg = new Msg();      
 
         try {
            
@@ -86,16 +78,13 @@ class ArticlesController
        
     }
 
-    /* 修改edit資料 Articles */ 
+    /* 修改 edit 資料 Articles */ 
     public function edit($request, $response, $args)
     {
         $data = $request->getParsedBody();        
         $ArticlesModel = new Articles();
         $MsgHandler = new MsgHandler();
-        $Msg = new Msg();
-        if (!DatabaseManager::checkConnection()){
-            return $MsgHandler->handleConnetFaild($response, $Msg->msg);
-        }
+        $Msg = new Msg();        
 
         try {
 

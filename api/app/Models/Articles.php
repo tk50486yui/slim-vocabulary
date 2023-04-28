@@ -2,9 +2,9 @@
 
 namespace app\Models;
 
-use Exception;
-use app\Time;
 use \RedBeanPHP\R as R;
+use libs\Customs\Time;
+use Exception;
 
 class Articles
 {

@@ -3,9 +3,8 @@
 namespace app\Controllers;
 
 use app\Models\Categories;
-use app\Msg;
-use app\DatabaseManager;
-use app\MsgHandler;
+use libs\Responses\Msg;
+use libs\Responses\MsgHandler;
 use Exception;
 
 class CategoriesController
@@ -13,15 +12,13 @@ class CategoriesController
     protected $CategoriesModel;
     protected $MsgHandler;
     protected $Msg;
+    
     /* 查詢單一資料 Categories id = ? */ 
     public function find($request, $response, $args)
     {
         $CategoriesModel = new Categories();
         $MsgHandler = new MsgHandler();
-        $Msg = new Msg();
-        if (!DatabaseManager::checkConnection()){
-            return $MsgHandler->handleConnetFaild($response, $Msg->msg);
-        }
+        $Msg = new Msg();      
 
         try {
 
@@ -34,15 +31,13 @@ class CategoriesController
 
         return $response->withJson($result, 200);
     }
+
     /* 查詢所有資料 Categories */ 
     public function findAll($request, $response, $args)
     {
         $CategoriesModel = new Categories();
         $MsgHandler = new MsgHandler();
-        $Msg = new Msg();
-        if (!DatabaseManager::checkConnection()){
-            return $MsgHandler->handleConnetFaild($response, $Msg->msg);
-        }
+        $Msg = new Msg();       
 
         try {
 
@@ -55,17 +50,14 @@ class CategoriesController
 
         return $response->withJson($result, 200);
     }
+
     /* 新增單一資料 Categories */ 
     public function add($request, $response, $args)
     {
         $data = $request->getParsedBody();        
         $CategoriesModel = new Categories();
         $MsgHandler = new MsgHandler();
-        $Msg = new Msg();
-
-        if (!DatabaseManager::checkConnection()){
-            return $MsgHandler->handleConnetFaild($response, $Msg->msg);
-        }
+        $Msg = new Msg();       
 
         try {
             /* 檢查有沒有重複的名稱 */
@@ -90,17 +82,14 @@ class CategoriesController
        
     }
 
-    /* 修改edit資料 Categories */ 
+    /* 修改 edit 資料 Categories */ 
     public function edit($request, $response, $args)
     {
         $data = $request->getParsedBody();        
         $CategoriesModel = new Categories();
         $MsgHandler = new MsgHandler();
         $Msg = new Msg();
-        if (!DatabaseManager::checkConnection()){
-            return $MsgHandler->handleConnetFaild($response, $Msg->msg);
-        }
-
+      
         try {
 
             $result = $CategoriesModel->edit($data, $args['id']);
@@ -116,5 +105,24 @@ class CategoriesController
             return $MsgHandler->handleServerError($response, $Msg->msg);
         }
        
+    }
+
+    /* JOIN查詢 Categories id 底下的 words */ 
+    public function findWordsByID($request, $response, $args)
+    {
+        $CategoriesModel = new Categories();
+        $MsgHandler = new MsgHandler();
+        $Msg = new Msg();
+       
+        try {
+
+            $result = $CategoriesModel->findWordsByID($args['id']);
+
+        } catch (Exception $e) {  
+            /* 出錯統一用 Internal Server Error */           
+            return $MsgHandler->handleServerError($response, $Msg->msg);
+        }
+
+        return $response->withJson($result, 200);
     }
 }

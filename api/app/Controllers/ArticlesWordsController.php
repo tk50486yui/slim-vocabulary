@@ -3,9 +3,8 @@
 namespace app\Controllers;
 
 use app\Models\ArticlesWords;
-use app\Msg;
-use app\DatabaseManager;
-use app\MsgHandler;
+use libs\Responses\Msg;
+use libs\Responses\MsgHandler;
 use Exception;
 
 class ArticlesWordsController
@@ -13,15 +12,13 @@ class ArticlesWordsController
     protected $ArticlesWordsModel;
     protected $MsgHandler;
     protected $Msg;
+    
     /* 查詢單一資料 ArticlesWords id = ? */ 
     public function find($request, $response, $args)
     {
         $ArticlesWordsModel = new ArticlesWords();
         $MsgHandler = new MsgHandler();
-        $Msg = new Msg();
-        if (!DatabaseManager::checkConnection()){
-            return $MsgHandler->handleConnetFaild($response, $Msg->msg);
-        }
+        $Msg = new Msg();       
 
         try {
 
@@ -34,15 +31,13 @@ class ArticlesWordsController
 
         return $response->withJson($result, 200);
     }
+
     /* 查詢所有資料 ArticlesWords */ 
     public function findAll($request, $response, $args)
     {
         $ArticlesWordsModel = new ArticlesWords();
         $MsgHandler = new MsgHandler();
-        $Msg = new Msg();
-        if (!DatabaseManager::checkConnection()){
-            return $MsgHandler->handleConnetFaild($response, $Msg->msg);
-        }
+        $Msg = new Msg();       
 
         try {
 
@@ -61,11 +56,7 @@ class ArticlesWordsController
         $data = $request->getParsedBody();        
         $ArticlesWordsModel = new ArticlesWords();
         $MsgHandler = new MsgHandler();
-        $Msg = new Msg();
-
-        if (!DatabaseManager::checkConnection()){
-            return $MsgHandler->handleConnetFaild($response, $Msg->msg);
-        }
+        $Msg = new Msg();     
 
         try {
            
@@ -91,10 +82,7 @@ class ArticlesWordsController
     {               
         $ArticlesWordsModel = new ArticlesWords();
         $MsgHandler = new MsgHandler();
-        $Msg = new Msg();
-        if (!DatabaseManager::checkConnection()){
-            return $MsgHandler->handleConnetFaild($response, $Msg->msg);
-        }
+        $Msg = new Msg();      
 
         try {
 

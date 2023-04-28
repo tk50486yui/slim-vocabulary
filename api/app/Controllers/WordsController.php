@@ -3,25 +3,22 @@
 namespace app\Controllers;
 
 use app\Models\Words;
-use app\Msg;
-use app\DatabaseManager;
-use app\MsgHandler;
+use libs\Responses\Msg;
+use libs\Responses\MsgHandler;
 use Exception;
 
 class WordsController
 {
     protected $WordsModel;
     protected $MsgHandler;
-    protected $Msg;
+    protected $Msg;   
+
     /* 查詢單一資料 words id = ? */ 
     public function find($request, $response, $args)
     {
         $WordsModel = new Words();
         $MsgHandler = new MsgHandler();
-        $Msg = new Msg();
-        if (!DatabaseManager::checkConnection()){
-            return $MsgHandler->handleConnetFaild($response, $Msg->msg);
-        }
+        $Msg = new Msg();       
 
         try {
 
@@ -34,15 +31,13 @@ class WordsController
 
         return $response->withJson($result, 200);
     }
+
     /* 查詢所有資料 words */ 
     public function findAll($request, $response, $args)
     {
         $WordsModel = new Words();
         $MsgHandler = new MsgHandler();
-        $Msg = new Msg();
-        if (!DatabaseManager::checkConnection()){
-            return $MsgHandler->handleConnetFaild($response, $Msg->msg);
-        }
+        $Msg = new Msg();    
 
         try {
 
@@ -55,6 +50,7 @@ class WordsController
 
         return $response->withJson($result, 200);
     }
+
     /* 新增add單一資料 words */ 
     public function add($request, $response, $args)
     {
@@ -62,10 +58,6 @@ class WordsController
         $WordsModel = new Words();
         $MsgHandler = new MsgHandler();
         $Msg = new Msg();
-
-        if (!DatabaseManager::checkConnection()){
-            return $MsgHandler->handleConnetFaild($response, $Msg->msg);
-        }
 
         try {
             /* 檢查有沒有重複的單詞 */
@@ -90,16 +82,13 @@ class WordsController
        
     }
 
-    /* 修改edit資料 words */ 
+    /* 修改 edit 資料 words */ 
     public function edit($request, $response, $args)
     {
         $data = $request->getParsedBody();        
         $WordsModel = new Words();
         $MsgHandler = new MsgHandler();
-        $Msg = new Msg();
-        if (!DatabaseManager::checkConnection()){
-            return $MsgHandler->handleConnetFaild($response, $Msg->msg);
-        }
+        $Msg = new Msg();       
 
         try {
 
@@ -116,5 +105,24 @@ class WordsController
             return $MsgHandler->handleServerError($response, $Msg->msg);
         }
        
+    }
+
+    /* 查詢 words left join categories */ 
+    public function findCategoriesAll($request, $response, $args)
+    {    
+        $WordsModel = new Words();
+        $MsgHandler = new MsgHandler();
+        $Msg = new Msg();      
+
+        try {
+
+            $result = $WordsModel->findCategoriesAll();           
+
+        } catch (Exception $e) {   
+            /* 出錯統一用 Internal Server Error */           
+            return $MsgHandler->handleServerError($response, $Msg->msg);
+        }
+       
+        return $response->withJson($result, 200);
     }
 }

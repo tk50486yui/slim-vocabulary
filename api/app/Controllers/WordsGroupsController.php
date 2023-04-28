@@ -3,9 +3,8 @@
 namespace app\Controllers;
 
 use app\Models\WordsGroups;
-use app\Msg;
-use app\DatabaseManager;
-use app\MsgHandler;
+use libs\Responses\Msg;
+use libs\Responses\MsgHandler;
 use Exception;
 
 class WordsGroupsController
@@ -13,16 +12,14 @@ class WordsGroupsController
     protected $WordsGroupsModel;
     protected $MsgHandler;
     protected $Msg;
+
     /* 查詢單一資料 WordsGroups id = ? */ 
     public function find($request, $response, $args)
     {
         $WordsGroupsModel = new WordsGroups();
         $MsgHandler = new MsgHandler();
         $Msg = new Msg();
-        if (!DatabaseManager::checkConnection()){
-            return $MsgHandler->handleConnetFaild($response, $Msg->msg);
-        }
-
+       
         try {
 
             $result = $WordsGroupsModel->find($args['id']);
@@ -34,16 +31,14 @@ class WordsGroupsController
 
         return $response->withJson($result, 200);
     }
+
     /* 查詢所有資料 WordsGroups */ 
     public function findAll($request, $response, $args)
     {
         $WordsGroupsModel = new WordsGroups();
         $MsgHandler = new MsgHandler();
         $Msg = new Msg();
-        if (!DatabaseManager::checkConnection()){
-            return $MsgHandler->handleConnetFaild($response, $Msg->msg);
-        }
-
+      
         try {
 
             $result = $WordsGroupsModel->findAll();
@@ -55,6 +50,7 @@ class WordsGroupsController
 
         return $response->withJson($result, 200);
     }
+    
     /* 新增單一資料 WordsGroups */ 
     public function add($request, $response, $args)
     {
@@ -62,10 +58,6 @@ class WordsGroupsController
         $WordsGroupsModel = new WordsGroups();
         $MsgHandler = new MsgHandler();
         $Msg = new Msg();
-
-        if (!DatabaseManager::checkConnection()){
-            return $MsgHandler->handleConnetFaild($response, $Msg->msg);
-        }
 
         try {
            
@@ -86,17 +78,14 @@ class WordsGroupsController
        
     }
 
-    /* 修改edit資料 WordsGroups */ 
+    /* 修改 edit 資料 WordsGroups */ 
     public function edit($request, $response, $args)
     {
         $data = $request->getParsedBody();        
         $WordsGroupsModel = new WordsGroups();
         $MsgHandler = new MsgHandler();
         $Msg = new Msg();
-        if (!DatabaseManager::checkConnection()){
-            return $MsgHandler->handleConnetFaild($response, $Msg->msg);
-        }
-
+       
         try {
 
             $result = $WordsGroupsModel->edit($data, $args['id']);

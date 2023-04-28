@@ -2,9 +2,8 @@
 
 namespace app\Models;
 
-use Exception;
-use app\Time;
 use \RedBeanPHP\R as R;
+use Exception;
 
 class ArticlesTags
 {

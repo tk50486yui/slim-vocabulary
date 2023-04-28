@@ -1,9 +1,10 @@
 <?php
 
-namespace app;
+namespace libs\Customs;
 
 use DateTime;
 use DateTimeZone;
+
 class Time
 {    
     public static function getNow()

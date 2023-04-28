@@ -3,9 +3,8 @@
 namespace app\Controllers;
 
 use app\Models\WordsGroupsDetails;
-use app\Msg;
-use app\DatabaseManager;
-use app\MsgHandler;
+use libs\Responses\Msg;
+use libs\Responses\MsgHandler;
 use Exception;
 
 class WordsGroupsDetailsController
@@ -13,16 +12,14 @@ class WordsGroupsDetailsController
     protected $WordsGroupsDetailsModel;
     protected $MsgHandler;
     protected $Msg;
+
     /* 查詢單一資料 WordsGroupsDetails id = ? */ 
     public function find($request, $response, $args)
     {
         $WordsGroupsDetailsModel = new WordsGroupsDetails();
         $MsgHandler = new MsgHandler();
         $Msg = new Msg();
-        if (!DatabaseManager::checkConnection()){
-            return $MsgHandler->handleConnetFaild($response, $Msg->msg);
-        }
-
+      
         try {
 
             $result = $WordsGroupsDetailsModel->find($args['id']);
@@ -34,16 +31,14 @@ class WordsGroupsDetailsController
 
         return $response->withJson($result, 200);
     }
+
     /* 查詢所有資料 WordsGroupsDetails */ 
     public function findAll($request, $response, $args)
     {
         $WordsGroupsDetailsModel = new WordsGroupsDetails();
         $MsgHandler = new MsgHandler();
         $Msg = new Msg();
-        if (!DatabaseManager::checkConnection()){
-            return $MsgHandler->handleConnetFaild($response, $Msg->msg);
-        }
-
+       
         try {
 
             $result = $WordsGroupsDetailsModel->findAll();
@@ -55,6 +50,7 @@ class WordsGroupsDetailsController
 
         return $response->withJson($result, 200);
     }
+    
     /* 新增單一資料 WordsGroupsDetails */ 
     public function add($request, $response, $args)
     {
@@ -62,10 +58,6 @@ class WordsGroupsDetailsController
         $WordsGroupsDetailsModel = new WordsGroupsDetails();
         $MsgHandler = new MsgHandler();
         $Msg = new Msg();
-
-        if (!DatabaseManager::checkConnection()){
-            return $MsgHandler->handleConnetFaild($response, $Msg->msg);
-        }
 
         try {
            
@@ -92,10 +84,7 @@ class WordsGroupsDetailsController
         $WordsGroupsDetailsModel = new WordsGroupsDetails();
         $MsgHandler = new MsgHandler();
         $Msg = new Msg();
-        if (!DatabaseManager::checkConnection()){
-            return $MsgHandler->handleConnetFaild($response, $Msg->msg);
-        }
-
+       
         try {
 
             /* 檢查 id 是否存在 */

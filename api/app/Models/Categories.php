@@ -2,9 +2,9 @@
 
 namespace app\Models;
 
-use Exception;
-use app\Time;
 use \RedBeanPHP\R as R;
+use libs\Customs\Time;
+use Exception;
 
 class Categories
 {
@@ -14,7 +14,7 @@ class Categories
     public function find($id)
     {
         $result = R::findOne(SELF::TABLE_NAME, ' id = ? ', array($id));
-        
+
         return $result;
     }
 
@@ -32,7 +32,7 @@ class Categories
     {
         $result = false;
         $row = R::findOne(SELF::TABLE_NAME, ' cate_name = ? ', array($cate_name));
-        if ($row == null) {           
+        if ($row == null) {
             $result = true;
         }
         return $result;
@@ -41,12 +41,12 @@ class Categories
     /* 新增單一資料 categories */
     public function add($data)
     {
-        $result = false;       
+        $result = false;
         /* Transaction */
         R::begin();
         try {
             $categories = R::dispense(SELF::TABLE_NAME);
-            $categories->cate_name = $data['cate_name'];            
+            $categories->cate_name = $data['cate_name'];
             $categories->cate_parent_id = is_numeric($data['cate_parent_id']) ? (int)$data['cate_parent_id'] : null;
             $categories->cate_level = is_numeric($data['cate_level']) ? (int)$data['cate_level'] : 1;
             $categories->cate_sort_order = is_numeric($data['cate_sort_order']) ? (int)$data['cate_sort_order'] : 1;
@@ -71,7 +71,7 @@ class Categories
         try {
 
             $categories = R::load(SELF::TABLE_NAME, $id);
-            $categories->cate_name = $data['cate_name'];            
+            $categories->cate_name = $data['cate_name'];
             $categories->cate_parent_id = is_numeric($data['cate_parent_id']) ? (int)$data['cate_parent_id'] : null;
             $categories->cate_level = is_numeric($data['cate_level']) ? (int)$data['cate_level'] : 1;
             $categories->cate_sort_order = is_numeric($data['cate_sort_order']) ? (int)$data['cate_sort_order'] : 1;
@@ -81,7 +81,7 @@ class Categories
             R::close();
             $result = true;
         } catch (Exception $e) {
-            R::rollback();            
+            R::rollback();
             $result = false;
         }
 
@@ -101,11 +101,29 @@ class Categories
             R::commit();
             R::close();
             $result = true;
-
         } catch (Exception $e) {
             R::rollback();
             $result = false;
         }
+
+        return $result;
+    }
+
+    /* JOIN 查詢 categories id 底下的 words 資料 */
+    public function findWordsByID($id)
+    {
+        $query = "SELECT 
+                    cate.*, ws.* 
+                FROM 
+                    categories cate
+                LEFT JOIN 
+                    words ws 
+                ON 
+                    cate.id = ws.cate_id 
+                WHERE 
+                    cate.id = :id";
+
+        $result = R::getAll($query, array(':id' => $id));
 
         return $result;
     }

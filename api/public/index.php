@@ -3,21 +3,15 @@
 require '../vendor/autoload.php';
 
 use core\Model as C;
+use app\Middlewares\CheckConnectionMiddleware;
 
 C::begin();
 
-//begin
+/* Begin */
 $app = new Slim\App();
-
-/*$app->add(new \Slim\Middleware\Session([
-    'name' => 'dummy_session',
-    'autorefresh' => true,
-    'lifetime' => '1 month'
-  ]));*/
+$app->add(new CheckConnectionMiddleware());
 
 require '../app/Container.php';
-
-//require '../app/Middleware.php';
 
 require '../app/Routes.php';
 

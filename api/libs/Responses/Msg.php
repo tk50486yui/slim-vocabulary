@@ -1,6 +1,6 @@
 <?php
 
-namespace app;
+namespace libs\Responses;
 
 class Msg
 {    

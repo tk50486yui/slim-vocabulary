@@ -2,9 +2,8 @@
 
 namespace app\Models;
 
-use Exception;
-use app\Time;
 use \RedBeanPHP\R as R;
+use Exception;
 
 class WordsTags
 {
@@ -67,6 +66,21 @@ class WordsTags
             R::rollback();
             $result = false;
         }
+
+        return $result;
+    }
+
+    /* JOIN 查詢 words_tags LEFT JOIN words tags 全部資料 */
+    public function findWordsTagsAll()
+    {
+        $query = "SELECT 
+                    ws.*, ts.ts_name
+                FROM 
+                    words_tags wt
+                LEFT JOIN words ws ON wt.ws_id =  ws.id
+                LEFT JOIN tags ts ON wt.ts_id =  ts.id";
+
+        $result = R::getAll($query);
 
         return $result;
     }

@@ -1,10 +1,6 @@
 <?php
 $container = $app->getContainer();
 
-/*$container['session'] = function ($container) {
-    return new \SlimSession\Helper;
-};*/
-
 $container['WordsController'] = function ($container) {
     return new app\Controllers\WordsController;
 };

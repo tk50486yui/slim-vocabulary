@@ -3,9 +3,8 @@
 namespace app\Controllers;
 
 use app\Models\Tags;
-use app\Msg;
-use app\DatabaseManager;
-use app\MsgHandler;
+use libs\Responses\Msg;
+use libs\Responses\MsgHandler;
 use Exception;
 
 class TagsController
@@ -13,16 +12,14 @@ class TagsController
     protected $TagsModel;
     protected $MsgHandler;
     protected $Msg;
+
     /* 查詢單一資料 Tags id = ? */ 
     public function find($request, $response, $args)
     {
         $TagsModel = new Tags();
         $MsgHandler = new MsgHandler();
         $Msg = new Msg();
-        if (!DatabaseManager::checkConnection()){
-            return $MsgHandler->handleConnetFaild($response, $Msg->msg);
-        }
-
+       
         try {
 
             $result = $TagsModel->find($args['id']);
@@ -34,16 +31,14 @@ class TagsController
 
         return $response->withJson($result, 200);
     }
+
     /* 查詢所有資料 Tags */ 
     public function findAll($request, $response, $args)
     {
         $TagsModel = new Tags();
         $MsgHandler = new MsgHandler();
         $Msg = new Msg();
-        if (!DatabaseManager::checkConnection()){
-            return $MsgHandler->handleConnetFaild($response, $Msg->msg);
-        }
-
+      
         try {
 
             $result = $TagsModel->findAll();
@@ -55,17 +50,14 @@ class TagsController
 
         return $response->withJson($result, 200);
     }
+    
     /* 新增單一資料 Tags */ 
     public function add($request, $response, $args)
     {
         $data = $request->getParsedBody();        
         $TagsModel = new Tags();
         $MsgHandler = new MsgHandler();
-        $Msg = new Msg();
-
-        if (!DatabaseManager::checkConnection()){
-            return $MsgHandler->handleConnetFaild($response, $Msg->msg);
-        }
+        $Msg = new Msg();      
 
         try {
             /* 檢查有沒有重複的標籤名稱 */
@@ -90,17 +82,14 @@ class TagsController
        
     }
 
-    /* 修改edit資料 Tags */ 
+    /* 修改 edit 資料 Tags */ 
     public function edit($request, $response, $args)
     {
         $data = $request->getParsedBody();        
         $TagsModel = new Tags();
         $MsgHandler = new MsgHandler();
         $Msg = new Msg();
-        if (!DatabaseManager::checkConnection()){
-            return $MsgHandler->handleConnetFaild($response, $Msg->msg);
-        }
-
+       
         try {
 
             $result = $TagsModel->edit($data, $args['id']);

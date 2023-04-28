@@ -3,9 +3,8 @@
 namespace app\Controllers;
 
 use app\Models\ArticlesTags;
-use app\Msg;
-use app\DatabaseManager;
-use app\MsgHandler;
+use libs\Responses\Msg;
+use libs\Responses\MsgHandler;
 use Exception;
 
 class ArticlesTagsController
@@ -13,19 +12,18 @@ class ArticlesTagsController
     protected $ArticlesTagsModel;
     protected $MsgHandler;
     protected $Msg;
+
     /* 查詢單一資料 ArticlesTags id = ? */
     public function find($request, $response, $args)
     {
         $ArticlesTagsModel = new ArticlesTags();
         $MsgHandler = new MsgHandler();
-        $Msg = new Msg();
-        if (!DatabaseManager::checkConnection()) {
-            return $MsgHandler->handleConnetFaild($response, $Msg->msg);
-        }
+        $Msg = new Msg();      
 
         try {
 
             $result = $ArticlesTagsModel->find($args['id']);
+
         } catch (Exception $e) {
             /* 出錯統一用 Internal Server Error */
             return $MsgHandler->handleServerError($response, $Msg->msg);
@@ -33,19 +31,18 @@ class ArticlesTagsController
 
         return $response->withJson($result, 200);
     }
+
     /* 查詢所有資料 ArticlesTags */
     public function findAll($request, $response, $args)
     {
         $ArticlesTagsModel = new ArticlesTags();
         $MsgHandler = new MsgHandler();
-        $Msg = new Msg();
-        if (!DatabaseManager::checkConnection()) {
-            return $MsgHandler->handleConnetFaild($response, $Msg->msg);
-        }
+        $Msg = new Msg();      
 
         try {
 
             $result = $ArticlesTagsModel->findAll();
+
         } catch (Exception $e) {
             /* 出錯統一用 Internal Server Error */
             return $MsgHandler->handleServerError($response, $Msg->msg);
@@ -53,6 +50,7 @@ class ArticlesTagsController
 
         return $response->withJson($result, 200);
     }
+    
     /* 新增單一資料 ArticlesTags */
     public function add($request, $response, $args)
     {
@@ -60,10 +58,6 @@ class ArticlesTagsController
         $ArticlesTagsModel = new ArticlesTags();
         $MsgHandler = new MsgHandler();
         $Msg = new Msg();
-
-        if (!DatabaseManager::checkConnection()) {
-            return $MsgHandler->handleConnetFaild($response, $Msg->msg);
-        }
 
         try {
 
@@ -75,6 +69,7 @@ class ArticlesTagsController
             } else {
                 return $MsgHandler->handleDataFaild($response, $Msg->msg);
             }
+
         } catch (Exception $e) {
             /* 出錯統一用 Internal Server Error */
             return $MsgHandler->handleServerError($response, $Msg->msg);
@@ -87,10 +82,7 @@ class ArticlesTagsController
         $ArticlesTagsModel = new ArticlesTags();
         $MsgHandler = new MsgHandler();
         $Msg = new Msg();
-        if (!DatabaseManager::checkConnection()) {
-            return $MsgHandler->handleConnetFaild($response, $Msg->msg);
-        }
-
+       
         try {
 
             /* 檢查 id 是否存在 */
@@ -106,6 +98,7 @@ class ArticlesTagsController
             } else {
                 return $MsgHandler->handleDataFaild($response, $Msg->msg);
             }
+
         } catch (Exception $e) {
             /* 出錯統一用 Internal Server Error */
             return $MsgHandler->handleServerError($response, $Msg->msg);

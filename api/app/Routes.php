@@ -5,7 +5,9 @@ $app->group('/words', function() {
     $this->get('', 'WordsController:findAll');
     $this->get('/{id}', 'WordsController:find');
     $this->post('', 'WordsController:add');
-    $this->put('/{id}', 'WordsController:edit');    
+    $this->put('/{id}', 'WordsController:edit');
+
+    $this->get('/categories/', 'WordsController:findCategoriesAll');
   
 });
 
@@ -14,7 +16,9 @@ $app->group('/categories', function() {
     $this->get('', 'CategoriesController:findAll');
     $this->get('/{id}', 'CategoriesController:find');
     $this->post('', 'CategoriesController:add');
-    $this->put('/{id}', 'CategoriesController:edit');    
+    $this->put('/{id}', 'CategoriesController:edit');
+
+    $this->get('/words/{id}', 'CategoriesController:findWordsByID');
   
 });
 

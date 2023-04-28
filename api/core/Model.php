@@ -3,8 +3,7 @@
 namespace core;
 
 use \RedBeanPHP\R as R;
-use \app\Config;
-
+use \core\Config;
 
 class Model
 {
