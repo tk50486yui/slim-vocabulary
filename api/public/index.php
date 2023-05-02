@@ -2,12 +2,12 @@
 
 require '../vendor/autoload.php';
 
-use core\Model as C;
 use app\Middlewares\CheckConnectionMiddleware;
+use core\Setup;
 
-C::begin();
+$Setup = new Setup();
+$Setup->RedBean();
 
-/* Begin */
 $app = new Slim\App();
 $app->add(new CheckConnectionMiddleware());
 

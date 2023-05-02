@@ -20,7 +20,7 @@ class CategoriesController
             $result = $CategoriesModel->find($args['id']);
 
         } catch (Exception $e) {           
-             /* 出錯統一用 Internal Server Error */           
+             // 出錯統一用 Internal Server Error           
              return $MsgHandler->handleServerError($response);
         }
 
@@ -38,7 +38,7 @@ class CategoriesController
             $result = $CategoriesModel->findAll();
 
         } catch (Exception $e) {  
-            /* 出錯統一用 Internal Server Error */           
+            // 出錯統一用 Internal Server Error           
             return $MsgHandler->handleServerError($response);
         }
 
@@ -53,12 +53,11 @@ class CategoriesController
         $MsgHandler = new MsgHandler();  
 
         try {
-            /* 檢查有沒有重複的名稱 */
-            $check = $CategoriesModel->findByName($data['cate_name']);
-            if($check == false){
+            // 檢查有沒有重複的名稱          
+            if($CategoriesModel->findByName($data['cate_name']) != null){
                 return $MsgHandler->handleDuplicate($response);
             }
-            /* 新增 */ 
+        
             $result = $CategoriesModel->add($data);
 
             if($result == true){
@@ -69,7 +68,7 @@ class CategoriesController
             
 
         } catch (Exception $e) {  
-            /* 出錯統一用 Internal Server Error */           
+            // 出錯統一用 Internal Server Error           
             return $MsgHandler->handleServerError($response);
         }
        
@@ -93,7 +92,7 @@ class CategoriesController
             }
 
         } catch (Exception $e) {   
-            /* 出錯統一用 Internal Server Error */
+            // 出錯統一用 Internal Server Error
             return $MsgHandler->handleServerError($response);
         }
        
@@ -110,7 +109,7 @@ class CategoriesController
             $result = $CategoriesModel->findWordsByID($args['id']);
 
         } catch (Exception $e) {  
-            /* 出錯統一用 Internal Server Error */           
+            // 出錯統一用 Internal Server Error           
             return $MsgHandler->handleServerError($response);
         }
 

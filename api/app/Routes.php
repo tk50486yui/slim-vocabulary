@@ -49,12 +49,13 @@ $app->group('/wordsgroups', function() {
   
 });
 
-$app->group('/wordstags', function() {
-   
-    $this->get('', 'WordsTagsController:findAll');
-    $this->get('/{id}', 'WordsTagsController:find');
+$app->group('/wordstags', function() {  
+    
     $this->post('', 'WordsTagsController:add');
     $this->delete('/{id}', 'WordsTagsController:delete');
+
+    $this->get('', 'WordsTagsController:findAll');
+    $this->get('/tags/{id}', 'WordsTagsController:findByTagsID');
   
 });
 

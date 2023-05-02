@@ -20,7 +20,7 @@ class ArticlesWordsController
             $result = $ArticlesWordsModel->find($args['id']);
 
         } catch (Exception $e) {           
-             /* 出錯統一用 Internal Server Error */           
+             // 出錯統一用 Internal Server Error           
              return $MsgHandler->handleServerError($response);
         }
 
@@ -38,7 +38,7 @@ class ArticlesWordsController
             $result = $ArticlesWordsModel->findAll();
 
         } catch (Exception $e) {  
-            /* 出錯統一用 Internal Server Error */           
+            // 出錯統一用 Internal Server Error           
             return $MsgHandler->handleServerError($response);
         }
 
@@ -51,9 +51,8 @@ class ArticlesWordsController
         $ArticlesWordsModel = new ArticlesWords();
         $MsgHandler = new MsgHandler();   
 
-        try {
-           
-            /* 新增 */ 
+        try {           
+            
             $result = $ArticlesWordsModel->add($data);
 
             if($result == true){
@@ -64,7 +63,7 @@ class ArticlesWordsController
             
 
         } catch (Exception $e) {  
-            /* 出錯統一用 Internal Server Error */           
+            // 出錯統一用 Internal Server Error           
             return $MsgHandler->handleServerError($response);
         }
        
@@ -78,7 +77,7 @@ class ArticlesWordsController
 
         try {
 
-            /* 檢查 id 是否存在 */
+            // 檢查 id 是否存在 
             $check =  $ArticlesWordsModel->find($args['id']);
             if ($check == false) {
                 return $MsgHandler->handleNotFound($response);
@@ -93,7 +92,7 @@ class ArticlesWordsController
             }
 
         } catch (Exception $e) {   
-            /* 出錯統一用 Internal Server Error */
+            // 出錯統一用 Internal Server Error
             return $MsgHandler->handleServerError($response);
         }
        

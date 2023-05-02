@@ -7,13 +7,12 @@ use libs\Customs\Time;
 use Exception;
 
 class Tags
-{
-    const TABLE_NAME = 'tags';
+{    
 
     /* 查詢單一資料 tags  id = ? */
     public function find($id)
     {
-        $result = R::findOne(SELF::TABLE_NAME, ' id = ? ', array($id));
+        $result = R::findOne('tags', ' id = ? ', array($id));
         
         return $result;
     }
@@ -22,7 +21,7 @@ class Tags
     public function findAll()
     {
 
-        $result = R::findAll(SELF::TABLE_NAME);
+        $result = R::findAll('tags');
 
         return $result;
     }
@@ -30,11 +29,9 @@ class Tags
     /* 以 ts_name 查詢 tags 表 */
     public function findByName($ts_name)
     {
-        $result = false;
-        $row = R::findOne(SELF::TABLE_NAME, ' ts_name = ? ', array($ts_name));
-        if ($row == null) {           
-            $result = true;
-        }
+        
+        $result = R::findOne('tags', ' ts_name = ? ', array($ts_name));
+       
         return $result;
     }
 
@@ -42,10 +39,10 @@ class Tags
     public function add($data)
     {
         $result = false;       
-        /* Transaction */
+        // Transaction
         R::begin();
         try {
-            $tags = R::dispense(SELF::TABLE_NAME);
+            $tags = R::dispense('tags');
             $tags->ts_name = $data['ts_name'];  
             $tags->ts_storage = is_bool($data['ts_storage']) ? (bool)$data['ts_storage'] : true;    
             $tags->ts_parent_id = is_numeric($data['ts_parent_id']) ? (int)$data['ts_parent_id'] : null;
@@ -68,11 +65,11 @@ class Tags
     public function edit($data, $id)
     {
         $result = false;
-        /* Transaction */
+        // Transaction
         R::begin();
         try {
 
-            $tags = R::load(SELF::TABLE_NAME, $id);
+            $tags = R::load('tags', $id);
             $tags->ts_name = $data['ts_name'];  
             $tags->ts_storage = is_bool($data['ts_storage']) ? (bool)$data['ts_storage'] : true;    
             $tags->ts_parent_id = is_numeric($data['ts_parent_id']) ? (int)$data['ts_parent_id'] : null;
@@ -96,11 +93,11 @@ class Tags
     public function delete($id)
     {
         $result = false;
-        /* Transaction */
+        // Transaction
         R::begin();
 
         try {
-            $tags = R::load(SELF::TABLE_NAME, $id);
+            $tags = R::load('tags', $id);
             R::trash($tags);
             R::commit();
             R::close();

@@ -7,13 +7,12 @@ use libs\Customs\Time;
 use Exception;
 
 class Categories
-{
-    const TABLE_NAME = 'categories';
+{   
 
     /* 查詢單一資料 categories  id = ? */
     public function find($id)
     {
-        $result = R::findOne(SELF::TABLE_NAME, ' id = ? ', array($id));
+        $result = R::findOne('categories', ' id = ? ', array($id));
 
         return $result;
     }
@@ -22,7 +21,7 @@ class Categories
     public function findAll()
     {
 
-        $result = R::findAll(SELF::TABLE_NAME);
+        $result = R::findAll('categories');
 
         return $result;
     }
@@ -30,11 +29,9 @@ class Categories
     /* 以 cate_name 查詢 categories 表 */
     public function findByName($cate_name)
     {
-        $result = false;
-        $row = R::findOne(SELF::TABLE_NAME, ' cate_name = ? ', array($cate_name));
-        if ($row == null) {
-            $result = true;
-        }
+        
+        $result = R::findOne('categories', ' cate_name = ? ', array($cate_name));
+        
         return $result;
     }
 
@@ -42,10 +39,10 @@ class Categories
     public function add($data)
     {
         $result = false;
-        /* Transaction */
+        // Transaction
         R::begin();
         try {
-            $categories = R::dispense(SELF::TABLE_NAME);
+            $categories = R::dispense('categories');
             $categories->cate_name = $data['cate_name'];
             $categories->cate_parent_id = is_numeric($data['cate_parent_id']) ? (int)$data['cate_parent_id'] : null;
             $categories->cate_level = is_numeric($data['cate_level']) ? (int)$data['cate_level'] : 1;
@@ -66,11 +63,10 @@ class Categories
     public function edit($data, $id)
     {
         $result = false;
-        /* Transaction */
+        // Transaction
         R::begin();
         try {
-
-            $categories = R::load(SELF::TABLE_NAME, $id);
+            $categories = R::load('categories', $id);
             $categories->cate_name = $data['cate_name'];
             $categories->cate_parent_id = is_numeric($data['cate_parent_id']) ? (int)$data['cate_parent_id'] : null;
             $categories->cate_level = is_numeric($data['cate_level']) ? (int)$data['cate_level'] : 1;
@@ -92,11 +88,10 @@ class Categories
     public function delete($id)
     {
         $result = false;
-        /* Transaction */
+        // Transaction
         R::begin();
-
         try {
-            $categories = R::load(SELF::TABLE_NAME, $id);
+            $categories = R::load('categories', $id);
             R::trash($categories);
             R::commit();
             R::close();
@@ -116,10 +111,7 @@ class Categories
                     cate.*, ws.* 
                 FROM 
                     categories cate
-                LEFT JOIN 
-                    words ws 
-                ON 
-                    cate.id = ws.cate_id 
+                LEFT JOIN words ws ON cate.id = ws.cate_id 
                 WHERE 
                     cate.id = :id";
 

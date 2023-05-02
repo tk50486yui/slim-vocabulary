@@ -6,13 +6,12 @@ use \RedBeanPHP\R as R;
 use Exception;
 
 class ArticlesTags
-{
-    const TABLE_NAME = 'articles_tags';
+{   
 
     /* 查詢單一資料 articles_tags  id = ? */
     public function find($id)
     {
-        $result = R::findOne(SELF::TABLE_NAME, ' id = ? ', array($id));
+        $result = R::findOne('articles_tags', ' id = ? ', array($id));
 
         return $result;
     }
@@ -21,7 +20,7 @@ class ArticlesTags
     public function findAll()
     {
 
-        $result = R::findAll(SELF::TABLE_NAME);
+        $result = R::findAll('articles_tags');
 
         return $result;
     }
@@ -30,10 +29,10 @@ class ArticlesTags
     public function add($data)
     {
         $result = false;
-        /* Transaction */
+        // Transaction
         R::begin();
         try {
-            $articles_tags = R::dispense(SELF::TABLE_NAME);            
+            $articles_tags = R::dispense('articles_tags');            
             $articles_tags->arti_id = is_numeric($data['arti_id']) ? (int)$data['arti_id'] : null;
             $articles_tags->ts_id = is_numeric($data['ts_id']) ? (int)$data['ts_id'] : null;         
             R::store($articles_tags);
@@ -52,11 +51,10 @@ class ArticlesTags
     public function delete($id)
     {
         $result = false;
-        /* Transaction */
+        // Transaction
         R::begin();
-
         try {
-            $articles_tags = R::load(SELF::TABLE_NAME, $id);
+            $articles_tags = R::load('articles_tags', $id);
             R::trash($articles_tags);
             R::commit();
             R::close();

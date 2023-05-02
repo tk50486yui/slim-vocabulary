@@ -9,65 +9,38 @@ use libs\Responses\MsgHandler;
 use Exception;
 
 class WordsTagsController
-{
-
-    /* 查詢單一資料 WordsTags id = ? */
-    public function find($request, $response, $args)
-    {
-        $WordsTagsModel = new WordsTags();
-        $MsgHandler = new MsgHandler();             
-
-        try {
-
-            $result = $WordsTagsModel->find($args['id']);
-
-        } catch (Exception $e) {
-            /* 出錯統一用 Internal Server Error */
-            return $MsgHandler->handleServerError($response);
-        }
-
-        return $response->withJson($result, 200);
-    }
-
-    /* 查詢所有資料 WordsTags */
-    public function findAll($request, $response, $args)
-    {
-        $WordsTagsModel = new WordsTags();
-        $MsgHandler = new MsgHandler();          
-
-        try {
-
-            $result = $WordsTagsModel->findAll();
-
-        } catch (Exception $e) {
-            /* 出錯統一用 Internal Server Error */
-            return $MsgHandler->handleServerError($response);
-        }
-
-        return $response->withJson($result, 200);
-    }
+{   
     
     /* 新增單一資料 WordsTags */
     public function add($request, $response, $args)
     {
         $data = $request->getParsedBody();
-        $WordsTagsModel = new WordsTags();
-        $WordsModel = new Words();
-        $TagsModel = new Tags();
-        $MsgHandler = new MsgHandler();   
+        $WordsTagsModel = new WordsTags();      
+        $MsgHandler = new MsgHandler();
+        $Words = new Words(); 
+        $Tags = new Tags(); 
 
         try {
-
-            /* 新增 */
+           
+            // 先判斷所參考的外鍵表格資料是否存在 若有其中一個不存在就直接return
+            // 這邊若過了就代表資料是整數字串而非其他字元 所以之後不用再另外判斷
+            if($Words->find($data['ws_id']) == null || $Tags->find($data['ts_id']) == null){
+                return $MsgHandler->handleNotFound($response);
+            }
+            // 再判斷所新增的關聯資料是否已經建立
+            if($WordsTagsModel->find($data) != null){
+                return $MsgHandler->handleDuplicate($response);
+            }
+            
             $result = $WordsTagsModel->add($data);
-
+           
             if ($result == true) {
                 return $MsgHandler->handleSuccess($response);
             } else {
                 return $MsgHandler->handleDataFaild($response);
             }
         } catch (Exception $e) {
-            /* 出錯統一用 Internal Server Error */
+            // 出錯統一用 Internal Server Error 
             return $MsgHandler->handleServerError($response);
         }
     }
@@ -80,7 +53,7 @@ class WordsTagsController
 
         try {
             
-            /* 檢查 id 是否存在 */
+            // 檢查 id 是否存在 
             $check = $WordsTagsModel->find($args['id']);
             if ($check == false) {
                 return $MsgHandler->handleNotFound($response);
@@ -95,8 +68,44 @@ class WordsTagsController
             }
 
         } catch (Exception $e) {
-            /* 出錯統一用 Internal Server Error */
+            // 出錯統一用 Internal Server Error
             return $MsgHandler->handleServerError($response);
         }
+    }
+
+    /* 查詢所有資料 WordsTags 關聯 Words Tags*/
+    public function findAll($request, $response, $args)
+    {
+        $WordsTagsModel = new WordsTags();
+        $MsgHandler = new MsgHandler();             
+
+        try {
+
+            $result = $WordsTagsModel->findAll();
+
+        } catch (Exception $e) {
+            // 出錯統一用 Internal Server Error
+            return $MsgHandler->handleServerError($response);
+        }
+
+        return $response->withJson($result, 200);
+    }
+
+    /* 以 tags id 查詢所有資料 WordsTags 關聯 Words Tags*/
+    public function findByTagsID($request, $response, $args)
+    {
+        $WordsTagsModel = new WordsTags();
+        $MsgHandler = new MsgHandler();             
+
+        try {
+
+            $result = $WordsTagsModel->findByTagsID($args['id']);
+
+        } catch (Exception $e) {
+            // 出錯統一用 Internal Server Error
+            return $MsgHandler->handleServerError($response);
+        }
+
+        return $response->withJson($result, 200);
     }
 }

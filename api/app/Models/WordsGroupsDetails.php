@@ -6,13 +6,12 @@ use \RedBeanPHP\R as R;
 use Exception;
 
 class WordsGroupsDetails
-{
-    const TABLE_NAME = 'words_groups_details';
+{    
 
     /* 查詢單一資料 words_groups_details  id = ? */
     public function find($id)
     {
-        $result = R::findOne(SELF::TABLE_NAME, ' id = ? ', array($id));
+        $result = R::findOne('words_groups_details', ' id = ? ', array($id));
 
         return $result;
     }
@@ -21,7 +20,7 @@ class WordsGroupsDetails
     public function findAll()
     {
 
-        $result = R::findAll(SELF::TABLE_NAME);
+        $result = R::findAll('words_groups_details');
 
         return $result;
     }
@@ -30,10 +29,10 @@ class WordsGroupsDetails
     public function add($data)
     {
         $result = false;
-        /* Transaction */
+        // Transaction
         R::begin();
         try {
-            $words_groups_details = R::dispense(SELF::TABLE_NAME);        
+            $words_groups_details = R::dispense('words_groups_details');        
             $words_groups_details->ws_id = is_numeric($data['ws_id']) ? (int)$data['ws_id'] : null;    
             $words_groups_details->wg_id = is_numeric($data['wg_id']) ? (int)$data['wg_id'] : null;
             $words_groups_details->wgd_content = $data['wgd_content'];
@@ -53,11 +52,10 @@ class WordsGroupsDetails
     public function delete($id)
     {
         $result = false;
-        /* Transaction */
+        // Transaction
         R::begin();
-
         try {
-            $words_groups_details = R::load(SELF::TABLE_NAME, $id);
+            $words_groups_details = R::load('words_groups_details', $id);
             R::trash($words_groups_details);
             R::commit();
             R::close();

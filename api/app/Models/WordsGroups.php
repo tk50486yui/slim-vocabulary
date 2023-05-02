@@ -8,12 +8,11 @@ use Exception;
 
 class WordsGroups
 {
-    const TABLE_NAME = 'words_groups';
-
+       
     /* 查詢單一資料 words_groups  id = ? */
     public function find($id)
     {
-        $result = R::findOne(SELF::TABLE_NAME, ' id = ? ', array($id));
+        $result = R::findOne('words_groups', ' id = ? ', array($id));
 
         return $result;
     }
@@ -22,8 +21,17 @@ class WordsGroups
     public function findAll()
     {
 
-        $result = R::findAll(SELF::TABLE_NAME);
+        $result = R::findAll('words_groups');
 
+        return $result;
+    }
+
+    /* 以 wg_name 查詢 words_group 表 */
+    public function findByName($wg_name)
+    {
+        
+        $result = R::findOne('wg_name', ' wg_name = ? ', array($wg_name));        
+        
         return $result;
     }
 
@@ -31,10 +39,11 @@ class WordsGroups
     public function add($data)
     {
         $result = false;
-        /* Transaction */
+        // Transaction
         R::begin();
         try {
-            $words_groups = R::dispense(SELF::TABLE_NAME);
+            // 使用自訂義 xdispense
+            $words_groups = R::xdispense('words_groups');
             $words_groups->wg_name = $data['wg_name'];        
             R::store($words_groups);
             R::commit();
@@ -42,7 +51,7 @@ class WordsGroups
             $result = true;
         } catch (Exception $e) {
             R::rollback();
-            $result = false;
+            $result = false;          
         }
 
         return $result;
@@ -52,11 +61,11 @@ class WordsGroups
     public function edit($data, $id)
     {
         $result = false;
-        /* Transaction */
+        // Transaction
         R::begin();
         try {
 
-            $words_groups = R::load(SELF::TABLE_NAME, $id);
+            $words_groups = R::load('words_groups', $id);
             $words_groups->wg_name = $data['wg_name'];             
             $words_groups->updated_at = Time::getNow();
             R::store($words_groups);
@@ -75,16 +84,14 @@ class WordsGroups
     public function delete($id)
     {
         $result = false;
-        /* Transaction */
+        // Transaction
         R::begin();
-
         try {
-            $words_groups = R::load(SELF::TABLE_NAME, $id);
+            $words_groups = R::load('words_groups', $id);
             R::trash($words_groups);
             R::commit();
             R::close();
             $result = true;
-
         } catch (Exception $e) {
             R::rollback();
             $result = false;

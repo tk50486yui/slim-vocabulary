@@ -7,13 +7,12 @@ use libs\Customs\Time;
 use Exception;
 
 class Articles
-{
-    const TABLE_NAME = 'articles';
+{   
 
     /* 查詢單一資料 articles  id = ? */
     public function find($id)
     {
-        $result = R::findOne(SELF::TABLE_NAME, ' id = ? ', array($id));
+        $result = R::findOne('articles', ' id = ? ', array($id));
 
         return $result;
     }
@@ -22,7 +21,7 @@ class Articles
     public function findAll()
     {
 
-        $result = R::findAll(SELF::TABLE_NAME);
+        $result = R::findAll('articles');
 
         return $result;
     }
@@ -31,10 +30,10 @@ class Articles
     public function add($data)
     {
         $result = false;
-        /* Transaction */
+        // Transaction
         R::begin();
         try {
-            $articles = R::dispense(SELF::TABLE_NAME);
+            $articles = R::dispense('articles');
             $articles->arti_title = $data['arti_title'];
             $articles->arti_content = $data['arti_content'];
             $articles->arti_order = $data['arti_order'];
@@ -55,11 +54,10 @@ class Articles
     public function edit($data, $id)
     {
         $result = false;
-        /* Transaction */
+        // Transaction
         R::begin();
         try {
-
-            $articles = R::load(SELF::TABLE_NAME, $id);
+            $articles = R::load('articles', $id);
             $articles->arti_title = $data['arti_title'];
             $articles->arti_content = $data['arti_content'];
             $articles->arti_order = $data['arti_order'];
@@ -81,11 +79,11 @@ class Articles
     public function delete($id)
     {
         $result = false;
-        /* Transaction */
+        // Transaction
         R::begin();
 
         try {
-            $articles = R::load(SELF::TABLE_NAME, $id);
+            $articles = R::load('articles', $id);
             R::trash($articles);
             R::commit();
             R::close();

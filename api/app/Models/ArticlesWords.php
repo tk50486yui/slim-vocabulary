@@ -6,13 +6,13 @@ use \RedBeanPHP\R as R;
 use Exception;
 
 class ArticlesWords
-{
-    const TABLE_NAME = 'articles_words';
+{    
 
     /* 查詢單一資料 articles_words  id = ? */
     public function find($id)
     {
-        $result = R::findOne(SELF::TABLE_NAME, ' id = ? ', array($id));
+
+        $result = R::findOne('articles_words', ' id = ? ', array($id));
 
         return $result;
     }
@@ -21,7 +21,7 @@ class ArticlesWords
     public function findAll()
     {
 
-        $result = R::findAll(SELF::TABLE_NAME);
+        $result = R::findAll('articles_words');
 
         return $result;
     }
@@ -30,10 +30,10 @@ class ArticlesWords
     public function add($data)
     {
         $result = false;
-        /* Transaction */
+        // Transaction
         R::begin();
         try {
-            $articles_words = R::dispense(SELF::TABLE_NAME);
+            $articles_words = R::dispense('articles_words');
             $articles_words->arti_id = is_numeric($data['arti_id']) ? (int)$data['arti_id'] : null;
             $articles_words->ws_id = is_numeric($data['ws_id']) ? (int)$data['ws_id'] : null;
             R::store($articles_words);
@@ -52,11 +52,10 @@ class ArticlesWords
     public function delete($id)
     {
         $result = false;
-        /* Transaction */
+        // Transaction
         R::begin();
-
         try {
-            $articles_words = R::load(SELF::TABLE_NAME, $id);
+            $articles_words = R::load('articles_words', $id);
             R::trash($articles_words);
             R::commit();
             R::close();

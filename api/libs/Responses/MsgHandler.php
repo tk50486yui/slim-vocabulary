@@ -6,8 +6,7 @@ use  libs\Responses\Msg;
 
 class MsgHandler
 {
-    /*  $this->msg */
-    private $msg;
+    private $msg; // $this->msg 
 
     public function __construct()
     {
@@ -23,10 +22,10 @@ class MsgHandler
         return $response->withJson($this->msg)->withStatus(200);
     }
 
-    /* 查無該筆資料 */
-    function handleDataNotNull($response)
+    /* 資料格式錯誤 ex 空值 非整數.. */
+    function handleInvalidData($response)
     {        
-        $this->msg['error']  = 'Data not null';
+        $this->msg['error']  = 'Invalid Data';
         $this->msg['success']  = false;
         return $response->withJson($this->msg)->withStatus(400);
     }

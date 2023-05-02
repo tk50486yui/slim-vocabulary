@@ -20,7 +20,7 @@ class WordsController
             $result = $WordsModel->find($args['id']);
 
         } catch (Exception $e) {           
-             /* 出錯統一用 Internal Server Error */           
+             // 出錯統一用 Internal Server Error           
              return $MsgHandler->handleServerError($response);
         }
 
@@ -38,7 +38,7 @@ class WordsController
             $result = $WordsModel->findAll();
 
         } catch (Exception $e) {  
-            /* 出錯統一用 Internal Server Error */           
+            // 出錯統一用 Internal Server Error           
             return $MsgHandler->handleServerError($response);
         }
 
@@ -53,12 +53,11 @@ class WordsController
         $MsgHandler = new MsgHandler();    
 
         try {
-            /* 檢查有沒有重複的單詞 */
-            $check = $WordsModel->findByName($data['ws_name']);
-            if($check == false){
+            // 檢查有沒有重複的單詞          
+            if($WordsModel->findByName($data['ws_name']) != null){
                 return $MsgHandler->handleDuplicate($response);
             }
-            /* 新增 */ 
+         
             $result = $WordsModel->add($data);
 
             if($result == true){
@@ -69,7 +68,7 @@ class WordsController
             
 
         } catch (Exception $e) {  
-            /* 出錯統一用 Internal Server Error */           
+            // 出錯統一用 Internal Server Error           
             return $MsgHandler->handleServerError($response);
         }
        
@@ -93,7 +92,7 @@ class WordsController
             }
 
         } catch (Exception $e) {   
-            /* 出錯統一用 Internal Server Error */
+            // 出錯統一用 Internal Server Error
             return $MsgHandler->handleServerError($response);
         }
        
@@ -110,7 +109,7 @@ class WordsController
             $result = $WordsModel->findCategoriesAll();           
 
         } catch (Exception $e) {   
-            /* 出錯統一用 Internal Server Error */           
+            // 出錯統一用 Internal Server Error           
             return $MsgHandler->handleServerError($response);
         }
        

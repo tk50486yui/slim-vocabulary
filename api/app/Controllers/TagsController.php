@@ -20,7 +20,7 @@ class TagsController
             $result = $TagsModel->find($args['id']);
 
         } catch (Exception $e) {           
-             /* 出錯統一用 Internal Server Error */           
+             // 出錯統一用 Internal Server Error           
              return $MsgHandler->handleServerError($response);
         }
 
@@ -38,7 +38,7 @@ class TagsController
             $result = $TagsModel->findAll();
 
         } catch (Exception $e) {  
-            /* 出錯統一用 Internal Server Error */           
+            // 出錯統一用 Internal Server Error           
             return $MsgHandler->handleServerError($response);
         }
 
@@ -53,12 +53,11 @@ class TagsController
         $MsgHandler = new MsgHandler();    
 
         try {
-            /* 檢查有沒有重複的標籤名稱 */
-            $check = $TagsModel->findByName($data['ts_name']);
-            if($check == false){
+            // 檢查有沒有重複的標籤名稱      
+            if($TagsModel->findByName($data['ts_name']) != null){
                 return $MsgHandler->handleDuplicate($response);
             }
-            /* 新增 */ 
+           
             $result = $TagsModel->add($data);
 
             if($result == true){
@@ -69,7 +68,7 @@ class TagsController
             
 
         } catch (Exception $e) {  
-            /* 出錯統一用 Internal Server Error */           
+            // 出錯統一用 Internal Server Error           
             return $MsgHandler->handleServerError($response);
         }
        
@@ -93,7 +92,7 @@ class TagsController
             }
 
         } catch (Exception $e) {   
-            /* 出錯統一用 Internal Server Error */
+            // 出錯統一用 Internal Server Error
             return $MsgHandler->handleServerError($response);
         }
        

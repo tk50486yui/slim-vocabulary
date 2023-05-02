@@ -20,7 +20,7 @@ class ArticlesTagsController
             $result = $ArticlesTagsModel->find($args['id']);
 
         } catch (Exception $e) {
-            /* 出錯統一用 Internal Server Error */
+            // 出錯統一用 Internal Server Error
             return $MsgHandler->handleServerError($response);
         }
 
@@ -38,7 +38,7 @@ class ArticlesTagsController
             $result = $ArticlesTagsModel->findAll();
 
         } catch (Exception $e) {
-            /* 出錯統一用 Internal Server Error */
+            // 出錯統一用 Internal Server Error
             return $MsgHandler->handleServerError($response);
         }
 
@@ -53,8 +53,7 @@ class ArticlesTagsController
         $MsgHandler = new MsgHandler();      
 
         try {
-
-            /* 新增 */
+      
             $result = $ArticlesTagsModel->add($data);
 
             if ($result == true) {
@@ -64,7 +63,7 @@ class ArticlesTagsController
             }
 
         } catch (Exception $e) {
-            /* 出錯統一用 Internal Server Error */
+            // 出錯統一用 Internal Server Error
             return $MsgHandler->handleServerError($response);
         }
     }
@@ -77,7 +76,7 @@ class ArticlesTagsController
        
         try {
 
-            /* 檢查 id 是否存在 */
+            // 檢查 id 是否存在 
             $check = $ArticlesTagsModel->find($args['id']);
             if ($check == false) {
                 return $MsgHandler->handleNotFound($response);
@@ -92,7 +91,7 @@ class ArticlesTagsController
             }
 
         } catch (Exception $e) {
-            /* 出錯統一用 Internal Server Error */
+            // 出錯統一用 Internal Server Error
             return $MsgHandler->handleServerError($response);
         }
     }
