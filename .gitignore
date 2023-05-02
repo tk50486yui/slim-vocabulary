@@ -1,7 +1,7 @@
 # 忽略 vendor 目錄下的所有檔案
 /api/vendor/*
 /api/composer.lock
-/api/app/Config.php
+/api/core/Config.php
 # 但排除 vendor/autoload.php 這個檔案
 !/api/vendor/autoload.php
 
