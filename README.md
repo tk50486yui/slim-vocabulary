@@ -2,14 +2,14 @@
 
 使用 PHP Slim 3 + Redbean ORM 來建立後端api
 
---
-app/ 主要程式
+----
+    app/ 主要程式
 
-public/index.php 執行程式
+    public/index.php 執行程式
 
-core/ 資料庫
+    core/ 資料庫
 
-libs/ 自訂函數
+    libs/ 自訂函數
 
 ## Node v18.15.0
 
