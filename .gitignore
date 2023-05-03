@@ -1,11 +1,14 @@
 # 忽略 vendor 目錄下的所有檔案
 /api/vendor/*
+
 /api/composer.lock
 /api/core/Config.php
+
 # 但排除 vendor/autoload.php 這個檔案
 !/api/vendor/autoload.php
 
 # 忽略 node_modules 目錄下的所有檔案
 /vue-app/node_modules/*
+
 /vue-app/package-lock.json
 /vue-app/build/*

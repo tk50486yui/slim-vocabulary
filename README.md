@@ -31,3 +31,6 @@
     git add .
     git commit -m ""
     git push
+
+    git rm --cached api/core/Config.php
+    git push -f origin main // !!*這是強制推送並覆蓋*!!
