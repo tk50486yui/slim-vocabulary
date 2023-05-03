@@ -68,7 +68,6 @@ class Tags
         // Transaction
         R::begin();
         try {
-
             $tags = R::load('tags', $id);
             $tags->ts_name = $data['ts_name'];  
             $tags->ts_storage = is_bool($data['ts_storage']) ? (bool)$data['ts_storage'] : true;    

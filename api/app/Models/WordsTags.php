@@ -9,8 +9,16 @@ use Exception;
 class WordsTags
 {    
 
+    /* 查詢單一資料 words_tags  id = ? */
+    public function find($id)
+    {
+        $result = R::findOne('words_tags', ' id = ? ', array($id));
+
+        return $result;
+    }
+
     /* 查詢資料 words_tags ws_id 及 ts_id */
-    public function find($data)
+    public function findByAssociatedIDs($data)
     {       
         $keyword = ArrayMap::getMap($data);
         $result = R::findOne('words_tags', ' ws_id = :ws_id AND ts_id = :ts_id', $keyword);
@@ -25,6 +33,7 @@ class WordsTags
         // Transaction   
         R::begin();
         try {
+            // 使用自訂義 xdispense
             $words_tags = R::xdispense('words_tags');                  
             $words_tags->ts_id = (int)$data['ts_id'];
             $words_tags->ws_id = (int)$data['ws_id'];;

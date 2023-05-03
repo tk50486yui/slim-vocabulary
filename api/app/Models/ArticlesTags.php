@@ -32,9 +32,10 @@ class ArticlesTags
         // Transaction
         R::begin();
         try {
-            $articles_tags = R::dispense('articles_tags');            
-            $articles_tags->arti_id = is_numeric($data['arti_id']) ? (int)$data['arti_id'] : null;
-            $articles_tags->ts_id = is_numeric($data['ts_id']) ? (int)$data['ts_id'] : null;         
+            // 使用自訂義 xdispense
+            $articles_tags = R::xdispense('articles_tags');            
+            $articles_tags->arti_id = (int)$data['arti_id'];
+            $articles_tags->ts_id = (int)$data['ts_id'];         
             R::store($articles_tags);
             R::commit();
             R::close();

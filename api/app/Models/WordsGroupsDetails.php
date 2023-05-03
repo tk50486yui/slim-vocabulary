@@ -32,9 +32,10 @@ class WordsGroupsDetails
         // Transaction
         R::begin();
         try {
-            $words_groups_details = R::dispense('words_groups_details');        
-            $words_groups_details->ws_id = is_numeric($data['ws_id']) ? (int)$data['ws_id'] : null;    
-            $words_groups_details->wg_id = is_numeric($data['wg_id']) ? (int)$data['wg_id'] : null;
+            // 使用自訂義 xdispense
+            $words_groups_details = R::xdispense('words_groups_details');        
+            $words_groups_details->ws_id = (int)$data['ws_id'];
+            $words_groups_details->wg_id = (int)$data['wg_id'];
             $words_groups_details->wgd_content = $data['wgd_content'];
             R::store($words_groups_details);
             R::commit();

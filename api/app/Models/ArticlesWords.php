@@ -33,9 +33,10 @@ class ArticlesWords
         // Transaction
         R::begin();
         try {
-            $articles_words = R::dispense('articles_words');
-            $articles_words->arti_id = is_numeric($data['arti_id']) ? (int)$data['arti_id'] : null;
-            $articles_words->ws_id = is_numeric($data['ws_id']) ? (int)$data['ws_id'] : null;
+            // 使用自訂義 xdispense
+            $articles_words = R::xdispense('articles_words');
+            $articles_words->arti_id = (int)$data['arti_id'];
+            $articles_words->ws_id = (int)$data['ws_id'];
             R::store($articles_words);
             R::commit();
             R::close();

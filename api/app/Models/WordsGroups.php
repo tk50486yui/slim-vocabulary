@@ -64,7 +64,6 @@ class WordsGroups
         // Transaction
         R::begin();
         try {
-
             $words_groups = R::load('words_groups', $id);
             $words_groups->wg_name = $data['wg_name'];             
             $words_groups->updated_at = Time::getNow();

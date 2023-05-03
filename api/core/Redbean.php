@@ -5,9 +5,10 @@ namespace core;
 use core\Model as Connet;
 use \RedBeanPHP\R as R;
 
-class Setup{
+class RedBean{
 
-    public function RedBean()
+    // 初始化 Redbean 部分設定
+    public function setup()
     {
         
         Connet::begin();

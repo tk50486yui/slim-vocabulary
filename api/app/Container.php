@@ -1,4 +1,5 @@
 <?php
+
 $container = $app->getContainer();
 
 $container['WordsController'] = function ($container) {

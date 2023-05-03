@@ -28,7 +28,7 @@ class WordsTagsController
                 return $MsgHandler->handleNotFound($response);
             }
             // 再判斷所新增的關聯資料是否已經建立
-            if($WordsTagsModel->find($data) != null){
+            if($WordsTagsModel->findByAssociatedIDs($data) != null){
                 return $MsgHandler->handleDuplicate($response);
             }
             
@@ -53,16 +53,15 @@ class WordsTagsController
 
         try {
             
-            // 檢查 id 是否存在 
-            $check = $WordsTagsModel->find($args['id']);
-            if ($check == false) {
+            // 檢查 id 是否存在                     
+            if ($WordsTagsModel->find($args['id']) == null) {
                 return $MsgHandler->handleNotFound($response);
             }
 
             $result = $WordsTagsModel->delete($args['id']);
 
             if ($result == true) {
-                return $MsgHandler->handleSuccess($response);
+                return $MsgHandler->handleDeletion($response);
             } else {
                 return $MsgHandler->handleDataFaild($response);
             }

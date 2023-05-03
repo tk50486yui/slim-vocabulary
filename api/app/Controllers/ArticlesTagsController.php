@@ -76,16 +76,15 @@ class ArticlesTagsController
        
         try {
 
-            // 檢查 id 是否存在 
-            $check = $ArticlesTagsModel->find($args['id']);
-            if ($check == false) {
+            // 檢查 id 是否存在        
+            if ($ArticlesTagsModel->find($args['id']) == null) {
                 return $MsgHandler->handleNotFound($response);
             }
 
             $result = $ArticlesTagsModel->delete($args['id']);
 
             if ($result == true) {
-                return $MsgHandler->handleSuccess($response);
+                return $MsgHandler->handleDeletion($response);
             } else {
                 return $MsgHandler->handleDataFaild($response);
             }
