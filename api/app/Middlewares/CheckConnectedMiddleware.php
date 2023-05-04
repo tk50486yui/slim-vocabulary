@@ -5,25 +5,19 @@ namespace app\Middlewares;
 use RedBeanPHP\R;
 use libs\Responses\MsgHandler;
 
-class CheckConnectionMiddleware {
+class CheckConnectedMiddleware {
     
     public function __invoke($request, $response, $next) {
 
-        $MsgHandler = new MsgHandler();
-
-        if (!$this->checkConnection()) {
+        // before
+        $MsgHandler = new MsgHandler();     
+        if (!R::testConnection()) {
             return $MsgHandler->handleConnetFaild($response);
         }
-
+        
         $response = $next($request, $response);
+              
         return $response;
     }
-
-    public function checkConnection()
-    {
-        if (!R::testConnection()) {      
-            return false;
-        }
-        return true;
-    }
+   
 }
