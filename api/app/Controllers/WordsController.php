@@ -2,6 +2,7 @@
 
 namespace app\Controllers;
 
+use app\Validations\WordsValidation;
 use app\Models\Words;
 use libs\Responses\MsgHandler;
 use \RedBeanPHP\R as R;
@@ -49,11 +50,13 @@ class WordsController
     public function add($request, $response, $args)
     {
         $data = $request->getParsedBody();
+        $WordsValidation= new WordsValidation();
         $WordsModel = new Words();
         $MsgHandler = new MsgHandler();
+       
         try {
-            // 檢查空值或null
-            if (empty($data['ws_name'])) {
+            // 檢查 $data 格式
+            if (!$WordsValidation->validate($data)) {
                 return $MsgHandler->handleInvalidData($response);
             }
             // 檢查有沒有重複的單詞          
@@ -78,10 +81,15 @@ class WordsController
     public function edit($request, $response, $args)
     {
         $data = $request->getParsedBody();
+        $WordsValidation= new WordsValidation();
         $WordsModel = new Words();
         $MsgHandler = new MsgHandler();
 
         try {
+            // 檢查 $data 格式
+            if (!$WordsValidation->validate($data)) {
+                return $MsgHandler->handleInvalidData($response);
+            }
             // Transaction --開始--
             R::begin();
             $WordsModel->edit($data, $args['id']);
@@ -103,7 +111,7 @@ class WordsController
         $MsgHandler = new MsgHandler();
 
         try {
-            
+
             $result = $WordsModel->findCategoriesAll();
             
         } catch (Exception $e) {
