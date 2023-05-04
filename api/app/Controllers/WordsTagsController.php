@@ -11,7 +11,6 @@ use Exception;
 
 class WordsTagsController
 {
-
     /* 新增單一資料 WordsTags */
     public function add($request, $response, $args)
     {
@@ -35,16 +34,14 @@ class WordsTagsController
             R::begin();
             $WordsTagsModel->add($data);
             R::commit();
-            // Transaction --結束--  
-            R::close();
-            return $MsgHandler->handleSuccess($response);
+            // Transaction --結束-- 
         } catch (Exception $e) {
             // 資料處理失敗
             R::rollback();
-            R::close();
             return $MsgHandler->handleDataProcessingFaild($response);
         }
-        
+
+        return $MsgHandler->handleSuccess($response);        
     }
 
     /* 刪除關聯資料 WordsTags */
@@ -62,16 +59,14 @@ class WordsTagsController
             R::begin();
             $WordsTagsModel->delete($args['id']);
             R::commit();
-            // Transaction --結束--       
-            R::close();
-            return $MsgHandler->handleDeletion($response);
+            // Transaction --結束-- 
         } catch (Exception $e) {
             // 資料處理失敗
             R::rollback();
-            R::close();
             return $MsgHandler->handleDataProcessingFaild($response);
         }
-       
+
+        return $MsgHandler->handleDeletion($response);
     }
 
     /* 查詢所有資料 WordsTags 關聯 Words Tags*/
@@ -81,15 +76,15 @@ class WordsTagsController
         $MsgHandler = new MsgHandler();
 
         try {
+
             $result = $WordsTagsModel->findAll();            
-            R::close();
-            return $response->withJson($result, 200);
+            
         } catch (Exception $e) {
             // 出錯統一用 Internal Server Error
-            R::close();
             return $MsgHandler->handleServerError($response);
         }
-        
+
+        return $response->withJson($result, 200);
     }
 
     /* 以 tags id 查詢所有資料 WordsTags 關聯 Words Tags*/
@@ -99,14 +94,14 @@ class WordsTagsController
         $MsgHandler = new MsgHandler();
 
         try {
+            
             $result = $WordsTagsModel->findByTagsID($args['id']);
-            R::close();
-            return $response->withJson($result, 200);
+            
         } catch (Exception $e) {
             // 出錯統一用 Internal Server Error
-            R::close();
             return $MsgHandler->handleServerError($response);
         }
        
+        return $response->withJson($result, 200);
     }
 }

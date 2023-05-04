@@ -16,14 +16,15 @@ class WordsGroupsDetailsController
         $MsgHandler = new MsgHandler();
 
         try {
+
             $result = $WordsGroupsDetailsModel->find($args['id']);
-            R::close();
-            return $response->withJson($result, 200);
+            
         } catch (Exception $e) {
-            // 出錯統一用 Internal Server Error   
-            R::close();        
+            // 出錯統一用 Internal Server Error           
             return $MsgHandler->handleServerError($response);
         }
+
+        return $response->withJson($result, 200);
     }
 
     /* 查詢所有資料 WordsGroupsDetails */
@@ -33,15 +34,15 @@ class WordsGroupsDetailsController
         $MsgHandler = new MsgHandler();
 
         try {
+
             $result = $WordsGroupsDetailsModel->findAll();
-            R::close();
-            return $response->withJson($result, 200);            
+                      
         } catch (Exception $e) {
-            // 出錯統一用 Internal Server Error
-            R::close();           
+            // 出錯統一用 Internal Server Error           
             return $MsgHandler->handleServerError($response);
         }
-        
+
+        return $response->withJson($result, 200);        
     }
 
     /* 新增單一資料 WordsGroupsDetails */
@@ -56,20 +57,18 @@ class WordsGroupsDetailsController
             R::begin();
             $WordsGroupsDetailsModel->add($data);
             R::commit();
-            // Transaction --結束--
-            R::close();
-            return $MsgHandler->handleSuccess($response);
+            // Transaction --結束--            
         } catch (Exception $e) {
             // 資料處理失敗
             R::rollback();
-            R::close();
             return $MsgHandler->handleDataProcessingFaild($response);
         }
-       
+
+        return $MsgHandler->handleSuccess($response);       
     }
 
     /* 刪除關聯資料 WordsGroupsDetails */
-    public function edit($request, $response, $args)
+    public function delete($request, $response, $args)
     {
         $WordsGroupsDetailsModel = new WordsGroupsDetails();
         $MsgHandler = new MsgHandler();
@@ -83,15 +82,13 @@ class WordsGroupsDetailsController
             R::begin();
             $WordsGroupsDetailsModel->delete($args['id']);
             R::commit();
-            // Transaction --結束--  
-            R::close();        
-            return $MsgHandler->handleDeletion($response);
+            // Transaction --結束-- 
         } catch (Exception $e) {
             // 資料處理失敗            
             R::rollback();
-            R::close();
             return $MsgHandler->handleDataProcessingFaild($response);
         }
-       
+
+        return $MsgHandler->handleDeletion($response);       
     }
 }

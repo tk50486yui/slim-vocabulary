@@ -17,14 +17,15 @@ class ArticlesWordsController
         $MsgHandler = new MsgHandler();
 
         try {
+
             $result = $ArticlesWordsModel->find($args['id']);
-            R::close();
-            return $response->withJson($result, 200);
+            
         } catch (Exception $e) {
             // 出錯統一用 Internal Server Error
-            R::close();
             return $MsgHandler->handleServerError($response);
         }
+
+        return $response->withJson($result, 200);
     }
 
     /* 查詢所有資料 ArticlesWords */
@@ -34,14 +35,15 @@ class ArticlesWordsController
         $MsgHandler = new MsgHandler();
 
         try {
+            
             $result = $ArticlesWordsModel->findAll();
-            R::close();
-            return $response->withJson($result, 200);
+            
         } catch (Exception $e) {
             // 出錯統一用 Internal Server Error    
-            R::close();
             return $MsgHandler->handleServerError($response);
         }
+
+        return $response->withJson($result, 200);
     }
     /* 新增單一資料 ArticlesWords */
     public function add($request, $response, $args)
@@ -55,15 +57,14 @@ class ArticlesWordsController
             R::begin();
             $ArticlesWordsModel->add($data);
             R::commit();
-            // Transaction --結束--     
-            R::close();
-            return $MsgHandler->handleSuccess($response);
+            // Transaction --結束-- 
         } catch (Exception $e) {
             // 資料處理失敗
             R::rollback();
-            R::close();
             return $MsgHandler->handleDataProcessingFaild($response);
         }
+
+        return $MsgHandler->handleSuccess($response);
     }
 
     /* 刪除關聯資料 ArticlesWords */
@@ -81,14 +82,13 @@ class ArticlesWordsController
             R::begin();
             $$ArticlesWordsModel->delete($args['id']);
             R::commit();
-            // Transaction --結束--     
-            R::close();
-            return $MsgHandler->handleDeletion($response);
+            // Transaction --結束--
         } catch (Exception $e) {
             // 資料處理失敗
             R::rollback();
-            R::close();
             return $MsgHandler->handleDataProcessingFaild($response);
         }
+
+        return $MsgHandler->handleDeletion($response);
     }
 }

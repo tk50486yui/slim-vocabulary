@@ -17,15 +17,15 @@ class CategoriesController
         $MsgHandler = new MsgHandler();
 
         try {
+
             $result = $CategoriesModel->find($args['id']);            
-            R::close();
-            return $response->withJson($result, 200);
+            
         } catch (Exception $e) {
-            // 出錯統一用 Internal Server Error
-            R::close();           
+            // 出錯統一用 Internal Server Error           
             return $MsgHandler->handleServerError($response);
         }
-       
+
+        return $response->withJson($result, 200);       
     }
 
     /* 查詢所有資料 Categories */
@@ -35,15 +35,15 @@ class CategoriesController
         $MsgHandler = new MsgHandler();
 
         try {
+
             $result = $CategoriesModel->findAll();
-            R::close();
-            return $response->withJson($result, 200);
+            
         } catch (Exception $e) {
-            // 出錯統一用 Internal Server Error
-            R::close();           
+            // 出錯統一用 Internal Server Error           
             return $MsgHandler->handleServerError($response);
         }
-      
+
+        return $response->withJson($result, 200);      
     }
 
     /* 新增單一資料 Categories */
@@ -62,15 +62,14 @@ class CategoriesController
             R::begin();         
             $CategoriesModel->add($data);
             R::commit();    
-            // Transaction --結束--     
-            R::close();           
-            return $MsgHandler->handleSuccess($response);           
+            // Transaction --結束--  
         } catch (Exception $e) {
             // 資料處理失敗
             R::rollback();
-            R::close();
             return $MsgHandler->handleDataProcessingFaild($response);
         }
+
+        return $MsgHandler->handleSuccess($response);
     }
 
     /* 修改 edit 資料 Categories */
@@ -85,15 +84,14 @@ class CategoriesController
             R::begin();         
             $CategoriesModel->edit($data, $args['id']);
             R::commit();    
-            // Transaction --結束--     
-            R::close();           
-            return $MsgHandler->handleSuccess($response);           
+            // Transaction --結束--  
         } catch (Exception $e) {
             // 資料處理失敗
-            R::rollback();
-            R::close();  
+            R::rollback();  
             return $MsgHandler->handleDataProcessingFaild($response);
         }
+
+        return $MsgHandler->handleSuccess($response); 
     }
 
     /* JOIN查詢 Categories id 底下的 words */
@@ -103,14 +101,14 @@ class CategoriesController
         $MsgHandler = new MsgHandler();
 
         try {
+
             $result = $CategoriesModel->findWordsByID($args['id']);            
-            R::close();
-            return $response->withJson($result, 200);
+            
         } catch (Exception $e) {
-            // 出錯統一用 Internal Server Error
-            R::close();           
+            // 出錯統一用 Internal Server Error           
             return $MsgHandler->handleServerError($response);
         }
-       
+
+        return $response->withJson($result, 200);       
     }
 }

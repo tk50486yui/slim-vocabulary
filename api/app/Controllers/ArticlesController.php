@@ -17,14 +17,15 @@ class ArticlesController
         $MsgHandler = new MsgHandler();
 
         try {
+
             $result = $ArticlesModel->find($args['id']);
-            R::close();
-            return $response->withJson($result, 200);
+            
         } catch (Exception $e) {
-            // 出錯統一用 Internal Server Error 
-            R::close();                      
+            // 出錯統一用 Internal Server Error                       
             return $MsgHandler->handleServerError($response);
-        }        
+        }
+
+        return $response->withJson($result, 200);
     }
 
     /* 查詢所有資料 Articles */
@@ -34,14 +35,15 @@ class ArticlesController
         $MsgHandler = new MsgHandler();
 
         try {
+
             $result = $ArticlesModel->findAll();
-            R::close();
-            return $response->withJson($result, 200);
+            
         } catch (Exception $e) {            
-            // 出錯統一用 Internal Server Error  
-            R::close();         
+            // 出錯統一用 Internal Server Error           
             return $MsgHandler->handleServerError($response);
-        }        
+        }
+
+        return $response->withJson($result, 200);   
     }
 
     /* 新增單一資料 Articles */
@@ -56,16 +58,14 @@ class ArticlesController
             R::begin();
             $ArticlesModel->add($data);
             R::commit();
-            // Transaction --結束--     
-            R::close();
-            return $MsgHandler->handleSuccess($response);
+            // Transaction --結束--  
         } catch (Exception $e) {
             // 資料處理失敗
             R::rollback();
-            R::close();
             return $MsgHandler->handleDataProcessingFaild($response);
         }
-        
+
+        return $MsgHandler->handleSuccess($response);        
     }
 
     /* 修改 edit 資料 Articles */
@@ -80,15 +80,13 @@ class ArticlesController
             R::begin();
             $ArticlesModel->edit($data, $args['id']);
             R::commit();
-            // Transaction --結束--     
-            R::close();
-            return $MsgHandler->handleSuccess($response);
+            // Transaction --結束--  
         } catch (Exception $e) {
             // 資料處理失敗
             R::rollback();
-            R::close();
             return $MsgHandler->handleDataProcessingFaild($response);
         }
-        
+
+        return $MsgHandler->handleSuccess($response);
     }
 }
