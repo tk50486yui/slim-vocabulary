@@ -33,7 +33,8 @@ class WordsValidation
         // NOT NULL TEXT欄位
         if (is_bool($data['ws_name']) || empty($data['ws_name'])) {
             return false;
-        }     
+        }   
+          
         // 外鍵 cate_id
         if(!$this->validateCategoriesForeignKey($data['cate_id'])){
             return false;
@@ -49,6 +50,7 @@ class WordsValidation
         if(is_bool($cate_id)){
             return false;
         }
+
         // 2. 若是null及空值則直接通過 因為本表的cate_id可以存放null  進入Model時再設定預設值
         //    用 === 過濾掉 0 1 避免判斷錯誤
         if($cate_id === null || $cate_id === ''){
@@ -59,6 +61,7 @@ class WordsValidation
         if(!Regular::PositiveInt($cate_id)){
             return false;
         }
+
         // 4. 最後檢查是否已存在於該資料表中
         $CategoriesModel = new Categories();        
         if ($CategoriesModel->find($cate_id) == null) {
