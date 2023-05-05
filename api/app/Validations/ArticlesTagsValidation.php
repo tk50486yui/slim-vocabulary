@@ -6,7 +6,7 @@ use app\Models\Tags;
 use app\Models\Articles;
 use libs\Customs\Regular;
 
-class WordsTagsValidation
+class ArticlesTagsValidation
 {
     public $requiredKeys;
 
@@ -51,7 +51,7 @@ class WordsTagsValidation
         }
 
         // 2. 若是null及空值則直接通過 本關聯表不能存空值
-        //    用 === 過濾掉 0 1 避免判斷錯誤
+        // 用 === 過濾掉 0 1 避免判斷錯誤
         if ($arti_id === null || $arti_id === '') {
             return false;
         }
@@ -80,7 +80,7 @@ class WordsTagsValidation
         }
 
         // 2. null及空值則直接過濾掉 本關聯表不能存空值
-        //    用 === 過濾掉 0 1 避免判斷錯誤
+        // 用 === 過濾掉 0 1 避免判斷錯誤
         if ($ts_id === null || $ts_id === '') {
             return false;
         }

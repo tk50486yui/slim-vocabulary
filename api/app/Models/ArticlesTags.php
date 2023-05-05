@@ -3,7 +3,6 @@
 namespace app\Models;
 
 use \RedBeanPHP\R as R;
-use Exception;
 
 class ArticlesTags
 {
@@ -19,6 +18,18 @@ class ArticlesTags
     public function findAll()
     {
         $result = R::findAll('articles_tags');
+        return $result;
+    }
+
+    /* 查詢資料 articles_words ws_id 及 ts_id */
+    public function findByAssociatedIDs($data)
+    {
+        // binding 的長度必須一致
+        $keyword = array(
+            "arti_id" => $data['arti_id'],
+            "ts_id" => $data['ts_id']
+        );
+        $result = R::findOne('articles_tags', ' arti_id = :arti_id AND ts_id = :ts_id', $keyword);        
         return $result;
     }
 

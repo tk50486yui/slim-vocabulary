@@ -3,30 +3,28 @@
 namespace app\Controllers;
 
 use app\Models\WordsTags;
-use app\Models\Words;
-use app\Models\Tags;
+use app\Validations\WordsTagsValidation;
 use libs\Responses\MsgHandler;
 use \RedBeanPHP\R as R;
 use Exception;
 
 class WordsTagsController
 {
+    
     /* 新增單一資料 WordsTags */
     public function add($request, $response, $args)
     {
         $data = $request->getParsedBody();
         $WordsTagsModel = new WordsTags();
-        $MsgHandler = new MsgHandler();
-        $Words = new Words();
-        $Tags = new Tags();
+        $WordsTagsValidation = new WordsTagsValidation();
+        $MsgHandler = new MsgHandler();             
 
         try {
-            // 先判斷所參考的外鍵表格資料是否存在 若有其中一個不存在就直接return
-            // 這邊若過了就代表資料是整數字串而非其他字元 所以之後不用再另外判斷
-            if ($Words->find($data['ws_id']) == null || $Tags->find($data['ts_id']) == null) {
-                return $MsgHandler->handleNotFound($response);
+            // 檢查 $data 格式
+            if (!$WordsTagsValidation->validate($data)) {
+                return $MsgHandler->handleInvalidData($response);
             }
-            // 再判斷所新增的關聯資料是否已經建立
+            // 再判斷所新增的關聯鍵是否已經存在 避免重複建立
             if ($WordsTagsModel->findByAssociatedIDs($data) != null) {
                 return $MsgHandler->handleDuplicate($response);
             }

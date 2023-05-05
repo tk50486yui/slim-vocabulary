@@ -10,6 +10,7 @@ use Exception;
 
 class WordsController
 {
+    
     /* 查詢單一資料 words id = ? */
     public function find($request, $response, $args)
     {

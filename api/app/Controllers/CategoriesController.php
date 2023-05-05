@@ -3,6 +3,7 @@
 namespace app\Controllers;
 
 use app\Models\Categories;
+use app\Validations\CategoriesValidation;
 use libs\Responses\MsgHandler;
 use \RedBeanPHP\R as R;
 use Exception;
@@ -51,9 +52,14 @@ class CategoriesController
     {
         $data = $request->getParsedBody();
         $CategoriesModel = new Categories();
+        $CategoriesValidation = new CategoriesValidation();
         $MsgHandler = new MsgHandler();
 
         try {
+            // 檢查 $data 格式
+            if (!$CategoriesValidation->validate($data)) {
+                return $MsgHandler->handleInvalidData($response);
+            }
             // 檢查有沒有重複的名稱          
             if ($CategoriesModel->findByName($data['cate_name']) != null) {
                 return $MsgHandler->handleDuplicate($response);
@@ -77,9 +83,14 @@ class CategoriesController
     {
         $data = $request->getParsedBody();
         $CategoriesModel = new Categories();
+        $CategoriesValidation = new CategoriesValidation();
         $MsgHandler = new MsgHandler();
 
         try {
+            // 檢查 $data 格式
+            if (!$CategoriesValidation->validate($data)) {
+                return $MsgHandler->handleInvalidData($response);
+            }
             // Transaction --開始-- 
             R::begin();         
             $CategoriesModel->edit($data, $args['id']);

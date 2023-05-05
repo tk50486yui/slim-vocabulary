@@ -52,7 +52,7 @@ class WordsValidation
         }
 
         // 2. 若是null及空值則直接通過 因為本表的cate_id可以存放null  進入Model時再設定預設值
-        //    用 === 過濾掉 0 1 避免判斷錯誤
+        // 用 === 過濾掉 0 1 避免判斷錯誤
         if($cate_id === null || $cate_id === ''){
             return true;
         }

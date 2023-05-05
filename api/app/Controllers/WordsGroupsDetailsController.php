@@ -3,12 +3,14 @@
 namespace app\Controllers;
 
 use app\Models\WordsGroupsDetails;
+use app\Validations\WordsGroupsDetailsValidation;
 use libs\Responses\MsgHandler;
 use \RedBeanPHP\R as R;
 use Exception;
 
 class WordsGroupsDetailsController
 {
+    
     /* 查詢單一資料 WordsGroupsDetails id = ? */
     public function find($request, $response, $args)
     {
@@ -50,12 +52,48 @@ class WordsGroupsDetailsController
     {
         $data = $request->getParsedBody();
         $WordsGroupsDetailsModel = new WordsGroupsDetails();
+        $WordsGroupsDetailsValidation = new WordsGroupsDetailsValidation();
         $MsgHandler = new MsgHandler();
 
         try {
+            // 檢查 $data 格式
+            if (!$WordsGroupsDetailsValidation->validate($data)) {
+                return $MsgHandler->handleInvalidData($response);
+            }
+            // 再判斷所新增的關聯鍵是否已經存在 避免重複建立
+            if ($WordsGroupsDetailsModel->findByAssociatedIDs($data) != null) {
+                return $MsgHandler->handleDuplicate($response);
+            }
             // Transaction --開始-- 
             R::begin();
             $WordsGroupsDetailsModel->add($data);
+            R::commit();
+            // Transaction --結束--            
+        } catch (Exception $e) {
+            // 資料處理失敗
+            R::rollback();
+            return $MsgHandler->handleDataProcessingFaild($response);
+        }
+
+        return $MsgHandler->handleSuccess($response);       
+    }
+
+    /* 修改資料 WordsGroupsDetails */
+    public function edit($request, $response, $args)
+    {
+        $data = $request->getParsedBody();
+        $WordsGroupsDetailsModel = new WordsGroupsDetails();
+        $WordsGroupsDetailsValidation = new WordsGroupsDetailsValidation();
+        $MsgHandler = new MsgHandler();
+
+        try {
+            // 檢查 $data 格式
+            if (!$WordsGroupsDetailsValidation->validate($data)) {
+                return $MsgHandler->handleInvalidData($response);
+            }
+            // Transaction --開始-- 
+            R::begin();
+            $WordsGroupsDetailsModel->edit($data, $args['id']);
             R::commit();
             // Transaction --結束--            
         } catch (Exception $e) {

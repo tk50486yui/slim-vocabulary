@@ -3,6 +3,7 @@
 namespace app\Controllers;
 
 use app\Models\Articles;
+use app\Validations\ArticlesValidation;
 use libs\Responses\MsgHandler;
 use \RedBeanPHP\R as R;
 use Exception;
@@ -51,9 +52,14 @@ class ArticlesController
     {
         $data = $request->getParsedBody();
         $ArticlesModel = new Articles();
+        $ArticlesValidation = new ArticlesValidation();
         $MsgHandler = new MsgHandler();
 
         try {
+            // 檢查 $data 格式
+            if (!$ArticlesValidation->validate($data)) {
+                return $MsgHandler->handleInvalidData($response);
+            }
             // Transaction --開始-- 
             R::begin();
             $ArticlesModel->add($data);
@@ -73,9 +79,14 @@ class ArticlesController
     {
         $data = $request->getParsedBody();
         $ArticlesModel = new Articles();
+        $ArticlesValidation = new ArticlesValidation();
         $MsgHandler = new MsgHandler();
-
+        
         try {
+            // 檢查 $data 格式
+            if (!$ArticlesValidation->validate($data)) {
+                return $MsgHandler->handleInvalidData($response);
+            }
             // Transaction --開始-- 
             R::begin();
             $ArticlesModel->edit($data, $args['id']);

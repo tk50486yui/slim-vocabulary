@@ -3,6 +3,7 @@
 namespace app\Controllers;
 
 use app\Models\ArticlesWords;
+use app\Validations\ArticlesWordsValidation;
 use libs\Responses\MsgHandler;
 use \RedBeanPHP\R as R;
 use Exception;
@@ -45,14 +46,24 @@ class ArticlesWordsController
 
         return $response->withJson($result, 200);
     }
+    
     /* 新增單一資料 ArticlesWords */
     public function add($request, $response, $args)
     {
         $data = $request->getParsedBody();
         $ArticlesWordsModel = new ArticlesWords();
+        $ArticlesWordsValidation = new ArticlesWordsValidation();
         $MsgHandler = new MsgHandler();
 
         try {
+            // 檢查 $data 格式
+            if (!$ArticlesWordsValidation->validate($data)) {
+                return $MsgHandler->handleInvalidData($response);
+            }
+            // 再判斷所新增的關聯鍵是否已經存在 避免重複建立
+            if ($ArticlesWordsModel->findByAssociatedIDs($data) != null) {
+                return $MsgHandler->handleDuplicate($response);
+            }
             // Transaction --開始-- 
             R::begin();
             $ArticlesWordsModel->add($data);

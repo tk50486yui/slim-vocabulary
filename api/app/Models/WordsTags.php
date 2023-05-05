@@ -3,7 +3,6 @@
 namespace app\Models;
 
 use \RedBeanPHP\R as R;
-use libs\Customs\ArrayMap;
 
 class WordsTags
 {
@@ -17,7 +16,11 @@ class WordsTags
     /* 查詢資料 words_tags ws_id 及 ts_id */
     public function findByAssociatedIDs($data)
     {
-        $keyword = ArrayMap::getMap($data);
+        // binding 的長度必須一致
+        $keyword = array(
+            "ws_id" => $data['ws_id'],
+            "ts_id" => $data['ts_id']
+        );
         $result = R::findOne('words_tags', ' ws_id = :ws_id AND ts_id = :ts_id', $keyword);        
         return $result;
     }

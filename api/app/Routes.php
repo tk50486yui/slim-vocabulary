@@ -77,11 +77,12 @@ $app->group('/articleswords', function() {
   
 });
 
-$app->group('/wordsgroupsdatails', function() {
+$app->group('/wordsgroupsdetails', function() {
    
     $this->get('', 'WordsGroupsDetailsController:findAll');
     $this->get('/{id}', 'WordsGroupsDetailsController:find');
     $this->post('', 'WordsGroupsDetailsController:add');
+    $this->put('/{id}', 'WordsGroupsDetailsController:edit');
     $this->delete('/{id}', 'WordsGroupsDetailsController:delete');
   
 });

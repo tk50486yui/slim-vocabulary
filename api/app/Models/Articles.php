@@ -28,7 +28,7 @@ class Articles
         $articles = R::dispense('articles');
         $articles->arti_title = $data['arti_title'];
         $articles->arti_content = $data['arti_content'];
-        $articles->arti_order = $data['arti_order'];
+        $articles->arti_order = is_numeric($data['arti_order'])? (int)$data['arti_order'] : 1;
         $articles->cate_id = is_numeric($data['cate_id']) ? (int)$data['cate_id'] : null;
         R::store($articles);
     }
@@ -39,7 +39,7 @@ class Articles
         $articles = R::load('articles', $id);
         $articles->arti_title = $data['arti_title'];
         $articles->arti_content = $data['arti_content'];
-        $articles->arti_order = $data['arti_order'];
+        $articles->arti_order = is_numeric($data['arti_order'])? (int)$data['arti_order'] : 1;
         $articles->cate_id = is_numeric($data['cate_id']) ? (int)$data['cate_id'] : null;
         $articles->updated_at = Time::getNow();
         R::store($articles);

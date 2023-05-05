@@ -3,6 +3,7 @@
 namespace app\Controllers;
 
 use app\Models\ArticlesTags;
+use app\Validations\ArticlesTagsValidation;
 use libs\Responses\MsgHandler;
 use \RedBeanPHP\R as R;
 use Exception;
@@ -19,13 +20,12 @@ class ArticlesTagsController
         try {
 
             $result = $ArticlesTagsModel->find($args['id']);
-            
         } catch (Exception $e) {
             // 出錯統一用 Internal Server Error
             return $MsgHandler->handleServerError($response);
         }
 
-        return $response->withJson($result, 200);             
+        return $response->withJson($result, 200);
     }
 
     /* 查詢所有資料 ArticlesTags */
@@ -37,13 +37,12 @@ class ArticlesTagsController
         try {
 
             $result = $ArticlesTagsModel->findAll();
-            
         } catch (Exception $e) {
             // 出錯統一用 Internal Server Error
             return $MsgHandler->handleServerError($response);
         }
 
-        return $response->withJson($result, 200);        
+        return $response->withJson($result, 200);
     }
 
     /* 新增單一資料 ArticlesTags */
@@ -51,9 +50,18 @@ class ArticlesTagsController
     {
         $data = $request->getParsedBody();
         $ArticlesTagsModel = new ArticlesTags();
+        $ArticlesTagsValidation = new ArticlesTagsValidation();
         $MsgHandler = new MsgHandler();
 
         try {
+            // 檢查 $data 格式
+            if (!$ArticlesTagsValidation->validate($data)) {
+                return $MsgHandler->handleInvalidData($response);
+            }
+            // 再判斷所新增的關聯鍵是否已經存在 避免重複建立
+            if ($ArticlesTagsModel->findByAssociatedIDs($data) != null) {
+                return $MsgHandler->handleDuplicate($response);
+            }
             // Transaction --開始-- 
             R::begin();
             $ArticlesTagsModel->add($data);
@@ -65,7 +73,7 @@ class ArticlesTagsController
             return $MsgHandler->handleDataProcessingFaild($response);
         }
 
-        return $MsgHandler->handleSuccess($response);        
+        return $MsgHandler->handleSuccess($response);
     }
 
     /* 刪除關聯資料 ArticlesTags */
@@ -91,6 +99,5 @@ class ArticlesTagsController
         }
 
         return $MsgHandler->handleDeletion($response);
-       
     }
 }

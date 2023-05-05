@@ -29,7 +29,7 @@ class TagsValidation
         }
 
         // NOT NULL TEXT欄位
-        if (is_bool($data['ts_name']) ||empty($data['ts_name'])) {
+        if (is_bool($data['ts_name']) || empty($data['ts_name'])) {
             return false;
         }
 
@@ -50,7 +50,7 @@ class TagsValidation
         }
 
         // 2. 若是null及空值則直接通過 因為本表的ts_parent_id可以存放null  進入Model時再設定預設值
-        //    用 === 過濾掉 0 1 避免判斷錯誤
+        // 用 === 過濾掉 0 1 避免判斷錯誤
         if($ts_parent_id === null || $ts_parent_id === ''){
             return true;
         }

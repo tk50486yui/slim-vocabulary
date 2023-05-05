@@ -51,7 +51,7 @@ class WordsTagsValidation
         }
 
         // 2. 若是null及空值則直接通過 本關聯表不能存空值
-        //    用 === 過濾掉 0 1 避免判斷錯誤
+        // 用 === 過濾掉 0 1 避免判斷錯誤
         if ($ws_id === null || $ws_id === '') {
             return false;
         }

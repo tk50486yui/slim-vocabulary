@@ -3,6 +3,7 @@
 namespace app\Controllers;
 
 use app\Models\Tags;
+use app\Validations\TagsValidation;
 use libs\Responses\MsgHandler;
 use \RedBeanPHP\R as R;
 use Exception;
@@ -35,24 +36,30 @@ class TagsController
         $MsgHandler = new MsgHandler();
 
         try {
+
             $result = $TagsModel->findAll();
-            return $response->withJson($result, 200);
+            
         } catch (Exception $e) {
             // 出錯統一用 Internal Server Error           
             return $MsgHandler->handleServerError($response);
         }
 
-        
+        return $response->withJson($result, 200);        
     }
 
     /* 新增單一資料 Tags */
     public function add($request, $response, $args)
     {
         $data = $request->getParsedBody();
-        $TagsModel = new Tags();
+        $TagsModel = new Tags();     
+        $TagsValidation = new TagsValidation();
         $MsgHandler = new MsgHandler();
-
-        try {
+        
+        try {            
+            // 檢查 $data 格式
+            if (!$TagsValidation->validate($data)) {
+                return $MsgHandler->handleInvalidData($response);
+            }
             // 檢查有沒有重複的標籤名稱      
             if ($TagsModel->findByName($data['ts_name']) != null) {
                 return $MsgHandler->handleDuplicate($response);
@@ -61,13 +68,14 @@ class TagsController
             R::begin();
             $TagsModel->add($data);
             R::commit();
-            // Transaction --結束--     
-            return $MsgHandler->handleSuccess($response);
+            // Transaction --結束-- 
         } catch (Exception $e) {
-            // 資料處理失敗
+            // 資料處理失敗           
             R::rollback();
             return $MsgHandler->handleDataProcessingFaild($response);
         }
+
+        return $MsgHandler->handleSuccess($response);
     }
 
     /* 修改 edit 資料 Tags */
@@ -75,19 +83,25 @@ class TagsController
     {
         $data = $request->getParsedBody();
         $TagsModel = new Tags();
+        $TagsValidation = new TagsValidation();
         $MsgHandler = new MsgHandler();
 
         try {
+            // 檢查 $data 格式
+            if (!$TagsValidation->validate($data)) {
+                return $MsgHandler->handleInvalidData($response);
+            }           
             // Transaction --開始-- 
             R::begin();
             $TagsModel->edit($data, $args['id']);
             R::commit();
-            // Transaction --結束--     
-            return $MsgHandler->handleSuccess($response);
+            // Transaction --結束-- 
         } catch (Exception $e) {
             // 資料處理失敗
             R::rollback();
             return $MsgHandler->handleDataProcessingFaild($response);
         }
+
+        return $MsgHandler->handleSuccess($response);
     }
 }
