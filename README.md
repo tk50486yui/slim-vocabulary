@@ -4,9 +4,13 @@
 
 搭配前端：[VuePoject](https://github.com/tk50486yui/VueProject.git)
 
+---
+
 ## PostgreSQL v9.6.24
 
 資料庫是PostgreSQL，並使用 pgAdmin 4 進行操作
+
+---
 
 ## Composer v2.5.4
     composer install
@@ -26,13 +30,13 @@
 
 ## 目錄架構
 
-app/ 主要程式
++-- app 主要程式
 
-public/index.php 執行程式
++-- public 執行程式
 
-core/ 資料庫相關
++-- core 資料庫相關
 
-libs/ 自訂函數
++-- libs 自訂函數
 
 ----
 
