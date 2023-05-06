@@ -2,6 +2,12 @@
 
 使用 PHP Slim 3 + Redbean ORM 來建立後端 API
 
+搭配前端：[VuePoject](https://github.com/tk50486yui/VueProject.git)
+
+## PostgreSQL v9.6.24
+
+資料庫是PostgreSQL，並使用 pgAdmin 4 進行操作
+
 ## Composer v2.5.4
     composer install
     composer update
