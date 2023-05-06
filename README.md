@@ -10,7 +10,7 @@
 
 資料庫是PostgreSQL，並使用 pgAdmin 4 進行操作
 
-************
+---
 
 ## Composer v2.5.4
     composer install
@@ -31,13 +31,24 @@
 ## 目錄架構
 
 ```
-+-- app 主要程式
+    -app 主要程式
+        -Controllers
 
-+-- public 執行程式
+        -Models
 
-+-- core 資料庫相關
+        -Validations
 
-+-- libs 自訂函數
+        -Middlewares
+
+    -public 執行程式
+        -index.php
+
+    -core 資料庫相關
+
+    -libs 自訂函數
+        -Customs
+
+        -Responses
 ```
 
 ----
