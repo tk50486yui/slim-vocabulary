@@ -30,19 +30,19 @@
 
 ## 目錄架構
 
-- api
++ api
     - app 主要程式
         - Controllers
         - Models
         - Validations
         - Middlewares        
     - public 執行程式
-        - index.php
+        * index.php
     - core 資料庫相關
     - libs 自訂函數
         - Customs
         - Responses
-            - MsgHandler.php
+            * MsgHandler.php
 
 ----
 
