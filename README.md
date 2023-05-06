@@ -30,7 +30,6 @@
 
 ## 目錄架構
 
-```
     -app 主要程式
         -Controllers
 
@@ -49,7 +48,6 @@
         -Customs
 
         -Responses
-```
 
 ----
 
