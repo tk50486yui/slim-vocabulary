@@ -31,7 +31,7 @@
 ## 目錄架構
 
 +-api
-    +-app 主要程式
+    -app 主要程式
         +-Controllers
         +-Models
         +-Validations
