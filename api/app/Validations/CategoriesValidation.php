@@ -67,4 +67,19 @@ class CategoriesValidation
 
         return true;
     }
+
+    //  檢查所新增的節點是否為子節點 避免出現問題 true => 不合法 false => 合法
+    function validateParent($tree, $id, $cate_parent_id) {
+        foreach ($tree as $node) {
+            if ($node['id'] == $cate_parent_id) {
+                return in_array($id, $node['parents']);
+            } else {
+                if ($this->validateParent($node['children'], $id, $cate_parent_id)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
 }

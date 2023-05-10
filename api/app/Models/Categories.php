@@ -55,7 +55,7 @@ class Categories
     public function delete($id)
     {
         $categories = R::load('categories', $id);
-        R::trash($categories);      
+        R::trash($categories);
     }
 
     /* JOIN 查詢 categories id 底下的 words 資料 */
@@ -65,12 +65,34 @@ class Categories
                     cate.*, ws.* 
                 FROM 
                     categories cate
-                LEFT JOIN words ws ON cate.id = ws.cate_id 
+                LEFT JOIN 
+                    words ws ON cate.id = ws.cate_id 
                 WHERE 
                     cate.id = :id";
 
         $result = R::getAll($query, array(':id' => $id));
 
         return $result;
+    }    
+
+    function buildCategoriesTree($categories, $parent_id = null, $parents = []) {
+
+        $tree = array();
+    
+        foreach ($categories as $category) {
+            if ($category['cate_parent_id'] == $parent_id) {
+                $node = array(
+                    'id' => $category['id'],
+                    'cate_name' => $category['cate_name'],
+                    'parents' => $parents,
+                    'children' => $this->buildCategoriesTree($categories, $category['id'], array_merge($parents, [$category['id']]))
+                );              
+    
+                $tree[] = $node;
+            }
+        }
+    
+        return $tree;
     }
+    
 }

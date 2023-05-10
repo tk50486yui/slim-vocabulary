@@ -37,8 +37,10 @@ class CategoriesController
 
         try {
 
-            $result = $CategoriesModel->findAll();
-            
+            $all = $CategoriesModel->findAll();
+            // 建立樹狀結構資料
+            $result = $CategoriesModel->buildCategoriesTree($all);
+
         } catch (Exception $e) {
             // 出錯統一用 Internal Server Error           
             return $MsgHandler->handleServerError($response);
@@ -91,6 +93,16 @@ class CategoriesController
             if (!$CategoriesValidation->validate($data)) {
                 return $MsgHandler->handleInvalidData($response);
             }
+            // 檢查 cate_parent_id
+            $all = $CategoriesModel->findAll();
+            // 建立樹狀結構資料
+            $tree = $CategoriesModel->buildCategoriesTree($all);
+            // 檢查所新增之 cate_parent_id 是否為自己的子節點 有值才做
+            if($data['cate_parent_id'] != null || $data['cate_parent_id'] != ''){
+                if($CategoriesValidation->validateParent($tree, $args['id'], $data['cate_parent_id'])){
+                    return $MsgHandler->handleInvalidData($response);
+                }
+            }           
             // Transaction --開始-- 
             R::begin();         
             $CategoriesModel->edit($data, $args['id']);
@@ -122,4 +134,5 @@ class CategoriesController
 
         return $response->withJson($result, 200);       
     }
+    
 }
