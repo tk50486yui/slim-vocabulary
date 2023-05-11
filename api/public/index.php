@@ -1,6 +1,6 @@
 <?php
 
-require '../vendor/autoload.php';
+require __DIR__ . '/../vendor/autoload.php'; // namespace
 
 use core\RedBean;
 use app\Middlewares\CheckConnectedMiddleware;
@@ -15,8 +15,8 @@ $app = new Slim\App();
 $app->add(new CheckConnectedMiddleware()); // 第一圈
 $app->add(new DisConnectedMiddleware()); //  第二圈
 
-require '../app/Container.php';
+require __DIR__ . '/../app/Container.php'; // 將路由綁至相應的method
 
-require '../app/Routes.php';
+require __DIR__ . '/../app/Routes.php';
 
 $app->run();
