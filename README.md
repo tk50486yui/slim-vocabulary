@@ -13,20 +13,17 @@
 
 
 ---
-
 ## PostgreSQL 9.6.24
 
 資料庫是PostgreSQL，並使用 pgAdmin 4 進行操作
 
 ---
-
 ## Composer 2.5.4
 
     slim
     redbean
 
 ---
-
 ## 目錄架構
 ```    
    + api
