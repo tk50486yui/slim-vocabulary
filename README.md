@@ -38,14 +38,13 @@
     │   ├─ Controllers   //  邏輯控制 存取Model並回傳給user
     │   ├─ Models        //  執行ORM與SQL語法
     │   ├─ Validations   //  驗證資料
-    │   ├─ Middlewares   //  中介層      
-    ├─ public   //  網址存取目錄
-    │   └─ index.php
+    │   └─ Middlewares   //  中介層      
+    ├─ public   //  網址存取目錄    
     ├─ core     //  資料庫相關設定
-    ├─ libs     //  自訂函數
+    └─ libs     //  自訂函數
         ├─ Customs
-        ├─ Responses    //  自訂回應訊息
-           └─ MsgHandler.php
+        └─ Responses    //  自訂回應訊息
+
 ```
 
 
