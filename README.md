@@ -22,6 +22,7 @@
 
     slim
     redbean
+    autoload
 
 ---
 ## 目錄架構
