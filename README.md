@@ -27,15 +27,15 @@
 ## 目錄架構
 ```    
    + api
-    ├─ app      //  主要程式
-    │   ├─ Controllers   //  邏輯控制 存取Model並回傳給user
-    │   ├─ Models        //  執行ORM與SQL語法
-    │   ├─ Validations   //  驗證資料
-    │   └─ Middlewares   //  中介層      
-    ├─ public   //  網址存取目錄    
+    ├─ app      //  主程式目錄
+    │   ├─ Controllers   //  邏輯控制 主要存取 Model 並回傳
+    │   ├─ Models        //  執行 ORM 與 SQL 語法
+    │   ├─ Validations   //  驗證輸入資料
+    │   └─ Middlewares   //  中介層   
+    ├─ public   //  index 網址存取目錄    
     ├─ core     //  資料庫相關設定
-    └─ libs     //  自訂函數
-        ├─ Customs
+    └─ libs     //  函式庫
+        ├─ Customs      //  自定義函式庫
         └─ Responses    //  自訂回應訊息
 
 ```
