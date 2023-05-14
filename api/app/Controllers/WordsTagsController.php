@@ -3,7 +3,7 @@
 namespace app\Controllers;
 
 use app\Models\WordsTags;
-use app\Validations\WordsTagsValidation;
+use app\Validators\tables\WordsTagsValidator;
 use libs\Responses\MsgHandler;
 use \RedBeanPHP\R as R;
 use Exception;
@@ -16,12 +16,12 @@ class WordsTagsController
     {
         $data = $request->getParsedBody();
         $WordsTagsModel = new WordsTags();
-        $WordsTagsValidation = new WordsTagsValidation();
+        $WordsTagsValidator = new WordsTagsValidator();
         $MsgHandler = new MsgHandler();             
 
         try {
             // 檢查 $data 格式
-            if (!$WordsTagsValidation->validate($data)) {
+            if (!$WordsTagsValidator->validate($data)) {
                 return $MsgHandler->handleInvalidData($response);
             }
             // 再判斷所新增的關聯鍵是否已經存在 避免重複建立

@@ -29,14 +29,16 @@
 ```    
    + api
     ├─ app      //  主程式目錄
-    │   ├─ Controllers   //  邏輯控制 主要存取 Model 並回傳
-    │   ├─ Models        //  執行 ORM 與 SQL 語法
-    │   ├─ Validations   //  驗證輸入資料
-    │   └─ Middlewares   //  中介層 
+    │   ├─ Controllers   //  邏輯控制 建立 Factory 及存取 Model 並處理訊息
+    │   ├─ Entities      //  建立實體 注入資料 驗證格式
+    │   ├─ Factories     //  實際執行 Entity 及 Validator
+    │   ├─ Middlewares   //  中介層 
+    │   ├─ Models        //  執行 ORM 與 SQL 語法    
+    │   └─ Validators    //  驗證資料
     ├─ core     //  資料庫相關設定
-    ├─ libs     //  函式庫
-    │   ├─ Customs      //  自定義函式庫
-    │   └─ Responses    //  自定義Response訊息
+    ├─ libs     //  自定義函式庫
+    │   ├─ Exceptions   //  自定義 Exception
+    │   └─ Responses    //  自定義 Response
     ├─ public   //  index 網址存取目錄    
     └─ vendor   //  composer 套件
 

@@ -3,7 +3,7 @@
 namespace app\Models;
 
 use \RedBeanPHP\R as R;
-use libs\Customs\Time;
+use libs\Time;
 
 class Articles
 {

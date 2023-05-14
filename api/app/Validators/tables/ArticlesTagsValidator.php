@@ -1,12 +1,12 @@
 <?php
 
-namespace app\Validations;
+namespace app\Validators\tables;
 
 use app\Models\Tags;
 use app\Models\Articles;
-use libs\Customs\Regular;
+use libs\Regular;
 
-class ArticlesTagsValidation
+class ArticlesTagsValidator
 {
     public $requiredKeys;
 

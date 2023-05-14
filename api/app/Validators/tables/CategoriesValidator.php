@@ -1,11 +1,11 @@
 <?php
 
-namespace app\Validations;
+namespace app\Validators\tables;
 
 use app\Models\Categories;
-use libs\Customs\Regular;
+use libs\Regular;
 
-class CategoriesValidation
+class CategoriesValidator
 {
     public $requiredKeys;
 

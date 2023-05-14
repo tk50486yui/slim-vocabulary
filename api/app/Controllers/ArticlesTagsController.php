@@ -3,7 +3,7 @@
 namespace app\Controllers;
 
 use app\Models\ArticlesTags;
-use app\Validations\ArticlesTagsValidation;
+use app\Validators\tables\ArticlesTagsValidator;
 use libs\Responses\MsgHandler;
 use \RedBeanPHP\R as R;
 use Exception;
@@ -50,12 +50,12 @@ class ArticlesTagsController
     {
         $data = $request->getParsedBody();
         $ArticlesTagsModel = new ArticlesTags();
-        $ArticlesTagsValidation = new ArticlesTagsValidation();
+        $ArticlesTagsValidator = new ArticlesTagsValidator();
         $MsgHandler = new MsgHandler();
 
         try {
             // 檢查 $data 格式
-            if (!$ArticlesTagsValidation->validate($data)) {
+            if (!$ArticlesTagsValidator->validate($data)) {
                 return $MsgHandler->handleInvalidData($response);
             }
             // 再判斷所新增的關聯鍵是否已經存在 避免重複建立

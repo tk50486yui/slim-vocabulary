@@ -3,21 +3,39 @@
 namespace app\Models;
 
 use \RedBeanPHP\R as R;
-use libs\Customs\Time;
+use libs\Time;
 
 class Words
 {
-    /* 查詢單一資料 words id = ? */
+    /* 查詢單一資料 words LEFT JOIN categories  id = ? */
     public function find($id)
     {
-        $result = R::findOne('words', ' id = ? ', array($id));
+        $query = "SELECT 
+                    ws.*, cate.cate_name as cate_name
+                FROM 
+                    words ws
+                LEFT JOIN 
+                    categories cate ON ws.cate_id =  cate.id
+                WHERE 
+                    ws.id = ?";
+
+        $result = R::getRow($query, array($id));    
+       
         return $result;
     }
 
-    /* 查詢所有資料 words */
+    /* JOIN 查詢 words LEFT JOIN categories 全部資料 */
     public function findAll()
     {
-        $result = R::findAll('words');
+        $query = "SELECT 
+                    ws.*, cate.cate_name as cate_name
+                FROM 
+                    words ws
+                LEFT JOIN 
+                    categories cate ON ws.cate_id =  cate.id";
+
+        $result = R::getAll($query);
+        
         return $result;
     }
 
@@ -69,18 +87,5 @@ class Words
         $words = R::load('words', $id);
         R::trash($words);       
     }
-
-    /* JOIN 查詢 words LEFT JOIN categories 全部資料 */
-    public function findCategoriesAll()
-    {
-        $query = "SELECT 
-                    ws.*, cate.cate_name as cate_name
-                FROM 
-                    words ws
-                LEFT JOIN categories cate ON ws.cate_id =  cate.id";
-
-        $result = R::getAll($query);
-        
-        return $result;
-    }
+   
 }

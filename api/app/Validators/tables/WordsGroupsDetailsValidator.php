@@ -1,19 +1,19 @@
 <?php
 
-namespace app\Validations;
+namespace app\Validators\tables;
 
-use app\Models\Tags;
 use app\Models\Words;
-use libs\Customs\Regular;
+use app\Models\WordsGroups;
+use libs\Regular;
 
-class WordsTagsValidation
+class WordsGroupsDetailsValidator
 {
     public $requiredKeys;
 
     public function __construct()
     {
         $this->requiredKeys = [
-            'ts_id', 'ws_id'
+            'ws_id', 'wg_id', 'wgd_content'
         ];
     }
     /**   
@@ -33,8 +33,8 @@ class WordsTagsValidation
             return false;
         }
 
-        // 外鍵 ts_id
-        if (!$this->validateTagsForeignKey($data['ts_id'])) {
+        // 外鍵 wg_id
+        if (!$this->validateWordsGroupsForeignKey($data['wg_id'])) {
             return false;
         }
 
@@ -71,28 +71,28 @@ class WordsTagsValidation
     }
 
     //  外鍵檢查 INTEGER
-    public function validateTagsForeignKey($ts_id)
+    public function validateWordsGroupsForeignKey($wg_id)
     {
 
         // 1. 先把布林過濾掉
-        if (is_bool($ts_id)) {
+        if (is_bool($wg_id)) {
             return false;
         }
 
         // 2. null及空值則直接過濾掉 本關聯表不能存空值
-        //    用 === 過濾掉 0 1 避免判斷錯誤
-        if ($ts_id === null || $ts_id === '') {
+        // 用 === 過濾掉 0 1 避免判斷錯誤
+        if ($wg_id === null || $wg_id === '') {
             return false;
         }
 
-        // 3. 若ts_id有值 則檢查其資料格式 不符合就直接過濾掉
-        if (!Regular::PositiveInt($ts_id)) {
+        // 3. 若wg_id有值 則檢查其資料格式 不符合就直接過濾掉
+        if (!Regular::PositiveInt($wg_id)) {
             return false;
         }
 
         // 4. 最後檢查是否已存在於該資料表中
-        $TagsModel = new Tags();
-        if ($TagsModel->find($ts_id) == null) {
+        $WordsGroupsModel = new WordsGroups();
+        if ($WordsGroupsModel->find($wg_id) == null) {
             return false;
         }
 

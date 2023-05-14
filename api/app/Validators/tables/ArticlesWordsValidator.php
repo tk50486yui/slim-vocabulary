@@ -1,19 +1,19 @@
 <?php
 
-namespace app\Validations;
+namespace app\Validators\tables;
 
 use app\Models\Words;
-use app\Models\WordsGroups;
-use libs\Customs\Regular;
+use app\Models\Articles;
+use libs\Regular;
 
-class WordsGroupsDetailsValidation
+class ArticlesWordsValidator
 {
     public $requiredKeys;
 
     public function __construct()
     {
         $this->requiredKeys = [
-            'ws_id', 'wg_id', 'wgd_content'
+            'arti_id', 'ws_id'
         ];
     }
     /**   
@@ -28,13 +28,41 @@ class WordsGroupsDetailsValidation
             return false;
         }
 
+        // 外鍵 arti_id
+        if (!$this->validateArticlesForeignKey($data['arti_id'])) {
+            return false;
+        }
+
         // 外鍵 ws_id
         if (!$this->validateWordsForeignKey($data['ws_id'])) {
             return false;
         }
 
-        // 外鍵 wg_id
-        if (!$this->validateWordsGroupsForeignKey($data['wg_id'])) {
+        return true;
+    }
+
+    //  外鍵檢查 INTEGER
+    public function validateArticlesForeignKey($arti_id)
+    {
+        // 1. 先把布林過濾掉
+        if (is_bool($arti_id)) {
+            return false;
+        }
+
+        // 2. 若是null及空值則直接通過 本關聯表不能存空值
+        // 用 === 過濾掉 0 1 避免判斷錯誤
+        if ($arti_id === null || $arti_id === '') {
+            return false;
+        }
+
+        // 3. 若arti_id有值 則檢查其資料格式 不符合就直接過濾掉
+        if (!Regular::PositiveInt($arti_id)) {
+            return false;
+        }
+
+        // 4. 最後檢查是否已存在於該資料表中
+        $ArticlesModel = new Articles();
+        if ($ArticlesModel->find($arti_id) == null) {
             return false;
         }
 
@@ -60,39 +88,10 @@ class WordsGroupsDetailsValidation
         if (!Regular::PositiveInt($ws_id)) {
             return false;
         }
-
+        
         // 4. 最後檢查是否已存在於該資料表中
         $WordsModel = new Words();
         if ($WordsModel->find($ws_id) == null) {
-            return false;
-        }
-
-        return true;
-    }
-
-    //  外鍵檢查 INTEGER
-    public function validateWordsGroupsForeignKey($wg_id)
-    {
-
-        // 1. 先把布林過濾掉
-        if (is_bool($wg_id)) {
-            return false;
-        }
-
-        // 2. null及空值則直接過濾掉 本關聯表不能存空值
-        // 用 === 過濾掉 0 1 避免判斷錯誤
-        if ($wg_id === null || $wg_id === '') {
-            return false;
-        }
-
-        // 3. 若wg_id有值 則檢查其資料格式 不符合就直接過濾掉
-        if (!Regular::PositiveInt($wg_id)) {
-            return false;
-        }
-
-        // 4. 最後檢查是否已存在於該資料表中
-        $WordsGroupsModel = new WordsGroups();
-        if ($WordsGroupsModel->find($wg_id) == null) {
             return false;
         }
 

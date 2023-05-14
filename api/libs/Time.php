@@ -1,6 +1,6 @@
 <?php
 
-namespace libs\Customs;
+namespace libs;
 
 use DateTime;
 use DateTimeZone;

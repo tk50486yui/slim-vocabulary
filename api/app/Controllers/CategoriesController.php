@@ -3,7 +3,7 @@
 namespace app\Controllers;
 
 use app\Models\Categories;
-use app\Validations\CategoriesValidation;
+use app\Validators\tables\CategoriesValidator;
 use libs\Responses\MsgHandler;
 use \RedBeanPHP\R as R;
 use Exception;
@@ -54,12 +54,12 @@ class CategoriesController
     {
         $data = $request->getParsedBody();
         $CategoriesModel = new Categories();
-        $CategoriesValidation = new CategoriesValidation();
+        $CategoriesValidator = new CategoriesValidator();
         $MsgHandler = new MsgHandler();
 
         try {
             // 檢查 $data 格式
-            if (!$CategoriesValidation->validate($data)) {
+            if (!$CategoriesValidator->validate($data)) {
                 return $MsgHandler->handleInvalidData($response);
             }
             // 檢查有沒有重複的名稱          
@@ -85,12 +85,12 @@ class CategoriesController
     {
         $data = $request->getParsedBody();
         $CategoriesModel = new Categories();
-        $CategoriesValidation = new CategoriesValidation();
+        $CategoriesValidator = new CategoriesValidator();
         $MsgHandler = new MsgHandler();
 
         try {
             // 檢查 $data 格式
-            if (!$CategoriesValidation->validate($data)) {
+            if (!$CategoriesValidator->validate($data)) {
                 return $MsgHandler->handleInvalidData($response);
             }
             // 檢查 cate_parent_id
@@ -99,7 +99,7 @@ class CategoriesController
             $tree = $CategoriesModel->buildCategoriesTree($all);
             // 檢查所新增之 cate_parent_id 是否為自己的子節點 有值才做
             if($data['cate_parent_id'] != null || $data['cate_parent_id'] != ''){
-                if($CategoriesValidation->validateParent($tree, $args['id'], $data['cate_parent_id'])){
+                if($CategoriesValidator->validateParent($tree, $args['id'], $data['cate_parent_id'])){
                     return $MsgHandler->handleInvalidData($response);
                 }
             }           

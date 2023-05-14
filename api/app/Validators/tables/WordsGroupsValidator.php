@@ -1,8 +1,8 @@
 <?php
 
-namespace app\Validations;
+namespace app\Validators\tables;
 
-class WordsGroupsValidation
+class WordsGroupsValidator
 {
     public $requiredKeys;
 

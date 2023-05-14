@@ -6,8 +6,6 @@ $app->group('/words', function() {
     $this->get('/{id}', 'WordsController:find');
     $this->post('', 'WordsController:add');
     $this->put('/{id}', 'WordsController:edit');
-
-    $this->get('/categories/', 'WordsController:findCategoriesAll');
   
 });
 

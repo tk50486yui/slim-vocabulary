@@ -3,7 +3,7 @@
 namespace app\Controllers;
 
 use app\Models\Tags;
-use app\Validations\TagsValidation;
+use app\Validators\tables\TagsValidator;
 use libs\Responses\MsgHandler;
 use \RedBeanPHP\R as R;
 use Exception;
@@ -52,12 +52,12 @@ class TagsController
     {
         $data = $request->getParsedBody();
         $TagsModel = new Tags();     
-        $TagsValidation = new TagsValidation();
+        $TagsValidator = new TagsValidator();
         $MsgHandler = new MsgHandler();
         
         try {            
             // 檢查 $data 格式
-            if (!$TagsValidation->validate($data)) {
+            if (!$TagsValidator->validate($data)) {
                 return $MsgHandler->handleInvalidData($response);
             }
             // 檢查有沒有重複的標籤名稱      
@@ -83,12 +83,12 @@ class TagsController
     {
         $data = $request->getParsedBody();
         $TagsModel = new Tags();
-        $TagsValidation = new TagsValidation();
+        $TagsValidator = new TagsValidator();
         $MsgHandler = new MsgHandler();
 
         try {
             // 檢查 $data 格式
-            if (!$TagsValidation->validate($data)) {
+            if (!$TagsValidator->validate($data)) {
                 return $MsgHandler->handleInvalidData($response);
             }           
             // Transaction --開始-- 

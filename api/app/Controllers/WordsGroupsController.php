@@ -3,7 +3,7 @@
 namespace app\Controllers;
 
 use app\Models\WordsGroups;
-use app\Validations\WordsGroupsValidation;
+use app\Validators\tables\WordsGroupsValidator;
 use libs\Responses\MsgHandler;
 use \RedBeanPHP\R as R;
 use Exception;
@@ -52,12 +52,12 @@ class WordsGroupsController
     {
         $data = $request->getParsedBody();
         $WordsGroupsModel = new WordsGroups();
-        $WordsGroupsValidation = new WordsGroupsValidation();
+        $WordsGroupsValidator = new WordsGroupsValidator();
         $MsgHandler = new MsgHandler();
 
         try {
             // 檢查 $data 格式
-            if (!$WordsGroupsValidation->validate($data)) {
+            if (!$WordsGroupsValidator->validate($data)) {
                 return $MsgHandler->handleInvalidData($response);
             }
             // Transaction --開始-- 
@@ -79,12 +79,12 @@ class WordsGroupsController
     {
         $data = $request->getParsedBody();
         $WordsGroupsModel = new WordsGroups();
-        $WordsGroupsValidation = new WordsGroupsValidation();
+        $WordsGroupsValidator = new WordsGroupsValidator();
         $MsgHandler = new MsgHandler();
 
         try {
             // 檢查 $data 格式
-            if (!$WordsGroupsValidation->validate($data)) {
+            if (!$WordsGroupsValidator->validate($data)) {
                 return $MsgHandler->handleInvalidData($response);
             }
             // Transaction --開始-- 

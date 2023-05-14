@@ -3,7 +3,7 @@
 namespace app\Controllers;
 
 use app\Models\WordsGroupsDetails;
-use app\Validations\WordsGroupsDetailsValidation;
+use app\Validators\tables\WordsGroupsDetailsValidator;
 use libs\Responses\MsgHandler;
 use \RedBeanPHP\R as R;
 use Exception;
@@ -52,12 +52,12 @@ class WordsGroupsDetailsController
     {
         $data = $request->getParsedBody();
         $WordsGroupsDetailsModel = new WordsGroupsDetails();
-        $WordsGroupsDetailsValidation = new WordsGroupsDetailsValidation();
+        $WordsGroupsDetailsValidator = new WordsGroupsDetailsValidator();
         $MsgHandler = new MsgHandler();
 
         try {
             // 檢查 $data 格式
-            if (!$WordsGroupsDetailsValidation->validate($data)) {
+            if (!$WordsGroupsDetailsValidator->validate($data)) {
                 return $MsgHandler->handleInvalidData($response);
             }
             // 再判斷所新增的關聯鍵是否已經存在 避免重複建立
@@ -83,12 +83,12 @@ class WordsGroupsDetailsController
     {
         $data = $request->getParsedBody();
         $WordsGroupsDetailsModel = new WordsGroupsDetails();
-        $WordsGroupsDetailsValidation = new WordsGroupsDetailsValidation();
+        $WordsGroupsDetailsValidator = new WordsGroupsDetailsValidator();
         $MsgHandler = new MsgHandler();
 
         try {
             // 檢查 $data 格式
-            if (!$WordsGroupsDetailsValidation->validate($data)) {
+            if (!$WordsGroupsDetailsValidator->validate($data)) {
                 return $MsgHandler->handleInvalidData($response);
             }
             // Transaction --開始-- 
