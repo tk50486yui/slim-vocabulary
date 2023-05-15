@@ -4,7 +4,8 @@ namespace app\Factories;
 
 use app\Entities\WordsEntity;
 use app\Validators\tables\WordsValidator;
-use libs\Exceptions\InvalidDataException;
+use libs\Exceptions\Collection\InvalidDataException;
+use libs\Exceptions\Collection\InvalidForeignKeyException;
 
 class WordsFactory
 {
@@ -15,9 +16,11 @@ class WordsFactory
 
         $WordsEntity->populate($data);
         if (!$WordsEntity->validate()) {
-            throw new InvalidDataException('Invalid input data');
+            throw new InvalidDataException();
         }
-
+        if(!$WordsValidator->validateForeignKey($WordsEntity)){
+            throw new InvalidForeignKeyException();
+        }
         return $WordsEntity;
     }
 }

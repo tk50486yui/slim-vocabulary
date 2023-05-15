@@ -47,7 +47,7 @@ class WordsEntity
         $this->cate_id=$data['cate_id'] ?? null;
     }
 
-    /* 驗證基本資料格式 */
+    /* 基本資料格式 以資料表允許格式為主 */
     public function validate()
     {
         // NOT NULL TEXT欄位 (不嚴格篩選 只要非空值就好)

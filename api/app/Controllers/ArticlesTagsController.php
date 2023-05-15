@@ -4,7 +4,7 @@ namespace app\Controllers;
 
 use app\Models\ArticlesTags;
 use app\Validators\tables\ArticlesTagsValidator;
-use libs\Responses\MsgHandler;
+use libs\Responses\MsgHandler as MsgH;
 use \RedBeanPHP\R as R;
 use Exception;
 
@@ -15,14 +15,13 @@ class ArticlesTagsController
     public function find($request, $response, $args)
     {
         $ArticlesTagsModel = new ArticlesTags();
-        $MsgHandler = new MsgHandler();
 
         try {
 
             $result = $ArticlesTagsModel->find($args['id']);
         } catch (Exception $e) {
             // 出錯統一用 Internal Server Error
-            return $MsgHandler->handleServerError($response);
+            return MsgH::handleServerError($response);
         }
 
         return $response->withJson($result, 200);
@@ -32,14 +31,13 @@ class ArticlesTagsController
     public function findAll($request, $response, $args)
     {
         $ArticlesTagsModel = new ArticlesTags();
-        $MsgHandler = new MsgHandler();
 
         try {
 
             $result = $ArticlesTagsModel->findAll();
         } catch (Exception $e) {
             // 出錯統一用 Internal Server Error
-            return $MsgHandler->handleServerError($response);
+            return MsgH::handleServerError($response);
         }
 
         return $response->withJson($result, 200);
@@ -51,16 +49,15 @@ class ArticlesTagsController
         $data = $request->getParsedBody();
         $ArticlesTagsModel = new ArticlesTags();
         $ArticlesTagsValidator = new ArticlesTagsValidator();
-        $MsgHandler = new MsgHandler();
 
         try {
             // 檢查 $data 格式
             if (!$ArticlesTagsValidator->validate($data)) {
-                return $MsgHandler->handleInvalidData($response);
+                return MsgH::handleInvalidData($response);
             }
             // 再判斷所新增的關聯鍵是否已經存在 避免重複建立
             if ($ArticlesTagsModel->findByAssociatedIDs($data) != null) {
-                return $MsgHandler->handleDuplicate($response);
+                return MsgH::handleDuplicate($response);
             }
             // Transaction --開始-- 
             R::begin();
@@ -70,22 +67,21 @@ class ArticlesTagsController
         } catch (Exception $e) {
             // 資料處理失敗
             R::rollback();
-            return $MsgHandler->handleDataProcessingFaild($response);
+            return MsgH::handleDataProcessingFaild($response);
         }
 
-        return $MsgHandler->handleSuccess($response);
+        return MsgH::handleSuccess($response);
     }
 
     /* 刪除關聯資料 ArticlesTags */
     public function delete($request, $response, $args)
     {
         $ArticlesTagsModel = new ArticlesTags();
-        $MsgHandler = new MsgHandler();
 
         try {
             // 檢查 id 是否存在        
             if ($ArticlesTagsModel->find($args['id']) == null) {
-                return $MsgHandler->handleNotFound($response);
+                return MsgH::handleNotFound($response);
             }
             // Transaction --開始-- 
             R::begin();
@@ -95,9 +91,9 @@ class ArticlesTagsController
         } catch (Exception $e) {
             // 資料處理失敗
             R::rollback();
-            return $MsgHandler->handleDataProcessingFaild($response);
+            return MsgH::handleDataProcessingFaild($response);
         }
 
-        return $MsgHandler->handleDeletion($response);
+        return MsgH::handleDeletion($response);
     }
 }

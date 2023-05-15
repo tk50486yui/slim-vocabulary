@@ -4,7 +4,7 @@ namespace app\Controllers;
 
 use app\Models\WordsGroups;
 use app\Validators\tables\WordsGroupsValidator;
-use libs\Responses\MsgHandler;
+use libs\Responses\MsgHandler as MsgH;
 use \RedBeanPHP\R as R;
 use Exception;
 
@@ -15,7 +15,6 @@ class WordsGroupsController
     public function find($request, $response, $args)
     {
         $WordsGroupsModel = new WordsGroups();
-        $MsgHandler = new MsgHandler();
 
         try {
 
@@ -23,7 +22,7 @@ class WordsGroupsController
             
         } catch (Exception $e) {
             // 出錯統一用 Internal Server Error   
-            return $MsgHandler->handleServerError($response);
+            return MsgH::handleServerError($response);
         }
 
         return $response->withJson($result, 200);
@@ -33,7 +32,6 @@ class WordsGroupsController
     public function findAll($request, $response, $args)
     {
         $WordsGroupsModel = new WordsGroups();
-        $MsgHandler = new MsgHandler();
 
         try {
 
@@ -41,7 +39,7 @@ class WordsGroupsController
             
         } catch (Exception $e) {
             // 出錯統一用 Internal Server Error    
-            return $MsgHandler->handleServerError($response);
+            return MsgH::handleServerError($response);
         }
 
         return $response->withJson($result, 200);
@@ -53,12 +51,11 @@ class WordsGroupsController
         $data = $request->getParsedBody();
         $WordsGroupsModel = new WordsGroups();
         $WordsGroupsValidator = new WordsGroupsValidator();
-        $MsgHandler = new MsgHandler();
 
         try {
             // 檢查 $data 格式
             if (!$WordsGroupsValidator->validate($data)) {
-                return $MsgHandler->handleInvalidData($response);
+                return MsgH::handleInvalidData($response);
             }
             // Transaction --開始-- 
             R::begin();
@@ -68,10 +65,10 @@ class WordsGroupsController
         } catch (Exception $e) {
             // 資料處理失敗
             R::rollback();
-            return $MsgHandler->handleDataProcessingFaild($response);
+            return MsgH::handleDataProcessingFaild($response);
         }
 
-        return $MsgHandler->handleSuccess($response);
+        return MsgH::handleSuccess($response);
     }
 
     /* 修改 edit 資料 WordsGroups */
@@ -80,12 +77,11 @@ class WordsGroupsController
         $data = $request->getParsedBody();
         $WordsGroupsModel = new WordsGroups();
         $WordsGroupsValidator = new WordsGroupsValidator();
-        $MsgHandler = new MsgHandler();
 
         try {
             // 檢查 $data 格式
             if (!$WordsGroupsValidator->validate($data)) {
-                return $MsgHandler->handleInvalidData($response);
+                return MsgH::handleInvalidData($response);
             }
             // Transaction --開始-- 
             R::begin();
@@ -95,9 +91,9 @@ class WordsGroupsController
         } catch (Exception $e) {
             // 資料處理失敗
             R::rollback();
-            return $MsgHandler->handleDataProcessingFaild($response);
+            return MsgH::handleDataProcessingFaild($response);
         }
 
-        return $MsgHandler->handleSuccess($response);
+        return MsgH::handleSuccess($response);
     }
 }

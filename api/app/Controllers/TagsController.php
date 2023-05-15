@@ -4,7 +4,7 @@ namespace app\Controllers;
 
 use app\Models\Tags;
 use app\Validators\tables\TagsValidator;
-use libs\Responses\MsgHandler;
+use libs\Responses\MsgHandler as MsgH;
 use \RedBeanPHP\R as R;
 use Exception;
 
@@ -15,7 +15,6 @@ class TagsController
     public function find($request, $response, $args)
     {
         $TagsModel = new Tags();
-        $MsgHandler = new MsgHandler();
 
         try {
 
@@ -23,7 +22,7 @@ class TagsController
             
         } catch (Exception $e) {
             // 出錯統一用 Internal Server Error           
-            return $MsgHandler->handleServerError($response);
+            return MsgH::handleServerError($response);
         }
 
         return $response->withJson($result, 200);
@@ -33,7 +32,6 @@ class TagsController
     public function findAll($request, $response, $args)
     {
         $TagsModel = new Tags();
-        $MsgHandler = new MsgHandler();
 
         try {
 
@@ -41,7 +39,7 @@ class TagsController
             
         } catch (Exception $e) {
             // 出錯統一用 Internal Server Error           
-            return $MsgHandler->handleServerError($response);
+            return MsgH::handleServerError($response);
         }
 
         return $response->withJson($result, 200);        
@@ -53,16 +51,15 @@ class TagsController
         $data = $request->getParsedBody();
         $TagsModel = new Tags();     
         $TagsValidator = new TagsValidator();
-        $MsgHandler = new MsgHandler();
         
         try {            
             // 檢查 $data 格式
             if (!$TagsValidator->validate($data)) {
-                return $MsgHandler->handleInvalidData($response);
+                return MsgH::handleInvalidData($response);
             }
             // 檢查有沒有重複的標籤名稱      
             if ($TagsModel->findByName($data['ts_name']) != null) {
-                return $MsgHandler->handleDuplicate($response);
+                return MsgH::handleDuplicate($response);
             }
             // Transaction --開始-- 
             R::begin();
@@ -72,10 +69,10 @@ class TagsController
         } catch (Exception $e) {
             // 資料處理失敗           
             R::rollback();
-            return $MsgHandler->handleDataProcessingFaild($response);
+            return MsgH::handleDataProcessingFaild($response);
         }
 
-        return $MsgHandler->handleSuccess($response);
+        return MsgH::handleSuccess($response);
     }
 
     /* 修改 edit 資料 Tags */
@@ -84,12 +81,11 @@ class TagsController
         $data = $request->getParsedBody();
         $TagsModel = new Tags();
         $TagsValidator = new TagsValidator();
-        $MsgHandler = new MsgHandler();
 
         try {
             // 檢查 $data 格式
             if (!$TagsValidator->validate($data)) {
-                return $MsgHandler->handleInvalidData($response);
+                return MsgH::handleInvalidData($response);
             }           
             // Transaction --開始-- 
             R::begin();
@@ -99,9 +95,9 @@ class TagsController
         } catch (Exception $e) {
             // 資料處理失敗
             R::rollback();
-            return $MsgHandler->handleDataProcessingFaild($response);
+            return MsgH::handleDataProcessingFaild($response);
         }
 
-        return $MsgHandler->handleSuccess($response);
+        return MsgH::handleSuccess($response);
     }
 }

@@ -4,7 +4,7 @@ namespace app\Controllers;
 
 use app\Models\WordsGroupsDetails;
 use app\Validators\tables\WordsGroupsDetailsValidator;
-use libs\Responses\MsgHandler;
+use libs\Responses\MsgHandler as MsgH;
 use \RedBeanPHP\R as R;
 use Exception;
 
@@ -15,7 +15,6 @@ class WordsGroupsDetailsController
     public function find($request, $response, $args)
     {
         $WordsGroupsDetailsModel = new WordsGroupsDetails();
-        $MsgHandler = new MsgHandler();
 
         try {
 
@@ -23,7 +22,7 @@ class WordsGroupsDetailsController
             
         } catch (Exception $e) {
             // 出錯統一用 Internal Server Error           
-            return $MsgHandler->handleServerError($response);
+            return MsgH::handleServerError($response);
         }
 
         return $response->withJson($result, 200);
@@ -33,7 +32,6 @@ class WordsGroupsDetailsController
     public function findAll($request, $response, $args)
     {
         $WordsGroupsDetailsModel = new WordsGroupsDetails();
-        $MsgHandler = new MsgHandler();
 
         try {
 
@@ -41,7 +39,7 @@ class WordsGroupsDetailsController
                       
         } catch (Exception $e) {
             // 出錯統一用 Internal Server Error           
-            return $MsgHandler->handleServerError($response);
+            return MsgH::handleServerError($response);
         }
 
         return $response->withJson($result, 200);        
@@ -53,16 +51,15 @@ class WordsGroupsDetailsController
         $data = $request->getParsedBody();
         $WordsGroupsDetailsModel = new WordsGroupsDetails();
         $WordsGroupsDetailsValidator = new WordsGroupsDetailsValidator();
-        $MsgHandler = new MsgHandler();
 
         try {
             // 檢查 $data 格式
             if (!$WordsGroupsDetailsValidator->validate($data)) {
-                return $MsgHandler->handleInvalidData($response);
+                return MsgH::handleInvalidData($response);
             }
             // 再判斷所新增的關聯鍵是否已經存在 避免重複建立
             if ($WordsGroupsDetailsModel->findByAssociatedIDs($data) != null) {
-                return $MsgHandler->handleDuplicate($response);
+                return MsgH::handleDuplicate($response);
             }
             // Transaction --開始-- 
             R::begin();
@@ -72,10 +69,10 @@ class WordsGroupsDetailsController
         } catch (Exception $e) {
             // 資料處理失敗
             R::rollback();
-            return $MsgHandler->handleDataProcessingFaild($response);
+            return MsgH::handleDataProcessingFaild($response);
         }
 
-        return $MsgHandler->handleSuccess($response);       
+        return MsgH::handleSuccess($response);       
     }
 
     /* 修改資料 WordsGroupsDetails */
@@ -84,12 +81,11 @@ class WordsGroupsDetailsController
         $data = $request->getParsedBody();
         $WordsGroupsDetailsModel = new WordsGroupsDetails();
         $WordsGroupsDetailsValidator = new WordsGroupsDetailsValidator();
-        $MsgHandler = new MsgHandler();
 
         try {
             // 檢查 $data 格式
             if (!$WordsGroupsDetailsValidator->validate($data)) {
-                return $MsgHandler->handleInvalidData($response);
+                return MsgH::handleInvalidData($response);
             }
             // Transaction --開始-- 
             R::begin();
@@ -99,22 +95,21 @@ class WordsGroupsDetailsController
         } catch (Exception $e) {
             // 資料處理失敗
             R::rollback();
-            return $MsgHandler->handleDataProcessingFaild($response);
+            return MsgH::handleDataProcessingFaild($response);
         }
 
-        return $MsgHandler->handleSuccess($response);       
+        return MsgH::handleSuccess($response);       
     }
 
     /* 刪除關聯資料 WordsGroupsDetails */
     public function delete($request, $response, $args)
     {
         $WordsGroupsDetailsModel = new WordsGroupsDetails();
-        $MsgHandler = new MsgHandler();
 
         try {
             // 檢查 id 是否存在          
             if ($WordsGroupsDetailsModel->find($args['id']) == null) {
-                return $MsgHandler->handleNotFound($response);
+                return MsgH::handleNotFound($response);
             }
             // Transaction --開始-- 
             R::begin();
@@ -124,9 +119,9 @@ class WordsGroupsDetailsController
         } catch (Exception $e) {
             // 資料處理失敗            
             R::rollback();
-            return $MsgHandler->handleDataProcessingFaild($response);
+            return MsgH::handleDataProcessingFaild($response);
         }
 
-        return $MsgHandler->handleDeletion($response);       
+        return MsgH::handleDeletion($response);       
     }
 }

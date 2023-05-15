@@ -4,7 +4,7 @@ namespace app\Controllers;
 
 use app\Models\WordsTags;
 use app\Validators\tables\WordsTagsValidator;
-use libs\Responses\MsgHandler;
+use libs\Responses\MsgHandler as MsgH;
 use \RedBeanPHP\R as R;
 use Exception;
 
@@ -16,17 +16,16 @@ class WordsTagsController
     {
         $data = $request->getParsedBody();
         $WordsTagsModel = new WordsTags();
-        $WordsTagsValidator = new WordsTagsValidator();
-        $MsgHandler = new MsgHandler();             
+        $WordsTagsValidator = new WordsTagsValidator();             
 
         try {
             // 檢查 $data 格式
             if (!$WordsTagsValidator->validate($data)) {
-                return $MsgHandler->handleInvalidData($response);
+                return MsgH::handleInvalidData($response);
             }
             // 再判斷所新增的關聯鍵是否已經存在 避免重複建立
             if ($WordsTagsModel->findByAssociatedIDs($data) != null) {
-                return $MsgHandler->handleDuplicate($response);
+                return MsgH::handleDuplicate($response);
             }
             // Transaction --開始-- 
             R::begin();
@@ -36,22 +35,21 @@ class WordsTagsController
         } catch (Exception $e) {
             // 資料處理失敗
             R::rollback();
-            return $MsgHandler->handleDataProcessingFaild($response);
+            return MsgH::handleDataProcessingFaild($response);
         }
 
-        return $MsgHandler->handleSuccess($response);        
+        return MsgH::handleSuccess($response);        
     }
 
     /* 刪除關聯資料 WordsTags */
     public function delete($request, $response, $args)
     {
         $WordsTagsModel = new WordsTags();
-        $MsgHandler = new MsgHandler();
 
         try {
             // 檢查 id 是否存在                     
             if ($WordsTagsModel->find($args['id']) == null) {
-                return $MsgHandler->handleNotFound($response);
+                return MsgH::handleNotFound($response);
             }
             // Transaction --開始-- 
             R::begin();
@@ -61,17 +59,16 @@ class WordsTagsController
         } catch (Exception $e) {
             // 資料處理失敗
             R::rollback();
-            return $MsgHandler->handleDataProcessingFaild($response);
+            return MsgH::handleDataProcessingFaild($response);
         }
 
-        return $MsgHandler->handleDeletion($response);
+        return MsgH::handleDeletion($response);
     }
 
     /* 查詢所有資料 WordsTags 關聯 Words Tags*/
     public function findAll($request, $response, $args)
     {
         $WordsTagsModel = new WordsTags();
-        $MsgHandler = new MsgHandler();
 
         try {
 
@@ -79,7 +76,7 @@ class WordsTagsController
             
         } catch (Exception $e) {
             // 出錯統一用 Internal Server Error
-            return $MsgHandler->handleServerError($response);
+            return MsgH::handleServerError($response);
         }
 
         return $response->withJson($result, 200);
@@ -89,7 +86,6 @@ class WordsTagsController
     public function findByTagsID($request, $response, $args)
     {
         $WordsTagsModel = new WordsTags();
-        $MsgHandler = new MsgHandler();
 
         try {
             
@@ -97,7 +93,7 @@ class WordsTagsController
             
         } catch (Exception $e) {
             // 出錯統一用 Internal Server Error
-            return $MsgHandler->handleServerError($response);
+            return MsgH::handleServerError($response);
         }
        
         return $response->withJson($result, 200);
