@@ -37,10 +37,10 @@
     │   └─ Validators    //  驗證資料完整性
     ├─ core     //  資料庫相關設定
     ├─ libs     //  自定義函式庫
-    │   ├─ Exceptions      //  Exception 例外管理
-    │   │   ├─ Collection  //  自定義 Exception 實作
-    │   │   └─ Interfaces  //  自定義 介面
-    │   └─ Responses       //  自定義 Response
+    │   ├─ Exceptions    //  Exception 例外管理
+    │   │   ├─ Collection    //  自定義 Exception 實作
+    │   │   └─ Interfaces    //  自定義 介面
+    │   └─ Responses     //  自定義 Response
     ├─ public   //  index 網址存取目錄    
     └─ vendor   //  composer 套件
 
