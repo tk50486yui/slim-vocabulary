@@ -34,11 +34,13 @@
     │   ├─ Factories     //  實際執行 Entity 及 Validator
     │   ├─ Middlewares   //  中介層 
     │   ├─ Models        //  執行 ORM 與 SQL 語法    
-    │   └─ Validators    //  驗證資料
+    │   └─ Validators    //  驗證資料完整性
     ├─ core     //  資料庫相關設定
     ├─ libs     //  自定義函式庫
-    │   ├─ Exceptions   //  自定義 Exception
-    │   └─ Responses    //  自定義 Response
+    │   ├─ Exceptions      //  Exception 例外管理
+    │   │   ├─ Collection  //  自定義 Exception 
+    │   │   └─ Handler     //  自定義 Exception 處理器
+    │   └─ Responses       //  自定義 Response
     ├─ public   //  index 網址存取目錄    
     └─ vendor   //  composer 套件
 
