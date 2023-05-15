@@ -3,7 +3,7 @@
 namespace app\Controllers;
 
 use app\Models\Tags;
-use app\Validators\tables\TagsValidator;
+use app\Validators\Tables\TagsValidator;
 use libs\Responses\MsgHandler as MsgH;
 use \RedBeanPHP\R as R;
 use Exception;

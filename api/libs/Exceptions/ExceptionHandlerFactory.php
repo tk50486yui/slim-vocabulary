@@ -11,10 +11,14 @@ use libs\Exceptions\ExceptionHandlerChain;
 
 class ExceptionHandlerFactory {
     public static function createExceptionHandlerChain(): ExceptionHandlerChain {
-        $handlerMap = new ExceptionHandlerMap([
-            InvalidDataException::class => new InvalidDataExceptionHandler(),
-            InvalidForeignKeyException::class => new InvalidForeignKeyExceptionHandler(),
-        ]);
+        $handlerMap = new ExceptionHandlerMap(
+            // ::class取得類別名稱 然後綁定各自對應的處理器   key => object 型態
+            [
+                InvalidDataException::class => new InvalidDataExceptionHandler(),
+                InvalidForeignKeyException::class => new InvalidForeignKeyExceptionHandler(),
+            ]
+        );
+        // 創建HandlerChain物件
         return new ExceptionHandlerChain($handlerMap);
     }
 }

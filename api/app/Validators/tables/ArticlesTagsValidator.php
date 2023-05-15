@@ -1,6 +1,6 @@
 <?php
 
-namespace app\Validators\tables;
+namespace app\Validators\Tables;
 
 use app\Models\Tags;
 use app\Models\Articles;

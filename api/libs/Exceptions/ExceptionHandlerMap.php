@@ -16,6 +16,7 @@ class ExceptionHandlerMap
         $this->handlers[$class] = $handler;
     }
 
+    // 判斷例外是否符合介面所定義的 
     public function getHandler(string $class): ?ExceptionHandlerInterface
     {
         return $this->handlers[$class] ?? null;

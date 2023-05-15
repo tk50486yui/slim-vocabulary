@@ -3,7 +3,7 @@
 namespace app\Controllers;
 
 use app\Models\Articles;
-use app\Validators\tables\ArticlesValidator;
+use app\Validators\Tables\ArticlesValidator;
 use libs\Responses\MsgHandler as MsgH;
 use \RedBeanPHP\R as R;
 use Exception;

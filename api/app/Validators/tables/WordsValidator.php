@@ -1,6 +1,6 @@
 <?php
 
-namespace app\Validators\tables;
+namespace app\Validators\Tables;
 
 use app\Entities\WordsEntity;
 use app\Models\Categories;

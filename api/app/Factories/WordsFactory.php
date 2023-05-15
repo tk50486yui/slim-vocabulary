@@ -3,7 +3,7 @@
 namespace app\Factories;
 
 use app\Entities\WordsEntity;
-use app\Validators\tables\WordsValidator;
+use app\Validators\Tables\WordsValidator;
 use libs\Exceptions\Collection\InvalidDataException;
 use libs\Exceptions\Collection\InvalidForeignKeyException;
 
