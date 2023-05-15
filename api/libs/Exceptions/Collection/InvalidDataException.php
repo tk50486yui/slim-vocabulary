@@ -2,9 +2,15 @@
 
 namespace libs\Exceptions\Collection;
 
+use Exception;
 use libs\Exceptions\BaseExceptionCollection;
+use libs\Exceptions\Interfaces\ExceptionHandlerInterface;
+use libs\Responses\MsgHandler as MsgH;
 
-class InvalidDataException extends BaseExceptionCollection
+class InvalidDataException extends BaseExceptionCollection implements ExceptionHandlerInterface
 {
-   // 自訂
+   public function handle(Exception $e, $response)
+   {
+      return MsgH::InvalidData($response);
+   }
 }

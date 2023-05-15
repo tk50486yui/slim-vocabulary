@@ -7,7 +7,7 @@ use  libs\Responses\Msg;
 class MsgHandler
 {   
     /* 資料正常 */
-    public static function handleSuccess($response)
+    public static function Success($response)
     {
         $Msg = new Msg();
         $Msg->error = '';
@@ -16,7 +16,7 @@ class MsgHandler
     }    
 
     /* 資料刪除完成 */
-    public static function handleDeletion($response)
+    public static function Deletion($response)
     {
         $Msg = new Msg();
         $Msg->error = '';
@@ -25,7 +25,7 @@ class MsgHandler
     }
 
     /* 資料格式錯誤 ex 空值 非整數.. */
-    public static function handleInvalidData($response)
+    public static function InvalidData($response)
     {
         $Msg = new Msg();
         $Msg->error = 'Invalid data';
@@ -33,7 +33,8 @@ class MsgHandler
         return $response->withJson($Msg->toArray())->withStatus(400);
     }
 
-    public static function handleInvalidForeignKey($response)
+    /* 外鍵格式或完整性錯誤 */
+    public static function InvalidForeignKey($response)
     {
         $Msg = new Msg();
         $Msg->error = 'Invalid foreign key';
@@ -41,8 +42,8 @@ class MsgHandler
         return $response->withJson($Msg->toArray())->withStatus(400);
     }
 
-    /* 查無該筆資料 */
-    public static function handleNotFound($response)
+    /* Not Found */
+    public static function NotFound($response)
     {
         $Msg = new Msg();
         $Msg->error = 'Data not found';
@@ -51,7 +52,7 @@ class MsgHandler
     }
 
     /* 資料重複 */
-    public static function handleDuplicate($response)
+    public static function Duplicate($response)
     {
         $Msg = new Msg();
         $Msg->error = 'Duplicate data';
@@ -60,7 +61,7 @@ class MsgHandler
     }
 
     /* 資料處理失敗 */
-    public static function handleDataProcessingFaild($response)
+    public static function DataProcessingFaild($response)
     {
         $Msg = new Msg();
         $Msg->error = 'Data processing failed';
@@ -69,7 +70,7 @@ class MsgHandler
     }
 
     /* 伺服器錯誤 統一 */
-    public static function handleServerError($response)
+    public static function ServerError($response)
     {
         $Msg = new Msg();
         $Msg->error = 'Internal server error';
@@ -78,7 +79,7 @@ class MsgHandler
     }
 
     /* 資料庫連接錯誤 */
-    public static function handleConnetFaild($response)
+    public static function ConnetFaild($response)
     {
         $Msg = new Msg();
         $Msg->error = 'Database connection failed';        

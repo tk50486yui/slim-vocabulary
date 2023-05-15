@@ -3,16 +3,15 @@
 namespace app\Middlewares;
 
 use RedBeanPHP\R;
-use libs\Responses\MsgHandler;
+use libs\Responses\MsgHandler as MsgH;
 
 class CheckConnectedMiddleware {
     
     public function __invoke($request, $response, $next) {
 
-        // before
-        $MsgHandler = new MsgHandler();     
+        // before      
         if (!R::testConnection()) {
-            return $MsgHandler->handleConnetFaild($response);
+            return MsgH::ConnetFaild($response);
         }
         
         $response = $next($request, $response);

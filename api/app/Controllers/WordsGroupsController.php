@@ -17,12 +17,9 @@ class WordsGroupsController
         $WordsGroupsModel = new WordsGroups();
 
         try {
-
             $result = $WordsGroupsModel->find($args['id']);
-            
         } catch (Exception $e) {
-            // 出錯統一用 Internal Server Error   
-            return MsgH::handleServerError($response);
+            return MsgH::ServerError($response);
         }
 
         return $response->withJson($result, 200);
@@ -34,12 +31,9 @@ class WordsGroupsController
         $WordsGroupsModel = new WordsGroups();
 
         try {
-
             $result = $WordsGroupsModel->findAll();
-            
         } catch (Exception $e) {
-            // 出錯統一用 Internal Server Error    
-            return MsgH::handleServerError($response);
+            return MsgH::ServerError($response);
         }
 
         return $response->withJson($result, 200);
@@ -55,7 +49,7 @@ class WordsGroupsController
         try {
             // 檢查 $data 格式
             if (!$WordsGroupsValidator->validate($data)) {
-                return MsgH::handleInvalidData($response);
+                return MsgH::InvalidData($response);
             }
             // Transaction --開始-- 
             R::begin();
@@ -63,12 +57,11 @@ class WordsGroupsController
             R::commit();
             // Transaction --結束-- 
         } catch (Exception $e) {
-            // 資料處理失敗
             R::rollback();
-            return MsgH::handleDataProcessingFaild($response);
+            return MsgH::DataProcessingFaild($response);
         }
 
-        return MsgH::handleSuccess($response);
+        return MsgH::Success($response);
     }
 
     /* 修改 edit 資料 WordsGroups */
@@ -81,7 +74,7 @@ class WordsGroupsController
         try {
             // 檢查 $data 格式
             if (!$WordsGroupsValidator->validate($data)) {
-                return MsgH::handleInvalidData($response);
+                return MsgH::InvalidData($response);
             }
             // Transaction --開始-- 
             R::begin();
@@ -89,11 +82,10 @@ class WordsGroupsController
             R::commit();
             // Transaction --結束-- 
         } catch (Exception $e) {
-            // 資料處理失敗
             R::rollback();
-            return MsgH::handleDataProcessingFaild($response);
+            return MsgH::DataProcessingFaild($response);
         }
 
-        return MsgH::handleSuccess($response);
+        return MsgH::Success($response);
     }
 }

@@ -17,11 +17,9 @@ class ArticlesTagsController
         $ArticlesTagsModel = new ArticlesTags();
 
         try {
-
             $result = $ArticlesTagsModel->find($args['id']);
         } catch (Exception $e) {
-            // 出錯統一用 Internal Server Error
-            return MsgH::handleServerError($response);
+            return MsgH::ServerError($response);
         }
 
         return $response->withJson($result, 200);
@@ -33,11 +31,9 @@ class ArticlesTagsController
         $ArticlesTagsModel = new ArticlesTags();
 
         try {
-
             $result = $ArticlesTagsModel->findAll();
         } catch (Exception $e) {
-            // 出錯統一用 Internal Server Error
-            return MsgH::handleServerError($response);
+            return MsgH::ServerError($response);
         }
 
         return $response->withJson($result, 200);
@@ -53,11 +49,11 @@ class ArticlesTagsController
         try {
             // 檢查 $data 格式
             if (!$ArticlesTagsValidator->validate($data)) {
-                return MsgH::handleInvalidData($response);
+                return MsgH::InvalidData($response);
             }
             // 再判斷所新增的關聯鍵是否已經存在 避免重複建立
             if ($ArticlesTagsModel->findByAssociatedIDs($data) != null) {
-                return MsgH::handleDuplicate($response);
+                return MsgH::Duplicate($response);
             }
             // Transaction --開始-- 
             R::begin();
@@ -65,12 +61,11 @@ class ArticlesTagsController
             R::commit();
             // Transaction --結束--              
         } catch (Exception $e) {
-            // 資料處理失敗
             R::rollback();
-            return MsgH::handleDataProcessingFaild($response);
+            return MsgH::DataProcessingFaild($response);
         }
 
-        return MsgH::handleSuccess($response);
+        return MsgH::Success($response);
     }
 
     /* 刪除關聯資料 ArticlesTags */
@@ -81,7 +76,7 @@ class ArticlesTagsController
         try {
             // 檢查 id 是否存在        
             if ($ArticlesTagsModel->find($args['id']) == null) {
-                return MsgH::handleNotFound($response);
+                return MsgH::NotFound($response);
             }
             // Transaction --開始-- 
             R::begin();
@@ -89,11 +84,10 @@ class ArticlesTagsController
             R::commit();
             // Transaction --結束--
         } catch (Exception $e) {
-            // 資料處理失敗
             R::rollback();
-            return MsgH::handleDataProcessingFaild($response);
+            return MsgH::DataProcessingFaild($response);
         }
 
-        return MsgH::handleDeletion($response);
+        return MsgH::Deletion($response);
     }
 }

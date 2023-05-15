@@ -4,28 +4,25 @@ namespace app\Controllers;
 
 use app\Factories\WordsFactory;
 use app\Models\Words;
-use libs\Responses\MsgHandler as MsgH;
 use \RedBeanPHP\R as R;
 use Exception;
 use libs\Exceptions\ExceptionHandlerFactory;
 use libs\Exceptions\BaseExceptionCollection;
+use libs\Responses\MsgHandler as MsgH;
 
 class WordsController
 {
-    
+
     /* 查詢單一資料 words id = ? */
     public function find($request, $response, $args)
-    {        
-        $WordsModel = new Words();
+    {
+        $WordsModel = new Words();        
 
         try {
-         
             $result = $WordsModel->find($args['id']);
-            
         } catch (Exception $e) {
-            // 出錯統一用 Internal Server Error    
-            return MsgH::handleServerError($response);
-        }       
+            return MsgH::ServerError($response);
+        }
 
         return $response->withJson($result, 200);
     }
@@ -34,14 +31,11 @@ class WordsController
     public function findAll($request, $response, $args)
     {
         $WordsModel = new Words();
-     
-        try {
 
+        try {
             $result = $WordsModel->findAll();
-            
         } catch (Exception $e) {
-            // 出錯統一用 Internal Server Error
-            return MsgH::handleServerError($response);
+            return MsgH::ServerError($response);
         }
 
         return $response->withJson($result, 200);
@@ -53,65 +47,47 @@ class WordsController
         $data = $request->getParsedBody();
         $WordsFactory = new WordsFactory();
         $WordsModel = new Words();
-        $handlerChain = ExceptionHandlerFactory::createExceptionHandlerChain();
-       
-        try {       
-           
-            //return $WordsEntity->cate_id;  
-            $d=$WordsFactory->createFactory($data);
-           
-            /*if(!$WordsEntity->validate()){
-                return MsgH::handleInvalidData($response);
-            }*/
-            return $d->cate_id;
-            /*// 檢查 $data 格式
-            if (!$WordsValidator->validate($data)) {
-                return MsgH::handleInvalidData($response);
-            }*/
-            // 檢查有沒有重複的單詞          
-            if ($WordsModel->findByName($data['ws_name']) != null) {
-                return MsgH::handleDuplicate($response);
-            }
+        $ExceptionHF = new ExceptionHandlerFactory();       
+
+        try {          
+            $newData = $WordsFactory->createFactory($data);
             // Transaction --開始-- 
             R::begin();
-            $WordsModel->add($data);
+            $WordsModel->add($newData);
             R::commit();
             // Transaction --結束--   
-        }catch (BaseExceptionCollection $e) {
-            return $handlerChain->handleException($e, $response);            
-        }catch (Exception $e) {
-            // 資料處理失敗
-            R::rollback();
-            return MsgH::handleDataProcessingFaild($response);
+        } catch (BaseExceptionCollection $e) {  
+            return $ExceptionHF->createChain()->handle($e, $response);
+        } catch (Exception $e) {
+            R::rollback();         
+            return $ExceptionHF->createDefault()->handle($e, $response);
         }
 
-        return MsgH::handleSuccess($response);
+        return MsgH::success($response);
     }
 
     /* 修改 edit 資料 words */
     public function edit($request, $response, $args)
     {
         $data = $request->getParsedBody();
-        //$WordsValidator= new WordsValidator();
+        $WordsFactory = new WordsFactory();
         $WordsModel = new Words();
+        $ExceptionHF = new ExceptionHandlerFactory();
 
         try {
-            /*// 檢查 $data 格式
-            if (!$WordsValidator->validate($data)) {
-                return MsgH::handleInvalidData($response);
-            }*/
+            $newData = $WordsFactory->createFactory($data);
             // Transaction --開始--
             R::begin();
-            $WordsModel->edit($data, $args['id']);
+            $WordsModel->edit($newData, $args['id']);
             R::commit();
             // Transaction --結束--            
-        } catch (Exception $e) {
-            // 資料處理失敗
+        } catch (BaseExceptionCollection $e) {  
+            return $ExceptionHF->createChain()->handle($e, $response);
+        } catch (Exception $e) {         
             R::rollback();
-            return MsgH::handleDataProcessingFaild($response);
+            return $ExceptionHF->createDefault()->handle($e, $response);
         }
 
-        return MsgH::handleSuccess($response);
+        return MsgH::success($response);
     }
-   
 }

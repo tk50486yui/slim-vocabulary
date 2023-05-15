@@ -55,11 +55,11 @@ class Words
         $words->ws_pronunciation = $data['ws_pronunciation'];
         $words->ws_slogan = $data['ws_slogan'];
         $words->ws_description = $data['ws_description'];
-        $words->ws_is_important = is_bool($data['ws_is_important']) ? (bool)$data['ws_is_important'] : false;
-        $words->ws_is_common = is_bool($data['ws_is_common']) ? (bool)$data['ws_is_common'] : false;
-        $words->ws_forget_count = is_numeric($data['ws_forget_count']) ? (int)$data['ws_forget_count'] : 0;
-        $words->ws_display_order = is_numeric($data['ws_display_order']) ? (int)$data['ws_display_order'] : 1;
-        $words->cate_id = is_numeric($data['cate_id']) ? (int)$data['cate_id'] : null;
+        $words->ws_is_important = $data['ws_is_important'];
+        $words->ws_is_common = $data['ws_is_common'];
+        $words->ws_forget_count = $data['ws_forget_count'];
+        $words->ws_display_order =$data['ws_display_order'];
+        $words->cate_id = $data['cate_id'];
         R::store($words);
     }
 
@@ -72,11 +72,11 @@ class Words
         $words->ws_pronunciation = $data['ws_pronunciation'];
         $words->ws_slogan = $data['ws_slogan'];
         $words->ws_description = $data['ws_description'];
-        $words->ws_is_important = is_bool($data['ws_is_important']) ? (bool)$data['ws_is_important'] : false;
-        $words->ws_is_common = is_bool($data['ws_is_common']) ? (bool)$data['ws_is_common'] : false;
-        $words->ws_forget_count = is_numeric($data['ws_forget_count']) ? (int)$data['ws_forget_count'] : 0;
-        $words->ws_display_order = is_numeric($data['ws_display_order']) ? (int)$data['ws_display_order'] : 1;
-        $words->cate_id = is_numeric($data['cate_id']) ? (int)$data['cate_id'] : null;
+        $words->ws_is_important = $data['ws_is_important'];
+        $words->ws_is_common = $data['ws_is_common'];
+        $words->ws_forget_count = $data['ws_forget_count'];
+        $words->ws_display_order =$data['ws_display_order'];
+        $words->cate_id = $data['cate_id'];
         $words->updated_at = Time::getNow();
         R::store($words);
     }

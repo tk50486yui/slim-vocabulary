@@ -4,31 +4,40 @@ namespace app\Validators\Tables;
 
 use app\Entities\WordsEntity;
 use app\Models\Categories;
+use app\Models\Words;
 
 class WordsValidator
-{   
-    /**   
-     * 使用Entity取得的資料檢查外鍵   
-    **/ 
+{
+    //  外鍵檢查 INTEGER
     public function validateForeignKey(WordsEntity $entity)
-    {  
-        if(!$this->cateID($entity->cate_id)){
+    {
+        if (!$this->cateID($entity->cate_id)) {
             return false;
         }
 
-        return true;        
+        return true;
     }
 
-    //  外鍵檢查 INTEGER
+    
     public function cateID($cate_id)
-    {        
-
-        // 檢查外鍵是否已存在於該資料表中
-        $CategoriesModel = new Categories();        
+    {
+        $CategoriesModel = new Categories();
         if ($CategoriesModel->find($cate_id) == null) {
             return false;
         }
-        
+
+        return true;
+    }
+
+    // 　檢查有沒有重複的單詞  
+    public function dupName($ws_name)
+    {
+        $WordsModel = new Words();
+
+        if ($WordsModel->findByName($ws_name) != null) {
+            return false;
+        }
+
         return true;
     }
 }

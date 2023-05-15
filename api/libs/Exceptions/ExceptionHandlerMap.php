@@ -2,6 +2,8 @@
 
 namespace libs\Exceptions;
 
+use libs\Exceptions\Interfaces\ExceptionHandlerInterface;
+
 class ExceptionHandlerMap
 {
     private $handlers;

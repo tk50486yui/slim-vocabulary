@@ -17,12 +17,9 @@ class CategoriesController
         $CategoriesModel = new Categories();
 
         try {
-
-            $result = $CategoriesModel->find($args['id']);            
-            
+            $result = $CategoriesModel->find($args['id']); 
         } catch (Exception $e) {
-            // 出錯統一用 Internal Server Error           
-            return MsgH::handleServerError($response);
+            return MsgH::ServerError($response);
         }
 
         return $response->withJson($result, 200);       
@@ -34,14 +31,11 @@ class CategoriesController
         $CategoriesModel = new Categories();
 
         try {
-
             $all = $CategoriesModel->findAll();
             // 建立樹狀結構資料
             $result = $CategoriesModel->buildCategoriesTree($all);
-
         } catch (Exception $e) {
-            // 出錯統一用 Internal Server Error           
-            return MsgH::handleServerError($response);
+            return MsgH::ServerError($response);
         }
 
         return $response->withJson($result, 200);      
@@ -57,11 +51,11 @@ class CategoriesController
         try {
             // 檢查 $data 格式
             if (!$CategoriesValidator->validate($data)) {
-                return MsgH::handleInvalidData($response);
+                return MsgH::InvalidData($response);
             }
             // 檢查有沒有重複的名稱          
             if ($CategoriesModel->findByName($data['cate_name']) != null) {
-                return MsgH::handleDuplicate($response);
+                return MsgH::Duplicate($response);
             }
             // Transaction --開始-- 
             R::begin();         
@@ -69,12 +63,11 @@ class CategoriesController
             R::commit();    
             // Transaction --結束--  
         } catch (Exception $e) {
-            // 資料處理失敗
             R::rollback();
-            return MsgH::handleDataProcessingFaild($response);
+            return MsgH::DataProcessingFaild($response);
         }
 
-        return MsgH::handleSuccess($response);
+        return MsgH::Success($response);
     }
 
     /* 修改 edit 資料 Categories */
@@ -87,7 +80,7 @@ class CategoriesController
         try {
             // 檢查 $data 格式
             if (!$CategoriesValidator->validate($data)) {
-                return MsgH::handleInvalidData($response);
+                return MsgH::InvalidData($response);
             }
             // 檢查 cate_parent_id
             $all = $CategoriesModel->findAll();
@@ -96,7 +89,7 @@ class CategoriesController
             // 檢查所新增之 cate_parent_id 是否為自己的子節點 有值才做
             if($data['cate_parent_id'] != null || $data['cate_parent_id'] != ''){
                 if($CategoriesValidator->validateParent($tree, $args['id'], $data['cate_parent_id'])){
-                    return MsgH::handleInvalidData($response);
+                    return MsgH::InvalidData($response);
                 }
             }           
             // Transaction --開始-- 
@@ -105,12 +98,11 @@ class CategoriesController
             R::commit();    
             // Transaction --結束--  
         } catch (Exception $e) {
-            // 資料處理失敗
             R::rollback();  
-            return MsgH::handleDataProcessingFaild($response);
+            return MsgH::DataProcessingFaild($response);
         }
 
-        return MsgH::handleSuccess($response); 
+        return MsgH::Success($response); 
     }
 
     /* JOIN查詢 Categories id 底下的 words */
@@ -119,12 +111,9 @@ class CategoriesController
         $CategoriesModel = new Categories();
 
         try {
-
-            $result = $CategoriesModel->findWordsByID($args['id']);            
-            
+            $result = $CategoriesModel->findWordsByID($args['id']);
         } catch (Exception $e) {
-            // 出錯統一用 Internal Server Error           
-            return MsgH::handleServerError($response);
+            return MsgH::ServerError($response);
         }
 
         return $response->withJson($result, 200);       

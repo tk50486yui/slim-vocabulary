@@ -6,6 +6,7 @@ use app\Entities\WordsEntity;
 use app\Validators\Tables\WordsValidator;
 use libs\Exceptions\Collection\InvalidDataException;
 use libs\Exceptions\Collection\InvalidForeignKeyException;
+use libs\Exceptions\Collection\DuplicateException;
 
 class WordsFactory
 {
@@ -18,9 +19,15 @@ class WordsFactory
         if (!$WordsEntity->validate()) {
             throw new InvalidDataException();
         }
-        if(!$WordsValidator->validateForeignKey($WordsEntity)){
+        if(!$WordsValidator->validateForeignKey($WordsEntity)){          
             throw new InvalidForeignKeyException();
         }
-        return $WordsEntity;
+        if(!$WordsValidator->dupName($WordsEntity->ws_name)){          
+            throw new DuplicateException();
+        }
+        
+        $WordsEntity->setDefault();
+     
+        return $WordsEntity->toArray();
     }
 }

@@ -2,8 +2,8 @@
 
 namespace libs\Exceptions;
 
-use libs\Exceptions\ExceptionHandlerInterface;
 use Exception;
+use libs\Exceptions\Interfaces\ExceptionHandlerInterface;
 
 class ExceptionHandlerChain implements ExceptionHandlerInterface
 {
@@ -17,7 +17,7 @@ class ExceptionHandlerChain implements ExceptionHandlerInterface
     }
 
     // 這裡主要是判別進來的例外是屬於哪一種 $e是當下要處理的例外
-    public function handleException(Exception $e, $response)
+    public function handle(Exception $e, $response)
     {
         // PHP內建方法 取得當下catch到的$e例外class名稱
         $class = get_class($e); 
@@ -26,20 +26,12 @@ class ExceptionHandlerChain implements ExceptionHandlerInterface
             throw $e;
         }
         // 使用$handlerMap判斷是否為自定義例外
-        $handler = $this->handlerMap->getHandler($class);
-        // 當不屬於自訂例外null時 就往上找
-        while ($handler === null) {
-            $class = get_parent_class($class);
-            if ($class === 'Exception') {
-                throw $e;
-            }
-            $handler = $this->handlerMap->getHandler($class);
-        }        
-        // 若找到$handler 就執行必須實作的handleException
+        $handler = $this->handlerMap->getHandler($class);     
+        // 若是則直接執行
         if ($handler) {
-            return $handler->handleException($e, $response);
+            return $handler->handle($e, $response);
         }
-        // 若完全找不到 則丟出來 交給外層下一個catch 
+        // 若找不到則丟出來 交給外層下一個catch 
         // 正常是交給Exception  catch(Exception $e){...}
         throw $e;
     }
