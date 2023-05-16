@@ -7,28 +7,25 @@ use libs\Time;
 
 class WordsGroups
 {
-    /* 查詢單一資料 words_groups  id = ? */
+
     public function find($id)
     {
         $result = R::findOne('words_groups', ' id = ? ', array($id));
         return $result;
     }
 
-    /* 查詢所有資料 words_groups */
     public function findAll()
     {
         $result = R::findAll('words_groups');
         return $result;
     }
 
-    /* 以 wg_name 查詢 words_group 表 */
     public function findByName($wg_name)
     {
         $result = R::findOne('wg_name', ' wg_name = ? ', array($wg_name));
         return $result;
     }
 
-    /* 新增單一資料 words_groups */
     public function add($data)
     {
         // 使用自訂義 xdispense
@@ -37,7 +34,6 @@ class WordsGroups
         R::store($words_groups);
     }
 
-    /* 修改 edit 資料 words_groups */
     public function edit($data, $id)
     {
         $words_groups = R::load('words_groups', $id);
@@ -46,7 +42,6 @@ class WordsGroups
         R::store($words_groups);
     }
 
-    /* 刪除關聯資料 words_groups */
     public function delete($id)
     {
         $words_groups = R::load('words_groups', $id);

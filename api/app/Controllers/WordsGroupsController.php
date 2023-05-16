@@ -2,11 +2,11 @@
 
 namespace app\Controllers;
 
-use app\Models\WordsGroups;
-use app\Validators\Tables\WordsGroupsValidator;
-use libs\Responses\MsgHandler as MsgH;
-use \RedBeanPHP\R as R;
 use Exception;
+use \RedBeanPHP\R as R;
+use libs\Responses\MsgHandler as MsgH;
+use app\Validators\Tables\WordsGroupsValidator;
+use app\Models\WordsGroups;
 
 class WordsGroupsController
 {
@@ -50,12 +50,10 @@ class WordsGroupsController
             // 檢查 $data 格式
             if (!$WordsGroupsValidator->validate($data)) {
                 return MsgH::InvalidData($response);
-            }
-            // Transaction --開始-- 
+            }        
             R::begin();
             $WordsGroupsModel->add($data);
-            R::commit();
-            // Transaction --結束-- 
+            R::commit();          
         } catch (Exception $e) {
             R::rollback();
             return MsgH::DataProcessingFaild($response);
@@ -75,12 +73,10 @@ class WordsGroupsController
             // 檢查 $data 格式
             if (!$WordsGroupsValidator->validate($data)) {
                 return MsgH::InvalidData($response);
-            }
-            // Transaction --開始-- 
+            }       
             R::begin();
             $WordsGroupsModel->edit($data, $args['id']);
-            R::commit();
-            // Transaction --結束-- 
+            R::commit();          
         } catch (Exception $e) {
             R::rollback();
             return MsgH::DataProcessingFaild($response);

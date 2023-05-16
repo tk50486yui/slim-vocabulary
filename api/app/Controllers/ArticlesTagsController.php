@@ -11,36 +11,8 @@ use app\Factories\ArticlesTagsFactory;
 use app\Models\ArticlesTags;
 
 class ArticlesTagsController
-{
-
-    /* 查詢單一資料 ArticlesTags id = ? */
-    public function find($request, $response, $args)
-    {
-        $ArticlesTagsModel = new ArticlesTags();
-
-        try {
-            $result = $ArticlesTagsModel->find($args['id']);
-        } catch (Exception $e) {
-            return MsgH::ServerError($response);
-        }
-
-        return $response->withJson($result, 200);
-    }
-
-    /* 查詢所有資料 ArticlesTags */
-    public function findAll($request, $response, $args)
-    {
-        $ArticlesTagsModel = new ArticlesTags();
-
-        try {
-            $result = $ArticlesTagsModel->findAll();
-        } catch (Exception $e) {
-            return MsgH::ServerError($response);
-        }
-
-        return $response->withJson($result, 200);
-    }
-
+{   
+    
     /* 新增單一資料 ArticlesTags */
     public function add($request, $response, $args)
     {

@@ -57,13 +57,12 @@ $app->group('/wordstags', function() {
   
 });
 
-$app->group('/articlestags', function() {
-   
-    $this->get('', 'ArticlesTagsController:findAll');
-    $this->get('/{id}', 'ArticlesTagsController:find');
+$app->group('/articlestags', function() {  
+  
     $this->post('', 'ArticlesTagsController:add');
     $this->delete('/{id}', 'ArticlesTagsController:delete');
-  
+
+    //$this->get('', 'ArticlesTagsController:findAll');  
 });
 
 $app->group('/articleswords', function() {
