@@ -3,7 +3,6 @@
 namespace app\Validators\Tables;
 
 use app\Validators\ValidatorForeignKey as VFK;
-use app\Validators\ValidatorHelper as VH;
 use app\Entities\ArticlesTagsEntity;
 use app\Models\ArticlesTags;
 

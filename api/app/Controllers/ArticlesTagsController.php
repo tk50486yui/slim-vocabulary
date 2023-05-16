@@ -47,8 +47,7 @@ class ArticlesTagsController
         $data = $request->getParsedBody();
         $ArticlesTagsFactory = new ArticlesTagsFactory();        
         $ExceptionHF = new ExceptionHandlerFactory();
-        $ArticlesTagsModel = new ArticlesTags();
-      
+        $ArticlesTagsModel = new ArticlesTags();      
 
         try {
             $data = $ArticlesTagsFactory->createFactory($data, null);         

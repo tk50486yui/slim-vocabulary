@@ -2,11 +2,13 @@
 
 namespace app\Controllers;
 
-use app\Models\ArticlesWords;
-use app\Validators\Tables\ArticlesWordsValidator;
-use libs\Responses\MsgHandler as MsgH;
-use \RedBeanPHP\R as R;
 use Exception;
+use \RedBeanPHP\R as R;
+use libs\Responses\MsgHandler as MsgH;
+use libs\Exceptions\ExceptionHandlerFactory;
+use libs\Exceptions\BaseExceptionCollection;
+use app\Factories\ArticlesWordsFactory;
+use app\Models\ArticlesWords;
 
 class ArticlesWordsController
 {
@@ -43,26 +45,20 @@ class ArticlesWordsController
     public function add($request, $response, $args)
     {
         $data = $request->getParsedBody();
-        $ArticlesWordsModel = new ArticlesWords();
-        $ArticlesWordsValidator = new ArticlesWordsValidator();
+        $ArticlesWordsFactory = new ArticlesWordsFactory();        
+        $ExceptionHF = new ExceptionHandlerFactory();     
+        $ArticlesWordsModel = new ArticlesWords();      
 
         try {
-            // 檢查 $data 格式
-            if (!$ArticlesWordsValidator->validate($data)) {
-                return MsgH::InvalidData($response);
-            }
-            // 再判斷所新增的關聯鍵是否已經存在 避免重複建立
-            if ($ArticlesWordsModel->findByAssociatedIDs($data) != null) {
-                return MsgH::Duplicate($response);
-            }
-            // Transaction --開始-- 
+            $data = $ArticlesWordsFactory->createFactory($data, null);
             R::begin();
             $ArticlesWordsModel->add($data);
-            R::commit();
-            // Transaction --結束-- 
+            R::commit();           
+        } catch (BaseExceptionCollection $e) {  
+            return $ExceptionHF->createChain()->handle($e, $response);
         } catch (Exception $e) {
-            R::rollback();
-            return MsgH::DataProcessingFaild($response);
+            R::rollback();         
+            return $ExceptionHF->createDefault()->handle($e, $response);
         }
 
         return MsgH::Success($response);
@@ -73,16 +69,13 @@ class ArticlesWordsController
     {
         $ArticlesWordsModel = new ArticlesWords();
 
-        try {
-            // 檢查 id 是否存在             
+        try {                
             if ($ArticlesWordsModel->find($args['id']) == null) {
                 return MsgH::NotFound($response);
-            }
-            // Transaction --開始-- 
+            }         
             R::begin();
             $$ArticlesWordsModel->delete($args['id']);
             R::commit();
-            // Transaction --結束--
         } catch (Exception $e) {
             R::rollback();
             return MsgH::DataProcessingFaild($response);

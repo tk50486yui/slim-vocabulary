@@ -5,6 +5,7 @@ namespace app\Validators;
 use app\Models\Categories;
 use app\Models\Tags;
 use app\Models\Articles;
+use app\Models\Words;
 
 class ValidatorForeignKey
 {
@@ -33,6 +34,16 @@ class ValidatorForeignKey
     {
         $ArticlesModel = new Articles();
         if ($ArticlesModel->find($id) == null) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public static function wsID($id)
+    {
+        $WordsModel = new Words();
+        if ($WordsModel->find($id) == null) {
             return false;
         }
 
