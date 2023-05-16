@@ -33,10 +33,10 @@ class Tags
     {
         $tags = R::dispense('tags');
         $tags->ts_name = $data['ts_name'];
-        $tags->ts_storage = is_bool($data['ts_storage']) ? (bool)$data['ts_storage'] : true;
-        $tags->ts_parent_id = is_numeric($data['ts_parent_id']) ? (int)$data['ts_parent_id'] : null;
-        $tags->ts_level = is_numeric($data['ts_level']) ? (int)$data['ts_level'] : 1;
-        $tags->ts_sort_order = is_numeric($data['ts_sort_order']) ? (int)$data['ts_sort_order'] : 1;
+        $tags->ts_storage = $data['ts_storage'];
+        $tags->ts_parent_id = $data['ts_parent_id'];
+        $tags->ts_level = $data['ts_level'];
+        $tags->ts_sort_order =$data['ts_sort_order'];
         $tags->ts_description = $data['ts_description'];
         R::store($tags);
     }
@@ -46,10 +46,10 @@ class Tags
     {
         $tags = R::load('tags', $id);
         $tags->ts_name = $data['ts_name'];
-        $tags->ts_storage = is_bool($data['ts_storage']) ? (bool)$data['ts_storage'] : true;
-        $tags->ts_parent_id = is_numeric($data['ts_parent_id']) ? (int)$data['ts_parent_id'] : null;
-        $tags->ts_level = is_numeric($data['ts_level']) ? (int)$data['ts_level'] : 1;
-        $tags->ts_sort_order = is_numeric($data['ts_sort_order']) ? (int)$data['ts_sort_order'] : 1;
+        $tags->ts_storage = $data['ts_storage'];
+        $tags->ts_parent_id = $data['ts_parent_id'];
+        $tags->ts_level = $data['ts_level'];
+        $tags->ts_sort_order =$data['ts_sort_order'];
         $tags->ts_description = $data['ts_description'];
         $tags->updated_at = Time::getNow();
         R::store($tags);
