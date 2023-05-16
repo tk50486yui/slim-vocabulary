@@ -2,11 +2,13 @@
 
 namespace app\Controllers;
 
-use app\Models\Categories;
-use app\Validators\Tables\CategoriesValidator;
-use libs\Responses\MsgHandler as MsgH;
-use \RedBeanPHP\R as R;
 use Exception;
+use \RedBeanPHP\R as R;
+use libs\Responses\MsgHandler as MsgH;
+use libs\Exceptions\ExceptionHandlerFactory;
+use libs\Exceptions\BaseExceptionCollection;
+use app\Factories\CategoriesFactory;
+use app\Models\Categories;
 
 class CategoriesController
 {
@@ -43,28 +45,22 @@ class CategoriesController
 
     /* 新增單一資料 Categories */
     public function add($request, $response, $args)
-    {
-        $data = $request->getParsedBody();
+    {       
+        $data = $request->getParsedBody();       
+        $CategoriesFactory = new CategoriesFactory();
+        $ExceptionHF = new ExceptionHandlerFactory();
         $CategoriesModel = new Categories();
-        $CategoriesValidator = new CategoriesValidator();
-
+     
         try {
-            // 檢查 $data 格式
-            if (!$CategoriesValidator->validate($data)) {
-                return MsgH::InvalidData($response);
-            }
-            // 檢查有沒有重複的名稱          
-            if ($CategoriesModel->findByName($data['cate_name']) != null) {
-                return MsgH::Duplicate($response);
-            }
-            // Transaction --開始-- 
+            $data = $CategoriesFactory->createFactory($data, null); 
             R::begin();         
             $CategoriesModel->add($data);
             R::commit();    
-            // Transaction --結束--  
+        } catch (BaseExceptionCollection $e) {  
+            return $ExceptionHF->createChain()->handle($e, $response);
         } catch (Exception $e) {
-            R::rollback();
-            return MsgH::DataProcessingFaild($response);
+            R::rollback();         
+            return $ExceptionHF->createDefault()->handle($e, $response);
         }
 
         return MsgH::Success($response);
@@ -73,33 +69,23 @@ class CategoriesController
     /* 修改 edit 資料 Categories */
     public function edit($request, $response, $args)
     {
-        $data = $request->getParsedBody();
+        $data = $request->getParsedBody();        
+        $CategoriesFactory = new CategoriesFactory();
+        $ExceptionHF = new ExceptionHandlerFactory();
         $CategoriesModel = new Categories();
-        $CategoriesValidator = new CategoriesValidator();
 
         try {
-            // 檢查 $data 格式
-            if (!$CategoriesValidator->validate($data)) {
-                return MsgH::InvalidData($response);
-            }
-            // 檢查 cate_parent_id
-            $all = $CategoriesModel->findAll();
-            // 建立樹狀結構資料
-            $tree = $CategoriesModel->buildCategoriesTree($all);
-            // 檢查所新增之 cate_parent_id 是否為自己的子節點 有值才做
-            if($data['cate_parent_id'] != null || $data['cate_parent_id'] != ''){
-                if($CategoriesValidator->validateParent($tree, $args['id'], $data['cate_parent_id'])){
-                    return MsgH::InvalidData($response);
-                }
-            }           
+            $data = $CategoriesFactory->createFactory($data, $args['id']);
             // Transaction --開始-- 
             R::begin();         
             $CategoriesModel->edit($data, $args['id']);
             R::commit();    
             // Transaction --結束--  
+        } catch (BaseExceptionCollection $e) {  
+            return $ExceptionHF->createChain()->handle($e, $response);
         } catch (Exception $e) {
-            R::rollback();  
-            return MsgH::DataProcessingFaild($response);
+            R::rollback();         
+            return $ExceptionHF->createDefault()->handle($e, $response);
         }
 
         return MsgH::Success($response); 

@@ -2,42 +2,40 @@
 
 namespace app\Validators\Tables;
 
+use app\Validators\ValidatorForeignKey as VFK;
+use app\Validators\ValidatorHelper as VH;
 use app\Entities\WordsEntity;
-use app\Models\Categories;
 use app\Models\Words;
 
 class WordsValidator
-{
-    //  外鍵檢查 INTEGER
-    public function validateForeignKey(WordsEntity $entity)
+{   
+    public function foreignKey(WordsEntity $entity)
     {
-        if (!$this->cateID($entity->cate_id)) {
+        if(VH::acceptNullEmpty($entity->cate_id)){
+            return true;
+        }
+        if (!VFK::cateID($entity->cate_id)) {
             return false;
         }
 
         return true;
-    }
-
+    }    
     
-    public function cateID($cate_id)
-    {
-        $CategoriesModel = new Categories();
-        if ($CategoriesModel->find($cate_id) == null) {
-            return false;
-        }
-
-        return true;
-    }
-
-    // 　檢查有沒有重複的單詞  
-    public function dupName($ws_name)
-    {
+    public function dupName(WordsEntity $entity, $id)
+    {      
         $WordsModel = new Words();
-
-        if ($WordsModel->findByName($ws_name) != null) {
+        $rowDup = $WordsModel->findByName($entity->ws_name);
+        if ($rowDup == null) {
+            return true;
+        }
+        if ($id === null) {
             return false;
         }
+        $row = $WordsModel->find($id);
+        if ($row['ws_name'] == $rowDup['ws_name']) {
+            return true;
+        }
 
-        return true;
+        return false;
     }
 }

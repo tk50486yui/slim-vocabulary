@@ -2,11 +2,13 @@
 
 namespace app\Controllers;
 
-use app\Models\Tags;
-use app\Validators\Tables\TagsValidator;
-use libs\Responses\MsgHandler as MsgH;
-use \RedBeanPHP\R as R;
 use Exception;
+use \RedBeanPHP\R as R;
+use libs\Responses\MsgHandler as MsgH;
+use libs\Exceptions\ExceptionHandlerFactory;
+use libs\Exceptions\BaseExceptionCollection;
+use app\Factories\TagsFactory;
+use app\Models\Tags;
 
 class TagsController
 {
@@ -42,27 +44,21 @@ class TagsController
     /* 新增單一資料 Tags */
     public function add($request, $response, $args)
     {
-        $data = $request->getParsedBody();
-        $TagsModel = new Tags();     
-        $TagsValidator = new TagsValidator();
+        $data = $request->getParsedBody();           
+        $TagsFactory = new TagsFactory();        
+        $ExceptionHF = new ExceptionHandlerFactory();
+        $TagsModel = new Tags();  
         
-        try {            
-            // 檢查 $data 格式
-            if (!$TagsValidator->validate($data)) {
-                return MsgH::InvalidData($response);
-            }
-            // 檢查有沒有重複的標籤名稱      
-            if ($TagsModel->findByName($data['ts_name']) != null) {
-                return MsgH::Duplicate($response);
-            }
-            // Transaction --開始-- 
+        try { 
+            $data = $TagsFactory->createFactory($data, null);
             R::begin();
             $TagsModel->add($data);
             R::commit();
-            // Transaction --結束-- 
+        } catch (BaseExceptionCollection $e) {  
+            return $ExceptionHF->createChain()->handle($e, $response);
         } catch (Exception $e) {
-            R::rollback();
-            return MsgH::DataProcessingFaild($response);
+            R::rollback();         
+            return $ExceptionHF->createDefault()->handle($e, $response);
         }
 
         return MsgH::Success($response);
@@ -72,22 +68,21 @@ class TagsController
     public function edit($request, $response, $args)
     {
         $data = $request->getParsedBody();
+        $TagsFactory = new TagsFactory();        
+        $ExceptionHF = new ExceptionHandlerFactory();
         $TagsModel = new Tags();
-        $TagsValidator = new TagsValidator();
 
         try {
-            // 檢查 $data 格式
-            if (!$TagsValidator->validate($data)) {
-                return MsgH::InvalidData($response);
-            }           
-            // Transaction --開始-- 
+            $data = $TagsFactory->createFactory($data, $args['id']);
             R::begin();
             $TagsModel->edit($data, $args['id']);
             R::commit();
-            // Transaction --結束-- 
+          
+        } catch (BaseExceptionCollection $e) {  
+            return $ExceptionHF->createChain()->handle($e, $response);
         } catch (Exception $e) {
-            R::rollback();
-            return MsgH::DataProcessingFaild($response);
+            R::rollback();         
+            return $ExceptionHF->createDefault()->handle($e, $response);
         }
 
         return MsgH::Success($response);

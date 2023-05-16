@@ -6,8 +6,7 @@ use \RedBeanPHP\R as R;
 use libs\Time;
 
 class Words
-{
-    /* 查詢單一資料 words LEFT JOIN categories  id = ? */
+{   
     public function find($id)
     {
         $query = "SELECT 
@@ -23,8 +22,7 @@ class Words
        
         return $result;
     }
-
-    /* JOIN 查詢 words LEFT JOIN categories 全部資料 */
+  
     public function findAll()
     {
         $query = "SELECT 
@@ -38,15 +36,13 @@ class Words
         
         return $result;
     }
-
-    /* 以 ws_name 查詢 words 表 */
+ 
     public function findByName($ws_name)
     {
-        $result = R::findOne('words', ' ws_name = ? ', array($ws_name));
+        $result = R::findOne('words', 'ws_name = ? ', array($ws_name));
         return $result;
     }
-
-    /* 新增單一資料 words */
+ 
     public function add($data)
     {
         $words = R::dispense('words');
@@ -62,8 +58,7 @@ class Words
         $words->cate_id = $data['cate_id'];
         R::store($words);
     }
-
-    /* 修改 edit 資料 words */
+  
     public function edit($data, $id)
     {
         $words = R::load('words', $id);
@@ -80,8 +75,7 @@ class Words
         $words->updated_at = Time::getNow();
         R::store($words);
     }
-
-    /* 刪除資料 words */
+   
     public function delete($id)
     {
         $words = R::load('words', $id);

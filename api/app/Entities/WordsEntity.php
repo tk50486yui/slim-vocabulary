@@ -60,8 +60,8 @@ class WordsEntity
             return false;
         }
 
-        // 允許 null 0 的int
-        if(!VH::acceptNullZeroInt($this->ws_display_order)){
+        // 允許 null 的int
+        if(!VH::acceptNullInt($this->ws_display_order)){
             return false;
         }
           

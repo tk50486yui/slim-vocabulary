@@ -2,13 +2,13 @@
 
 namespace app\Controllers;
 
-use app\Factories\WordsFactory;
-use app\Models\Words;
-use \RedBeanPHP\R as R;
 use Exception;
+use \RedBeanPHP\R as R;
+use libs\Responses\MsgHandler as MsgH;
 use libs\Exceptions\ExceptionHandlerFactory;
 use libs\Exceptions\BaseExceptionCollection;
-use libs\Responses\MsgHandler as MsgH;
+use app\Factories\WordsFactory;
+use app\Models\Words;
 
 class WordsController
 {
@@ -16,7 +16,7 @@ class WordsController
     /* 查詢單一資料 words id = ? */
     public function find($request, $response, $args)
     {
-        $WordsModel = new Words();        
+        $WordsModel = new Words();
 
         try {
             $result = $WordsModel->find($args['id']);
@@ -43,19 +43,17 @@ class WordsController
 
     /* 新增add單一資料 words */
     public function add($request, $response, $args)
-    {
+    {       
         $data = $request->getParsedBody();
-        $WordsFactory = new WordsFactory();
-        $WordsModel = new Words();
-        $ExceptionHF = new ExceptionHandlerFactory();       
+        $WordsFactory = new WordsFactory();        
+        $ExceptionHF = new ExceptionHandlerFactory();
+        $WordsModel = new Words();      
 
         try {          
-            $newData = $WordsFactory->createFactory($data);
-            // Transaction --開始-- 
+            $data = $WordsFactory->createFactory($data, null);           
             R::begin();
-            $WordsModel->add($newData);
-            R::commit();
-            // Transaction --結束--   
+            $WordsModel->add($data);
+            R::commit();         
         } catch (BaseExceptionCollection $e) {  
             return $ExceptionHF->createChain()->handle($e, $response);
         } catch (Exception $e) {
@@ -63,31 +61,29 @@ class WordsController
             return $ExceptionHF->createDefault()->handle($e, $response);
         }
 
-        return MsgH::success($response);
+        return MsgH::Success($response);
     }
 
     /* 修改 edit 資料 words */
     public function edit($request, $response, $args)
-    {
+    {      
         $data = $request->getParsedBody();
-        $WordsFactory = new WordsFactory();
-        $WordsModel = new Words();
+        $WordsFactory = new WordsFactory();        
         $ExceptionHF = new ExceptionHandlerFactory();
+        $WordsModel = new Words();
 
         try {
-            $newData = $WordsFactory->createFactory($data);
-            // Transaction --開始--
+            $data = $WordsFactory->createFactory($data, $args['id']);            
             R::begin();
-            $WordsModel->edit($newData, $args['id']);
+            $WordsModel->edit($data, $args['id']);
             R::commit();
-            // Transaction --結束--            
         } catch (BaseExceptionCollection $e) {  
             return $ExceptionHF->createChain()->handle($e, $response);
-        } catch (Exception $e) {         
+        } catch (Exception $e) {
             R::rollback();
             return $ExceptionHF->createDefault()->handle($e, $response);
         }
 
-        return MsgH::success($response);
+        return MsgH::Success($response);
     }
 }

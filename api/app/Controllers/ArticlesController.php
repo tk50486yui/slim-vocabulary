@@ -2,11 +2,13 @@
 
 namespace app\Controllers;
 
-use app\Models\Articles;
-use app\Validators\Tables\ArticlesValidator;
-use libs\Responses\MsgHandler as MsgH;
-use \RedBeanPHP\R as R;
 use Exception;
+use \RedBeanPHP\R as R;
+use libs\Responses\MsgHandler as MsgH;
+use libs\Exceptions\ExceptionHandlerFactory;
+use libs\Exceptions\BaseExceptionCollection;
+use app\Factories\ArticlesFactory;
+use app\Models\Articles;
 
 class ArticlesController
 {
@@ -43,22 +45,20 @@ class ArticlesController
     public function add($request, $response, $args)
     {
         $data = $request->getParsedBody();
-        $ArticlesModel = new Articles();
-        $ArticlesValidator = new ArticlesValidator();
+        $ArticlesFactory = new ArticlesFactory();        
+        $ExceptionHF = new ExceptionHandlerFactory();
+        $ArticlesModel = new Articles();     
 
         try {
-            // 檢查 $data 格式
-            if (!$ArticlesValidator->validate($data)) {
-                return MsgH::InvalidData($response);
-            }
-            // Transaction --開始-- 
+            $data = $ArticlesFactory->createFactory($data, null);
             R::begin();
             $ArticlesModel->add($data);
-            R::commit();
-            // Transaction --結束--  
+            R::commit();            
+        } catch (BaseExceptionCollection $e) {  
+            return $ExceptionHF->createChain()->handle($e, $response);
         } catch (Exception $e) {
-            R::rollback();
-            return MsgH::DataProcessingFaild($response);
+            R::rollback();         
+            return $ExceptionHF->createDefault()->handle($e, $response);
         }
 
         return MsgH::Success($response);        
@@ -68,22 +68,21 @@ class ArticlesController
     public function edit($request, $response, $args)
     {
         $data = $request->getParsedBody();
-        $ArticlesModel = new Articles();
-        $ArticlesValidator = new ArticlesValidator();
+        $ArticlesFactory = new ArticlesFactory();        
+        $ExceptionHF = new ExceptionHandlerFactory();
+        $ArticlesModel = new Articles();  
         
         try {
-            // 檢查 $data 格式
-            if (!$ArticlesValidator->validate($data)) {
-                return MsgH::InvalidData($response);
-            }
-            // Transaction --開始-- 
+            $data = $ArticlesFactory->createFactory($data, $args['id']);
             R::begin();
             $ArticlesModel->edit($data, $args['id']);
             R::commit();
             // Transaction --結束--  
+        } catch (BaseExceptionCollection $e) {  
+            return $ExceptionHF->createChain()->handle($e, $response);
         } catch (Exception $e) {
-            R::rollback();
-            return MsgH::DataProcessingFaild($response);
+            R::rollback();         
+            return $ExceptionHF->createDefault()->handle($e, $response);
         }
 
         return MsgH::Success($response);
