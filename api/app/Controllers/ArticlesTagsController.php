@@ -2,11 +2,13 @@
 
 namespace app\Controllers;
 
-use app\Models\ArticlesTags;
-use app\Validators\Tables\ArticlesTagsValidator;
-use libs\Responses\MsgHandler as MsgH;
-use \RedBeanPHP\R as R;
 use Exception;
+use \RedBeanPHP\R as R;
+use libs\Responses\MsgHandler as MsgH;
+use libs\Exceptions\ExceptionHandlerFactory;
+use libs\Exceptions\BaseExceptionCollection;
+use app\Factories\ArticlesTagsFactory;
+use app\Models\ArticlesTags;
 
 class ArticlesTagsController
 {
@@ -43,26 +45,21 @@ class ArticlesTagsController
     public function add($request, $response, $args)
     {
         $data = $request->getParsedBody();
+        $ArticlesTagsFactory = new ArticlesTagsFactory();        
+        $ExceptionHF = new ExceptionHandlerFactory();
         $ArticlesTagsModel = new ArticlesTags();
-        $ArticlesTagsValidator = new ArticlesTagsValidator();
+      
 
         try {
-            // 檢查 $data 格式
-            if (!$ArticlesTagsValidator->validate($data)) {
-                return MsgH::InvalidData($response);
-            }
-            // 再判斷所新增的關聯鍵是否已經存在 避免重複建立
-            if ($ArticlesTagsModel->findByAssociatedIDs($data) != null) {
-                return MsgH::Duplicate($response);
-            }
-            // Transaction --開始-- 
+            $data = $ArticlesTagsFactory->createFactory($data, null);         
             R::begin();
             $ArticlesTagsModel->add($data);
-            R::commit();
-            // Transaction --結束--              
+            R::commit();               
+        } catch (BaseExceptionCollection $e) {  
+            return $ExceptionHF->createChain()->handle($e, $response);
         } catch (Exception $e) {
-            R::rollback();
-            return MsgH::DataProcessingFaild($response);
+            R::rollback();         
+            return $ExceptionHF->createDefault()->handle($e, $response);
         }
 
         return MsgH::Success($response);
@@ -73,16 +70,13 @@ class ArticlesTagsController
     {
         $ArticlesTagsModel = new ArticlesTags();
 
-        try {
-            // 檢查 id 是否存在        
+        try {         
             if ($ArticlesTagsModel->find($args['id']) == null) {
                 return MsgH::NotFound($response);
             }
-            // Transaction --開始-- 
             R::begin();
             $ArticlesTagsModel->delete($args['id']);
             R::commit();
-            // Transaction --結束--
         } catch (Exception $e) {
             R::rollback();
             return MsgH::DataProcessingFaild($response);

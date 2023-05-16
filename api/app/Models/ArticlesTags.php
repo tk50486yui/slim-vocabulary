@@ -22,12 +22,12 @@ class ArticlesTags
     }
 
     /* 查詢資料 articles_words ws_id 及 ts_id */
-    public function findByAssociatedIDs($data)
+    public function findByAssociatedIDs($arti_id, $ts_id)
     {
         // binding 的長度必須一致
         $keyword = array(
-            "arti_id" => $data['arti_id'],
-            "ts_id" => $data['ts_id']
+            "arti_id" => $arti_id,
+            "ts_id" => $ts_id
         );
         $result = R::findOne('articles_tags', ' arti_id = :arti_id AND ts_id = :ts_id', $keyword);        
         return $result;
@@ -38,8 +38,8 @@ class ArticlesTags
     {
         // 使用自訂義 xdispense
         $articles_tags = R::xdispense('articles_tags');
-        $articles_tags->arti_id = (int)$data['arti_id'];
-        $articles_tags->ts_id = (int)$data['ts_id'];
+        $articles_tags->arti_id = $data['arti_id'];
+        $articles_tags->ts_id = $data['ts_id'];
         R::store($articles_tags);
     }
 
