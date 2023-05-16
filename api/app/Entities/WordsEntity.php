@@ -17,11 +17,11 @@ class WordsEntity
     private $ws_pronunciation;
     private $ws_slogan;
     private $ws_description;
-    private $ws_is_important; // bool
-    private $ws_is_common; // bool
-    private $ws_forget_count; // int
-    private $ws_display_order; // int
-    private $cate_id; // 外鍵
+    private $ws_is_important;   // bool
+    private $ws_is_common;      // bool
+    private $ws_forget_count;   // int
+    private $ws_display_order;  // int
+    private $cate_id;           // 外鍵
 
     public function __get($name)
     {
@@ -32,8 +32,7 @@ class WordsEntity
     {
         $this->$name = $value;
     }
-
-    /* 將資料注入至Entity */
+ 
     public function populate($data)
     {
         $this->ws_name = $data['ws_name'] ?? null;
@@ -47,26 +46,25 @@ class WordsEntity
         $this->ws_display_order = $data['ws_display_order'] ?? null;
         $this->cate_id = $data['cate_id'] ?? null;
     }
-
-    /* 基本資料格式 以資料表允許格式為主 */
+  
     public function validate()
     {
-        // NOT NULL TEXT欄位 (不嚴格篩選 只要非空值就好)
+        // NOT NULL TEXT欄位
         if (!VH::notNullText($this->ws_name)) {
             return false;
         }
 
-        // 允許 null 0 的int
+        // 允許 null 0 的 int
         if (!VH::acceptNullZeroInt($this->ws_forget_count)) {
             return false;
         }
 
-        // 允許 null 的int
+        // 允許 null 的 int
         if (!VH::acceptNullInt($this->ws_display_order)) {
             return false;
         }
 
-        // 外鍵格式檢查 (外鍵是主鍵格式 所以用主鍵格式檢查)
+        // 外鍵格式檢查
         if (!VH::idType($this->cate_id)) {
             return false;
         }
@@ -74,7 +72,6 @@ class WordsEntity
         return true;
     }
 
-    /* 全部驗證完後 設定預設值 */
     public function setDefault()
     {
         $this->ws_is_important = is_bool($this->ws_is_important) ? (bool)$this->ws_is_important : false;

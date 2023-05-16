@@ -14,8 +14,8 @@ class ArticlesEntity
 {
     private $arti_title;
     private $arti_content;
-    private $arti_order; // int
-    private $cate_id; // 外鍵
+    private $arti_order;    // int
+    private $cate_id;       // 外鍵
 
     public function __get($name)
     {
@@ -26,8 +26,7 @@ class ArticlesEntity
     {
         $this->$name = $value;
     }
-
-    /* 將資料注入至Entity */
+    
     public function populate($data)
     {
         $this->arti_title = $data['arti_title'] ?? null;
@@ -35,29 +34,27 @@ class ArticlesEntity
         $this->arti_order = $data['arti_order'] ?? null;
         $this->cate_id = $data['cate_id'] ?? null;
     }
-
-    /* 基本資料格式 以資料表允許格式為主 */
+  
     public function validate()
     {
-        // NOT NULL TEXT欄位 (不嚴格篩選 只要非空值就好)
+        // NOT NULL TEXT欄位
         if (!VH::notNullText($this->arti_title)) {
             return false;
         }
 
-        // 允許 null 的int
+        // 允許 null 的 int
         if (!VH::acceptNullInt($this->arti_order)) {
             return false;
         }
 
-        // 外鍵格式檢查 (外鍵是主鍵格式 所以用主鍵格式檢查)
+        // 外鍵格式檢查
         if (!VH::idType($this->cate_id)) {
             return false;
         }
 
         return true;
     }
-
-    /* 全部驗證完後 設定預設值 */
+   
     public function setDefault()
     {
         $this->arti_order = is_numeric($this->arti_order) ? (int)$this->arti_order : 1;

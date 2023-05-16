@@ -6,6 +6,7 @@ use app\Models\Categories;
 use app\Models\Tags;
 use app\Models\Articles;
 use app\Models\Words;
+use app\Models\WordsGroups;
 
 class ValidatorForeignKey
 {
@@ -16,7 +17,6 @@ class ValidatorForeignKey
         if ($CategoriesModel->find($id) == null) {
             return false;
         }
-
         return true;
     }
 
@@ -26,7 +26,6 @@ class ValidatorForeignKey
         if ($TagsModel->find($id) == null) {
             return false;
         }
-
         return true;
     }
 
@@ -36,7 +35,6 @@ class ValidatorForeignKey
         if ($ArticlesModel->find($id) == null) {
             return false;
         }
-
         return true;
     }
 
@@ -46,7 +44,15 @@ class ValidatorForeignKey
         if ($WordsModel->find($id) == null) {
             return false;
         }
+        return true;
+    }
 
+    public static function wgID($id)
+    {
+        $WordsGroupsModel = new WordsGroups();
+        if ($WordsGroupsModel->find($id) == null) {
+            return false;
+        }
         return true;
     }
 }

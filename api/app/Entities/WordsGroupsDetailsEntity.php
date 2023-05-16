@@ -10,10 +10,11 @@ use app\Validators\ValidatorHelper as VH;
  * validate方法用來驗證基本資料格式，不做其他複雜驗證
  **/
 
-class ArticlesTagsEntity
+class WordsGroupsDetailsEntity
 {
-    private $arti_id;  // 外鍵
-    private $ts_id;    // 外鍵
+    private $ws_id;       // 外鍵
+    private $wg_id;       // 外鍵
+    private $wgd_content;
 
     public function __get($name)
     {
@@ -27,40 +28,42 @@ class ArticlesTagsEntity
 
     public function populate($data)
     {
-        $this->arti_id = $data['arti_id'] ?? null;
-        $this->ts_id = $data['ts_id'] ?? null;
+        $this->ws_id = $data['ws_id'] ?? null;
+        $this->wg_id = $data['wg_id'] ?? null;
+        $this->wgd_content = $data['wgd_content'] ?? null;
     }
 
     public function validate()
     {
-        if (!VH::notNullText($this->arti_id)) {
+        if (!VH::notNullText($this->ws_id)) {
             return false;
         }
-        if (!VH::notNullText($this->ts_id)) {
+        if (!VH::notNullText($this->wg_id)) {
             return false;
         }
 
-        if (!VH::idType($this->arti_id)) {
+        if (!VH::idType($this->ws_id)) {
             return false;
         }
-        if (!VH::idType($this->ts_id)) {
+        if (!VH::idType($this->wg_id)) {
             return false;
         }
 
         return true;
     }
-   
+
     public function setDefault()
     {
-        $this->arti_id = (int)$this->arti_id;
-        $this->ts_id = (int)$this->ts_id;
+        $this->ws_id = (int)$this->ws_id;
+        $this->wg_id = (int)$this->wg_id;
     }
 
     public function toArray()
     {
         return [
-            'arti_id' => $this->arti_id,
-            'ts_id' => $this->ts_id
+            'ws_id' => $this->ws_id,
+            'wg_id' => $this->wg_id,
+            'wgd_content' => $this->wgd_content
         ];
     }
 }

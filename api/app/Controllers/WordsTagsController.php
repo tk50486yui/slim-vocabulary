@@ -19,8 +19,7 @@ class WordsTagsController
         $data = $request->getParsedBody();
         $WordsTagsModel = new WordsTags();
         $WordsTagsFactory = new WordsTagsFactory();        
-        $ExceptionHF = new ExceptionHandlerFactory();
-        $WordsTagsModel = new WordsTags();             
+        $ExceptionHF = new ExceptionHandlerFactory();           
 
         try {
             $data = $WordsTagsFactory->createFactory($data, null);

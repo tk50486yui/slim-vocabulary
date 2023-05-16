@@ -5,7 +5,9 @@ namespace app\Controllers;
 use Exception;
 use \RedBeanPHP\R as R;
 use libs\Responses\MsgHandler as MsgH;
-use app\Validators\Tables\WordsGroupsDetailsValidator;
+use libs\Exceptions\ExceptionHandlerFactory;
+use libs\Exceptions\BaseExceptionCollection;
+use app\Factories\WordsGroupsDetailsFactory;
 use app\Models\WordsGroupsDetails;
 
 class WordsGroupsDetailsController
@@ -43,15 +45,20 @@ class WordsGroupsDetailsController
     public function add($request, $response, $args)
     {
         $data = $request->getParsedBody();
+        $WordsGroupsDetailsFactory = new WordsGroupsDetailsFactory();        
+        $ExceptionHF = new ExceptionHandlerFactory();
         $WordsGroupsDetailsModel = new WordsGroupsDetails();      
 
-        try {          
+        try {         
+            $data = $WordsGroupsDetailsFactory->createFactory($data, null); 
             R::begin();
             $WordsGroupsDetailsModel->add($data);
             R::commit();          
+        } catch (BaseExceptionCollection $e) {  
+            return $ExceptionHF->createChain()->handle($e, $response);
         } catch (Exception $e) {
-            R::rollback();
-            return MsgH::DataProcessingFaild($response);
+            R::rollback();         
+            return $ExceptionHF->createDefault()->handle($e, $response);
         }
 
         return MsgH::Success($response);       
@@ -62,15 +69,19 @@ class WordsGroupsDetailsController
     {
         $data = $request->getParsedBody();
         $WordsGroupsDetailsModel = new WordsGroupsDetails();
-        $WordsGroupsDetailsValidator = new WordsGroupsDetailsValidator();
+        $WordsGroupsDetailsFactory = new WordsGroupsDetailsFactory();        
+        $ExceptionHF = new ExceptionHandlerFactory(); 
 
         try {       
+            $data = $WordsGroupsDetailsFactory->createFactory($data, $args['id']);
             R::begin();
             $WordsGroupsDetailsModel->edit($data, $args['id']);
             R::commit();
+        } catch (BaseExceptionCollection $e) {  
+            return $ExceptionHF->createChain()->handle($e, $response);
         } catch (Exception $e) {
-            R::rollback();
-            return MsgH::DataProcessingFaild($response);
+            R::rollback();         
+            return $ExceptionHF->createDefault()->handle($e, $response);
         }
 
         return MsgH::Success($response);       
@@ -85,12 +96,10 @@ class WordsGroupsDetailsController
             // 檢查 id 是否存在          
             if ($WordsGroupsDetailsModel->find($args['id']) == null) {
                 return MsgH::NotFound($response);
-            }
-            // Transaction --開始-- 
+            }           
             R::begin();
             $WordsGroupsDetailsModel->delete($args['id']);
-            R::commit();
-            // Transaction --結束-- 
+            R::commit();         
         } catch (Exception $e) { 
             R::rollback();
             return MsgH::DataProcessingFaild($response);

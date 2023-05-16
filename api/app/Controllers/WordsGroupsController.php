@@ -5,7 +5,9 @@ namespace app\Controllers;
 use Exception;
 use \RedBeanPHP\R as R;
 use libs\Responses\MsgHandler as MsgH;
-use app\Validators\Tables\WordsGroupsValidator;
+use libs\Exceptions\ExceptionHandlerFactory;
+use libs\Exceptions\BaseExceptionCollection;
+use app\Factories\WordsGroupsFactory;
 use app\Models\WordsGroups;
 
 class WordsGroupsController
@@ -43,20 +45,20 @@ class WordsGroupsController
     public function add($request, $response, $args)
     {
         $data = $request->getParsedBody();
-        $WordsGroupsModel = new WordsGroups();
-        $WordsGroupsValidator = new WordsGroupsValidator();
+        $WordsGroupsFactory = new WordsGroupsFactory();        
+        $ExceptionHF = new ExceptionHandlerFactory();
+        $WordsGroupsModel = new WordsGroups(); 
 
         try {
-            // 檢查 $data 格式
-            if (!$WordsGroupsValidator->validate($data)) {
-                return MsgH::InvalidData($response);
-            }        
+            $data = $WordsGroupsFactory->createFactory($data, null);
             R::begin();
             $WordsGroupsModel->add($data);
             R::commit();          
+        } catch (BaseExceptionCollection $e) {  
+            return $ExceptionHF->createChain()->handle($e, $response);
         } catch (Exception $e) {
-            R::rollback();
-            return MsgH::DataProcessingFaild($response);
+            R::rollback();         
+            return $ExceptionHF->createDefault()->handle($e, $response);
         }
 
         return MsgH::Success($response);
@@ -66,20 +68,20 @@ class WordsGroupsController
     public function edit($request, $response, $args)
     {
         $data = $request->getParsedBody();
-        $WordsGroupsModel = new WordsGroups();
-        $WordsGroupsValidator = new WordsGroupsValidator();
+        $WordsGroupsFactory = new WordsGroupsFactory();        
+        $ExceptionHF = new ExceptionHandlerFactory();
+        $WordsGroupsModel = new WordsGroups();      
 
         try {
-            // 檢查 $data 格式
-            if (!$WordsGroupsValidator->validate($data)) {
-                return MsgH::InvalidData($response);
-            }       
+            $data = $WordsGroupsFactory->createFactory($data, $args['id']); 
             R::begin();
             $WordsGroupsModel->edit($data, $args['id']);
             R::commit();          
+        } catch (BaseExceptionCollection $e) {  
+            return $ExceptionHF->createChain()->handle($e, $response);
         } catch (Exception $e) {
-            R::rollback();
-            return MsgH::DataProcessingFaild($response);
+            R::rollback();         
+            return $ExceptionHF->createDefault()->handle($e, $response);
         }
 
         return MsgH::Success($response);

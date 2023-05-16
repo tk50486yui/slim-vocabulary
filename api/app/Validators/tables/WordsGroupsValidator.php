@@ -2,34 +2,26 @@
 
 namespace app\Validators\Tables;
 
-class WordsGroupsValidator
-{
-    public $requiredKeys;
+use app\Entities\WordsGroupsEntity;
+use app\Models\WordsGroups;
 
-    public function __construct()
-    {
-        $this->requiredKeys = [
-            'wg_name'
-        ];
-    }
-    /**   
-     * 驗證傳進來的資料名稱是否與資料表的一致 並檢查外鍵及NOT NULL欄位  
-     * 本頁面只檢查不改動任何資料 若有預設值統一在Model進行設定
-    **/ 
-    public function validate($data)
-    {  
-        // 檢查key都有存在
-        $missingKeys = array_diff($this->requiredKeys, array_keys($data));
-        if (!empty($missingKeys)) {
+class WordsGroupsValidator
+{   
+    public function dupName(WordsGroupsEntity $entity, $id)
+    {      
+        $WordsGroupsModel = new WordsGroups();        
+        $rowDup = $WordsGroupsModel->findByName($entity->wg_name);
+        if ($rowDup == null) {           
+            return true;
+        }     
+        if ($id === null) {
             return false;
         }
+        $row = $WordsGroupsModel->find($id);
+        if ($row['wg_name'] == $rowDup['wg_name']) {
+            return true;
+        }
 
-        // NOT NULL TEXT欄位
-        if (is_bool($data['wg_name']) || empty($data['wg_name'])) {
-            return false;
-        }  
-
-        return true;        
+        return false;
     }
-  
 }

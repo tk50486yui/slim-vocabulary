@@ -13,9 +13,9 @@ use app\Validators\ValidatorHelper as VH;
 class CategoriesEntity
 {
     private $cate_name;
-    private $cate_parent_id; // 外鍵
-    private $cate_level; // int
-    private $cate_sort_order; // int
+    private $cate_parent_id;   // 外鍵
+    private $cate_level;       // int
+    private $cate_sort_order;  // int
 
     public function __get($name)
     {
@@ -26,8 +26,7 @@ class CategoriesEntity
     {
         $this->$name = $value;
     }
-
-    /* 將資料注入至Entity */
+  
     public function populate($data)
     {
         $this->cate_name = $data['cate_name'] ?? null;
@@ -36,33 +35,31 @@ class CategoriesEntity
         $this->cate_sort_order = $data['cate_sort_order'] ?? null;
     }
 
-    /* 基本資料格式 以資料表允許格式為主 */
     public function validate()
     {
-        // NOT NULL TEXT欄位 (不嚴格篩選 只要非空值就好)
+        // NOT NULL TEXT欄位
         if (!VH::notNullText($this->cate_name)) {
             return false;
         }
 
-        // 允許 null 的int
+        // 允許 null 的 int
         if (!VH::acceptNullInt($this->cate_level)) {
             return false;
         }
 
-        // 允許 null 的int
+        // 允許 null 的 int
         if (!VH::acceptNullInt($this->cate_sort_order)) {
             return false;
         }
 
-        // 外鍵格式檢查 (外鍵是主鍵格式 所以用主鍵格式檢查)
+        // 外鍵格式檢查
         if (!VH::idType($this->cate_parent_id)) {
             return false;
         }
 
         return true;
     }
-
-    /* 全部驗證完後 設定預設值 */
+   
     public function setDefault()
     {
         $this->cate_parent_id = is_numeric($this->cate_parent_id) ? (int)$this->cate_parent_id : null;

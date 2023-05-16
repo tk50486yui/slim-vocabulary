@@ -14,10 +14,10 @@ class TagsEntity
 {
     private $ts_name;
     private $ts_description;
-    private $ts_storage; // bool
-    private $ts_level; // int
-    private $ts_sort_order; // int
-    private $ts_parent_id; // 外鍵
+    private $ts_storage;     // bool
+    private $ts_level;       // int
+    private $ts_sort_order;  // int
+    private $ts_parent_id;   // 外鍵
 
     public function __get($name)
     {
@@ -28,8 +28,7 @@ class TagsEntity
     {
         $this->$name = $value;
     }
-
-    /* 將資料注入至Entity */
+   
     public function populate($data)
     {
         $this->ts_name = $data['ts_name'] ?? null;
@@ -39,34 +38,32 @@ class TagsEntity
         $this->ts_sort_order = $data['ts_sort_order'] ?? null;
         $this->ts_parent_id = $data['ts_parent_id'] ?? null;
     }
-
-    /* 基本資料格式 以資料表允許格式為主 */
+  
     public function validate()
     {
-        // NOT NULL TEXT欄位 (不嚴格篩選 只要非空值就好)
+        // NOT NULL TEXT欄位
         if (!VH::notNullText($this->ts_name)) {
             return false;
         }
 
-        // 允許 null 的int
+        // 允許 null 的 int
         if (!VH::acceptNullInt($this->ts_level)) {
             return false;
         }
 
-        // 允許 null 的int
+        // 允許 null 的 int
         if (!VH::acceptNullInt($this->ts_sort_order)) {
             return false;
         }
 
-        // 外鍵格式檢查 (外鍵是主鍵格式 所以用主鍵格式檢查)
+        // 外鍵格式檢查
         if (!VH::idType($this->ts_parent_id)) {
             return false;
         }
 
         return true;
     }
-
-    /* 全部驗證完後 設定預設值 */
+    
     public function setDefault()
     {
         $this->ts_storage = is_bool($this->ts_storage) ? (bool)$this->ts_storage : true;

@@ -22,7 +22,7 @@ class WordsGroups
 
     public function findByName($wg_name)
     {
-        $result = R::findOne('wg_name', ' wg_name = ? ', array($wg_name));
+        $result = R::findOne('words_groups', 'wg_name = ?', array($wg_name));
         return $result;
     }
 

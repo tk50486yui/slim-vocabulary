@@ -12,8 +12,8 @@ use app\Validators\ValidatorHelper as VH;
 
 class ArticlesWordsEntity
 {
-    private $arti_id; // 外鍵
-    private $ws_id;   // 外鍵
+    private $arti_id;  // 外鍵
+    private $ws_id;    // 外鍵
 
     public function __get($name)
     {
@@ -24,15 +24,13 @@ class ArticlesWordsEntity
     {
         $this->$name = $value;
     }
-
-    /* 將資料注入至Entity */
+   
     public function populate($data)
     {
         $this->arti_id = $data['arti_id'] ?? null;
         $this->ws_id = $data['ws_id'] ?? null;
     }
-
-    /* 基本資料格式 以資料表允許格式為主 */
+  
     public function validate()
     {
         if (!VH::notNullText($this->arti_id)) {
@@ -51,8 +49,7 @@ class ArticlesWordsEntity
 
         return true;
     }
-
-    /* 全部驗證完後 設定轉換格式 */
+   
     public function setDefault()
     {
         $this->arti_id = (int)$this->arti_id;

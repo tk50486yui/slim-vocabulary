@@ -10,10 +10,9 @@ use app\Validators\ValidatorHelper as VH;
  * validate方法用來驗證基本資料格式，不做其他複雜驗證
  **/
 
-class ArticlesTagsEntity
+class WordsGroupsEntity
 {
-    private $arti_id;  // 外鍵
-    private $ts_id;    // 外鍵
+    private $wg_name; 
 
     public function __get($name)
     {
@@ -24,43 +23,32 @@ class ArticlesTagsEntity
     {
         $this->$name = $value;
     }
-
+   
     public function populate($data)
     {
-        $this->arti_id = $data['arti_id'] ?? null;
-        $this->ts_id = $data['ts_id'] ?? null;
+        $this->wg_name = $data['wg_name'] ?? null;       
     }
-
+ 
     public function validate()
     {
-        if (!VH::notNullText($this->arti_id)) {
-            return false;
-        }
-        if (!VH::notNullText($this->ts_id)) {
-            return false;
-        }
-
-        if (!VH::idType($this->arti_id)) {
-            return false;
-        }
-        if (!VH::idType($this->ts_id)) {
+        // NOT NULL TEXT欄位
+        if (!VH::notNullText($this->wg_name)) {
             return false;
         }
 
         return true;
     }
-   
+
     public function setDefault()
     {
-        $this->arti_id = (int)$this->arti_id;
-        $this->ts_id = (int)$this->ts_id;
+        // ..
+        return true;
     }
 
     public function toArray()
     {
         return [
-            'arti_id' => $this->arti_id,
-            'ts_id' => $this->ts_id
+            'wg_name' => $this->wg_name
         ];
     }
 }
