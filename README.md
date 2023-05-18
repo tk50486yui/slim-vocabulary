@@ -12,7 +12,7 @@
 ## Slim 3
 
 使用的 PHP 框架為 [Slim 3](https://www.slimframework.com/docs/v3/)，適合 PHP 5.5 以上
-，Slim 提供方便的 router 及 container，可以彈性開發專案，使用 Slim 4 則需要 PHP 7.4 以上。
+，Slim 提供方便的 Router 及 Container，可以彈性開發專案，使用 Slim 4 則需要 PHP 7.4 以上。
 
 ---
 ## PostgreSQL 9.6.24
