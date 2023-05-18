@@ -12,7 +12,7 @@
 ## Slim 3
 
 使用的 PHP 框架為 [Slim 3](https://www.slimframework.com/docs/v3/)，適合 PHP 5.5 以上
-，Slim 提供方便的 Router 及 Container，可以彈性開發專案，使用 Slim 4 則需要 PHP 7.4 以上。
+，Slim 提供方便的 Router 及 Container，可以彈性開發專案。
 
 ---
 ## PostgreSQL 9.6.24
@@ -22,7 +22,7 @@
 ---
 ## ORM
 
-使用 [Redbean](https://www.redbeanphp.com/index.php) 進行 CRUD 及 Transaction 操作。
+使用 [Redbean](https://www.redbeanphp.com/index.php) 進行基本 CRUD 及 Transaction 操作，複雜的查詢則搭配 Redbean 使用 SQL 原生語法。
 
 ---
 ## Composer 2.5.4
