@@ -30,7 +30,9 @@ class Words
                 FROM 
                     words ws
                 LEFT JOIN 
-                    categories cate ON ws.cate_id =  cate.id";
+                    categories cate ON ws.cate_id =  cate.id
+                ORDER BY 
+                    ws.id DESC";
 
         $result = R::getAll($query);
         

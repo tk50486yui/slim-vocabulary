@@ -1,6 +1,6 @@
 # SlimProject
 
-使用 PHP Slim 3 + Redbean ORM 來建立後端 API
+使用 PHP Slim 3 來建立後端 API
 
 搭配前端：[VuePoject](https://github.com/tk50486yui/VueProject.git)
 
@@ -20,7 +20,7 @@
 資料庫是使用 PostgreSQL，並透過 pgAdmin 4 進行建表操作。
 
 ---
-## ORM
+## Redbean ORM
 
 使用 [Redbean](https://www.redbeanphp.com/index.php) 進行基本 CRUD 及 Transaction 操作，複雜的查詢則搭配 Redbean 使用 SQL 原生語法。
 

@@ -2,8 +2,7 @@
     "require": {
         "slim/slim": "^3.0",
         "slim/psr7": "^1.4",
-        "gabordemooij/redbean": "dev-master",
-        "bryanjhv/slim-session": "~3.0"
+        "gabordemooij/redbean": "dev-master"
     },
     "autoload": {
         "psr-4": {
