@@ -75,12 +75,10 @@ class CategoriesController
         $CategoriesModel = new Categories();
 
         try {
-            $data = $CategoriesFactory->createFactory($data, $args['id']);
-            // Transaction --開始-- 
+            $data = $CategoriesFactory->createFactory($data, $args['id']);           
             R::begin();         
             $CategoriesModel->edit($data, $args['id']);
-            R::commit();    
-            // Transaction --結束--  
+            R::commit();       
         } catch (BaseExceptionCollection $e) {  
             return $ExceptionHF->createChain()->handle($e, $response);
         } catch (Exception $e) {

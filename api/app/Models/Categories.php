@@ -31,7 +31,7 @@ class Categories
         $categories->cate_name = $data['cate_name'];
         $categories->cate_parent_id = $data['cate_parent_id'];
         $categories->cate_level = $data['cate_level'];
-        $categories->cate_sort_order = $data['cate_sort_order'];
+        $categories->cate_order = $data['cate_order'];
         R::store($categories);
     }
 
@@ -41,7 +41,7 @@ class Categories
         $categories->cate_name = $data['cate_name'];
         $categories->cate_parent_id = $data['cate_parent_id'];
         $categories->cate_level = $data['cate_level'];
-        $categories->cate_sort_order = $data['cate_sort_order'];
+        $categories->cate_order = $data['cate_order'];
         $categories->updated_at = Time::getNow();
         R::store($categories);
     }

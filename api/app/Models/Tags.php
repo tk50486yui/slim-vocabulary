@@ -32,7 +32,7 @@ class Tags
         $tags->ts_storage = $data['ts_storage'];
         $tags->ts_parent_id = $data['ts_parent_id'];
         $tags->ts_level = $data['ts_level'];
-        $tags->ts_sort_order =$data['ts_sort_order'];
+        $tags->ts_order =$data['ts_order'];
         $tags->ts_description = $data['ts_description'];
         R::store($tags);
     }
@@ -44,7 +44,7 @@ class Tags
         $tags->ts_storage = $data['ts_storage'];
         $tags->ts_parent_id = $data['ts_parent_id'];
         $tags->ts_level = $data['ts_level'];
-        $tags->ts_sort_order =$data['ts_sort_order'];
+        $tags->ts_order =$data['ts_order'];
         $tags->ts_description = $data['ts_description'];
         $tags->updated_at = Time::getNow();
         R::store($tags);
@@ -54,6 +54,26 @@ class Tags
     {
         $tags = R::load('tags', $id);
         R::trash($tags);        
+    }
+
+    function buildTagsTree($tags, $parent_id = null, $parents = []) {
+
+        $tree = array();
+    
+        foreach ($tags as $tag) {
+            if ($tag['ts_parent_id'] == $parent_id) {
+                $node = array(
+                    'id' => $tag['id'],
+                    'ts_name' => $tag['ts_name'],
+                    'parents' => $parents,
+                    'children' => $this->buildTagsTree($tags, $tag['id'], array_merge($parents, [$tag['id']]))
+                );              
+    
+                $tree[] = $node;
+            }
+        }
+    
+        return $tree;
     }
     
 }

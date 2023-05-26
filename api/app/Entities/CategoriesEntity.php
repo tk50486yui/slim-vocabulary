@@ -15,7 +15,7 @@ class CategoriesEntity
     private $cate_name;
     private $cate_parent_id;   // 外鍵
     private $cate_level;       // int
-    private $cate_sort_order;  // int
+    private $cate_order;  // int
 
     public function __get($name)
     {
@@ -32,7 +32,7 @@ class CategoriesEntity
         $this->cate_name = $data['cate_name'] ?? null;
         $this->cate_parent_id = $data['cate_parent_id'] ?? null;
         $this->cate_level = $data['cate_level'] ?? null;
-        $this->cate_sort_order = $data['cate_sort_order'] ?? null;
+        $this->cate_order = $data['cate_order'] ?? null;
     }
 
     public function validate()
@@ -48,7 +48,7 @@ class CategoriesEntity
         }
 
         // 允許 null 的 int
-        if (!VH::acceptNullInt($this->cate_sort_order)) {
+        if (!VH::acceptNullInt($this->cate_order)) {
             return false;
         }
 
@@ -64,7 +64,7 @@ class CategoriesEntity
     {
         $this->cate_parent_id = is_numeric($this->cate_parent_id) ? (int)$this->cate_parent_id : null;
         $this->cate_level = is_numeric($this->cate_level) ? (int)$this->cate_level : 1;
-        $this->cate_sort_order = is_numeric($this->cate_sort_order) ? (int)$this->cate_sort_order : 1;
+        $this->cate_order = is_numeric($this->cate_order) ? (int)$this->cate_order : 1;
     }
 
     public function toArray()
@@ -73,7 +73,7 @@ class CategoriesEntity
             'cate_name' => $this->cate_name,
             'cate_parent_id' => $this->cate_parent_id,
             'cate_level' => $this->cate_level,
-            'cate_sort_order' => $this->cate_sort_order
+            'cate_order' => $this->cate_order
         ];
     }
 }

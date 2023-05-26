@@ -33,7 +33,9 @@ class TagsController
         $TagsModel = new Tags();
 
         try {
-            $result = $TagsModel->findAll();
+            $all = $TagsModel->findAll();
+            // 建立樹狀結構資料
+            $result = $TagsModel->buildTagsTree($all);
         } catch (Exception $e) {
             return MsgH::ServerError($response);
         }

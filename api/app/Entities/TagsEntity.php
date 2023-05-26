@@ -16,7 +16,7 @@ class TagsEntity
     private $ts_description;
     private $ts_storage;     // bool
     private $ts_level;       // int
-    private $ts_sort_order;  // int
+    private $ts_order;  // int
     private $ts_parent_id;   // 外鍵
 
     public function __get($name)
@@ -35,7 +35,7 @@ class TagsEntity
         $this->ts_description = $data['ts_description'] ?? null;
         $this->ts_storage = $data['ts_storage'] ?? null;
         $this->ts_level = $data['ts_level'] ?? null;
-        $this->ts_sort_order = $data['ts_sort_order'] ?? null;
+        $this->ts_order = $data['ts_order'] ?? null;
         $this->ts_parent_id = $data['ts_parent_id'] ?? null;
     }
   
@@ -52,7 +52,7 @@ class TagsEntity
         }
 
         // 允許 null 的 int
-        if (!VH::acceptNullInt($this->ts_sort_order)) {
+        if (!VH::acceptNullInt($this->ts_order)) {
             return false;
         }
 
@@ -68,7 +68,7 @@ class TagsEntity
     {
         $this->ts_storage = is_bool($this->ts_storage) ? (bool)$this->ts_storage : true;
         $this->ts_level = is_numeric($this->ts_level) ? (int)$this->ts_level : 1;
-        $this->ts_sort_order = is_numeric($this->ts_sort_order) ? (int)$this->ts_sort_order : 1;
+        $this->ts_order = is_numeric($this->ts_order) ? (int)$this->ts_order : 1;
         $this->ts_parent_id = is_numeric($this->ts_parent_id) ? (int)$this->ts_parent_id : null;
     }
 
@@ -79,7 +79,7 @@ class TagsEntity
             'ts_description' => $this->ts_description,
             'ts_storage' => $this->ts_storage,
             'ts_level' => $this->ts_level,
-            'ts_sort_order' => $this->ts_sort_order,
+            'ts_order' => $this->ts_order,
             'ts_parent_id' => $this->ts_parent_id
         ];
     }

@@ -20,7 +20,7 @@ class WordsEntity
     private $ws_is_important;   // bool
     private $ws_is_common;      // bool
     private $ws_forget_count;   // int
-    private $ws_display_order;  // int
+    private $ws_order;  // int
     private $cate_id;           // 外鍵
 
     public function __get($name)
@@ -43,7 +43,7 @@ class WordsEntity
         $this->ws_is_important = $data['ws_is_important'] ?? null;
         $this->ws_is_common = $data['ws_is_common'] ?? null;
         $this->ws_forget_count = $data['ws_forget_count'] ?? null;
-        $this->ws_display_order = $data['ws_display_order'] ?? null;
+        $this->ws_order = $data['ws_order'] ?? null;
         $this->cate_id = $data['cate_id'] ?? null;
     }
   
@@ -60,7 +60,7 @@ class WordsEntity
         }
 
         // 允許 null 的 int
-        if (!VH::acceptNullInt($this->ws_display_order)) {
+        if (!VH::acceptNullInt($this->ws_order)) {
             return false;
         }
 
@@ -77,7 +77,7 @@ class WordsEntity
         $this->ws_is_important = is_bool($this->ws_is_important) ? (bool)$this->ws_is_important : false;
         $this->ws_is_common = is_bool($this->ws_is_common) ? (bool)$this->ws_is_common : false;
         $this->ws_forget_count = is_numeric($this->ws_forget_count) ? (int)$this->ws_forget_count : 0;
-        $this->ws_display_order = is_numeric($this->ws_display_order) ? (int)$this->ws_display_order : 1;
+        $this->ws_order = is_numeric($this->ws_order) ? (int)$this->ws_order : 1;
         $this->cate_id = is_numeric($this->cate_id) ? (int)$this->cate_id : null;
     }
 
@@ -92,7 +92,7 @@ class WordsEntity
             'ws_is_important' => $this->ws_is_important,
             'ws_is_common' => $this->ws_is_common,
             'ws_forget_count' => $this->ws_forget_count,
-            'ws_display_order' => $this->ws_display_order,
+            'ws_order' => $this->ws_order,
             'cate_id' => $this->cate_id
         ];
     }

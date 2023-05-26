@@ -27,7 +27,11 @@ class TagsFactory
      
         if(!$TagsValidator->dupName($TagsEntity, $id)){                 
             throw new DuplicateException();
-        }     
+        }
+
+        if($id !== null && !$TagsValidator->validateTree($TagsEntity, $id)){
+            throw new InvalidDataException();
+        }    
         
         $TagsEntity->setDefault();
      

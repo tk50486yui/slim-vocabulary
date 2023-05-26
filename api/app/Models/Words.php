@@ -56,7 +56,7 @@ class Words
         $words->ws_is_important = $data['ws_is_important'];
         $words->ws_is_common = $data['ws_is_common'];
         $words->ws_forget_count = $data['ws_forget_count'];
-        $words->ws_display_order =$data['ws_display_order'];
+        $words->ws_order =$data['ws_order'];
         $words->cate_id = $data['cate_id'];
         R::store($words);
     }
@@ -72,7 +72,7 @@ class Words
         $words->ws_is_important = $data['ws_is_important'];
         $words->ws_is_common = $data['ws_is_common'];
         $words->ws_forget_count = $data['ws_forget_count'];
-        $words->ws_display_order =$data['ws_display_order'];
+        $words->ws_order =$data['ws_order'];
         $words->cate_id = $data['cate_id'];
         $words->updated_at = Time::getNow();
         R::store($words);
