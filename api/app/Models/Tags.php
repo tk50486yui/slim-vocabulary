@@ -14,8 +14,10 @@ class Tags
     }
 
     public function findAll()
-    {
-        $result = R::findAll('tags');
+    {       
+        $query = "SELECT * FROM tags ORDER BY id ASC";
+        $result = R::getAll($query);
+
         return $result;
     }
  
@@ -54,6 +56,14 @@ class Tags
     {
         $tags = R::load('tags', $id);
         R::trash($tags);        
+    }
+
+    public function findRecent()
+    {       
+        $query = "SELECT * FROM tags ORDER BY created_at DESC, updated_at DESC";
+        $result = R::getAll($query);
+
+        return $result;
     }
 
     function buildTagsTree($tags, $parent_id = null, $parents = []) {

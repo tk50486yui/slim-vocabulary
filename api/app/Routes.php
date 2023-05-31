@@ -25,7 +25,10 @@ $app->group('/tags', function() {
     $this->get('', 'TagsController:findAll');
     $this->get('/{id}', 'TagsController:find');
     $this->post('', 'TagsController:add');
-    $this->put('/{id}', 'TagsController:edit');    
+    $this->put('/{id}', 'TagsController:edit');   
+    
+    $this->get('/recent/', 'TagsController:findRecent');
+    $this->get('/popular/', 'TagsController:findPopular');
   
 });
 

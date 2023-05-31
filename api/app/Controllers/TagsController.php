@@ -27,7 +27,7 @@ class TagsController
         return $response->withJson($result, 200);
     }
 
-    /* 查詢所有資料 Tags */
+    /* 查詢所有資料 Tags --回傳樹狀結構-- */
     public function findAll($request, $response, $args)
     {
         $TagsModel = new Tags();
@@ -88,5 +88,33 @@ class TagsController
         }
 
         return MsgH::Success($response);
+    }
+
+    /*  查詢近期新增  */
+    public function findRecent($request, $response, $args)
+    {
+        $TagsModel = new Tags();
+
+        try {
+            $result = $TagsModel->findRecent();     
+        } catch (Exception $e) {
+            return MsgH::ServerError($response);
+        }
+
+        return $response->withJson($result, 200);        
+    }
+
+    /*  查詢常用標籤  */
+    public function findPopular($request, $response, $args)
+    {
+        $TagsModel = new Tags();
+
+        try {
+            $result = $TagsModel->findAll();       
+        } catch (Exception $e) {
+            return MsgH::ServerError($response);
+        }
+
+        return $response->withJson($result, 200);        
     }
 }
