@@ -16,7 +16,16 @@ class Articles
  
     public function findAll()
     {
-        $result = R::findAll('articles');
+        $query = "SELECT 
+                    arti_title, arti_content, arti_order, cate_id,
+                    TO_CHAR(created_at, 'YYYY-MM-DD HH24:MI:SS') AS created_at, 
+                    TO_CHAR(updated_at, 'YYYY-MM-DD HH24:MI:SS') AS updated_at
+                FROM 
+                    articles             
+                ORDER BY 
+                    id DESC";
+
+        $result = R::getAll($query);
         return $result;
     }
   
