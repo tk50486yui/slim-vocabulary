@@ -29,7 +29,7 @@ class WordsTags
         // 使用自訂義 xdispense
         $words_tags = R::xdispense('words_tags');
         $words_tags->ts_id = $data['ts_id'];
-        $words_tags->ws_id = $data['ws_id'];;
+        $words_tags->ws_id = $data['ws_id'];
         R::store($words_tags);
     }
   
@@ -54,7 +54,7 @@ class WordsTags
         return $result;
     }
 
-    /* JOIN 查詢 words_tags LEFT JOIN words tags WHERE ts_id */
+    /* JOIN 查詢 */
     public function findByTagsID($ts_id)
     {
         $query = "SELECT 
@@ -67,6 +67,23 @@ class WordsTags
                     wt.ts_id = ?";
 
         $result = R::getAll($query, array($ts_id));
+
+        return $result;
+    }
+
+    /* JOIN 查詢 */
+    public function findByWordsID($ws_id)
+    {
+        $query = "SELECT 
+                    ts.id as ts_id, ts.ts_name
+                FROM 
+                    words_tags wt                   
+                LEFT JOIN  words ws ON wt.ws_id = ws.id 
+                LEFT JOIN tags ts ON wt.ts_id =  ts.id
+                WHERE 
+                    wt.ws_id = ?";
+
+        $result = R::getAll($query, array($ws_id));
 
         return $result;
     }

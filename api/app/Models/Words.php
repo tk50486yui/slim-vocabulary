@@ -26,11 +26,22 @@ class Words
     public function findAll()
     {
         $query = "SELECT 
-                    ws.*, cate.cate_name as cate_name
+                    ws.*, cate.cate_name as cate_name,                  
+                    (
+                        SELECT 
+                            json_agg(json_build_object('ts_id', ts.id, 'ts_name', ts.ts_name))
+                        FROM 
+                            words_tags wt
+                        LEFT JOIN 
+                            tags ts ON wt.ts_id = ts.id
+                        WHERE 
+                            wt.ws_id = ws.id
+                       
+                    ) AS words_tags                  
                 FROM 
                     words ws
                 LEFT JOIN 
-                    categories cate ON ws.cate_id =  cate.id
+                    categories cate ON ws.cate_id =  cate.id                     
                 ORDER BY 
                     ws.id DESC";
 
@@ -58,7 +69,8 @@ class Words
         $words->ws_forget_count = $data['ws_forget_count'];
         $words->ws_order =$data['ws_order'];
         $words->cate_id = $data['cate_id'];
-        R::store($words);
+        $id = R::store($words);
+        return $id;
     }
   
     public function edit($data, $id)

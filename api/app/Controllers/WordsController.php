@@ -8,7 +8,9 @@ use libs\Responses\MsgHandler as MsgH;
 use libs\Exceptions\ExceptionHandlerFactory;
 use libs\Exceptions\BaseExceptionCollection;
 use app\Factories\WordsFactory;
+use app\Servies\WordsServie;
 use app\Models\Words;
+use app\Models\WordsTags;
 
 class WordsController
 {
@@ -17,9 +19,10 @@ class WordsController
     public function find($request, $response, $args)
     {
         $WordsModel = new Words();
-
+        $WordsTags = new WordsTags();
         try {
             $result = $WordsModel->find($args['id']);
+            $result['words_tags'] = $WordsTags->findByWordsID($args['id']);
         } catch (Exception $e) {
             return MsgH::ServerError($response);
         }
@@ -34,6 +37,14 @@ class WordsController
 
         try {
             $result = $WordsModel->findAll();
+            $i = 0;
+            foreach($result as $item){                
+                if($item['words_tags'] != null){
+                    $result[$i]['words_tags'] = json_decode($item['words_tags'], true);
+                }              
+                $i++;  
+            } 
+
         } catch (Exception $e) {
             return MsgH::ServerError($response);
         }
@@ -41,19 +52,27 @@ class WordsController
         return $response->withJson($result, 200);
     }
 
-    /* 新增add單一資料 words */
+    /* 新增 words 綜合式新增 包含(WordsTags) */
     public function add($request, $response, $args)
     {       
-        $data = $request->getParsedBody();
+        $data = $request->getParsedBody();       
+        $WordsServie = new WordsServie();      
         $WordsFactory = new WordsFactory();        
+        $WordsTags = new WordsTags();
         $ExceptionHF = new ExceptionHandlerFactory();
         $WordsModel = new Words();      
 
-        try {          
-            $data = $WordsFactory->createFactory($data, null);           
+        try { 
+            $dataRow = $WordsFactory->createFactory($data, null); 
             R::begin();
-            $WordsModel->add($data);
-            R::commit();         
+            $id = $WordsModel->add($dataRow);
+            $dataWordsTags = $WordsServie->createServie($data, $id);
+            if($dataWordsTags){
+                foreach($dataWordsTags as $item){                   
+                   $WordsTags->add($item);
+                }                
+            }      
+            R::commit();       
         } catch (BaseExceptionCollection $e) {  
             return $ExceptionHF->createChain()->handle($e, $response);
         } catch (Exception $e) {

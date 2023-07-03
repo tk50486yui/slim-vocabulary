@@ -38,9 +38,10 @@
     ├─ app      //  主程式目錄
     │   ├─ Controllers   //  邏輯控制 建立 Factory 及存取 Model 並處理訊息
     │   ├─ Entities      //  建立實體 注入資料 驗證格式 轉換資料
-    │   ├─ Factories     //  實際執行 Entity 及 Validator
+    │   ├─ Factories     //  處理資料格式 實際執行 Entity 及 Validator
     │   ├─ Middlewares   //  中介層 
     │   ├─ Models        //  執行 ORM 與 SQL 語法    
+    │   ├─ Servies       //  處理前端輸入資料（多對多、複雜欄位）
     │   └─ Validators    //  驗證資料完整性
     ├─ core     //  資料庫相關設定
     ├─ libs     //  自定義函式庫
