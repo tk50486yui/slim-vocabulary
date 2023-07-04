@@ -22,7 +22,14 @@ class WordsController
         $WordsTags = new WordsTags();
         try {
             $result = $WordsModel->find($args['id']);
-            $result['words_tags'] = $WordsTags->findByWordsID($args['id']);
+            $result['words_tags']['values'] = $WordsTags->findByWordsID($args['id']);
+            if(isset($result['words_tags']['values']) && count($result['words_tags']['values']) > 0){
+                $result['words_tags']['array'] = array();
+                foreach($result['words_tags']['values'] as $item){
+                    array_push($result['words_tags']['array'], (string)$item['ts_id']);                    
+                }
+            }
+          
         } catch (Exception $e) {
             return MsgH::ServerError($response);
         }
@@ -41,6 +48,14 @@ class WordsController
             foreach($result as $item){                
                 if($item['words_tags'] != null){
                     $result[$i]['words_tags'] = json_decode($item['words_tags'], true);
+                    if (isset($result[$i]['words_tags']['values']) && count($result[$i]['words_tags']['values']) > 0 ) {
+                        $result[$i]['words_tags']['array'] = array();
+                        foreach($result[$i]['words_tags']['values'] as $row){
+                            array_push($result[$i]['words_tags']['array'], (string)$row['ts_id']); 
+                        }                      
+                    }else{
+                        $result[$i]['words_tags']['array'] = array();
+                    }                   
                 }              
                 $i++;  
             } 

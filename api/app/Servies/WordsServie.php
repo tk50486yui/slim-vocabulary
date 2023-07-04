@@ -33,11 +33,11 @@ class WordsServie
 
     public function validateWordsTags($data)
     {
-        if(isset($data['words_tags']) && !is_bool($data['words_tags'])){
-            if(!is_array($data['words_tags']) || empty($data['words_tags'])){
+        if(isset($data['words_tags']['array']) && !is_bool($data['words_tags']['array'])){
+            if(!is_array($data['words_tags']['array']) || empty($data['words_tags']['array'])){
                 $this->wordsTags = null;
             }else{
-                $this->wordsTags = $data['words_tags'];
+                $this->wordsTags = $data['words_tags']['array'];
             }
         }else{
             $this->wordsTags = null;
