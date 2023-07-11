@@ -23,8 +23,8 @@ class ArticlesTagsValidator
 
     public function dupKey(ArticlesTagsEntity $entity)
     {
-        $ArticlesTagsModel = new ArticlesTags();
-        $row = $ArticlesTagsModel
+        $ArticlesTags = new ArticlesTags();
+        $row = $ArticlesTags
                 ->findByAssociatedIDs($entity->arti_id, $entity->ts_id);        
         if($row != null){
             return false;

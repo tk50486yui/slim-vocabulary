@@ -34,28 +34,7 @@ class WordsTagsController
         }
 
         return MsgH::Success($response);        
-    }
-
-    /* 刪除關聯資料 WordsTags */
-    public function delete($request, $response, $args)
-    {
-        $WordsTagsModel = new WordsTags();
-
-        try {
-            // 檢查 id 是否存在                     
-            if ($WordsTagsModel->find($args['id']) == null) {
-                return MsgH::NotFound($response);
-            }
-            R::begin();
-            $WordsTagsModel->delete($args['id']);
-            R::commit();
-        } catch (Exception $e) {
-            R::rollback();
-            return MsgH::DataProcessingFaild($response);
-        }
-
-        return MsgH::Deletion($response);
-    }
+    }   
 
     /* 查詢所有資料 WordsTags 關聯 Words Tags*/
     public function findAll($request, $response, $args)

@@ -34,25 +34,5 @@ class ArticlesTagsController
         }
 
         return MsgH::Success($response);
-    }
-
-    /* 刪除關聯資料 ArticlesTags */
-    public function delete($request, $response, $args)
-    {
-        $ArticlesTagsModel = new ArticlesTags();
-
-        try {         
-            if ($ArticlesTagsModel->find($args['id']) == null) {
-                return MsgH::NotFound($response);
-            }
-            R::begin();
-            $ArticlesTagsModel->delete($args['id']);
-            R::commit();
-        } catch (Exception $e) {
-            R::rollback();
-            return MsgH::DataProcessingFaild($response);
-        }
-
-        return MsgH::Deletion($response);
-    }
+    }    
 }

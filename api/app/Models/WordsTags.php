@@ -33,10 +33,9 @@ class WordsTags
         R::store($words_tags);
     }
   
-    public function delete($id)
-    {
-        $words_tags = R::load('words_tags', $id);
-        R::trash($words_tags);
+    public function deleteByWsID($id)
+    {       
+        R::hunt('words_tags', 'ws_id = ?', array($id));
     }
 
     /* JOIN 查詢 關聯 words 與 tags 全部資料 */

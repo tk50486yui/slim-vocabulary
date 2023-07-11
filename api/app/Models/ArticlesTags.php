@@ -37,12 +37,28 @@ class ArticlesTags
         $articles_tags->arti_id = $data['arti_id'];
         $articles_tags->ts_id = $data['ts_id'];
         R::store($articles_tags);
-    }
-   
-    public function delete($id)
+    } 
+
+    /** 尋找這個 articles 底下所有的 tags */
+    public function findByArticlesID($arti_id)
     {
-        $articles_tags = R::load('articles_tags', $id);
-        R::trash($articles_tags);
+        $query = "SELECT 
+                    ts.id as ts_id, ts.ts_name
+                FROM 
+                    articles_tags ats                   
+                LEFT JOIN articles arti ON ats.arti_id = arti.id 
+                LEFT JOIN tags ts ON ats.ts_id =  ts.id
+                WHERE 
+                    ats.arti_id = ?";
+
+        $result = R::getAll($query, array($arti_id));
+
+        return $result;
+    }
+
+    public function deleteByArtiID($id)
+    {    
+        R::hunt('articles_tags', 'arti_id = ?', array($id));
     }
     
 }

@@ -23,9 +23,10 @@ class ArticlesTagsFactory
         if(!$ArticlesTagsValidator->foreignKey($ArticlesTagsEntity)){          
             throw new InvalidForeignKeyException();
         }
-        if(!$ArticlesTagsValidator->dupKey($ArticlesTagsEntity)){          
+
+        /*if(!$ArticlesTagsValidator->dupKey($ArticlesTagsEntity)){          
             throw new DuplicateException();
-        } 
+        } */
      
         $ArticlesTagsEntity->setDefault();
         

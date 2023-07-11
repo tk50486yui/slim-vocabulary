@@ -7,8 +7,11 @@ use \RedBeanPHP\R as R;
 use libs\Responses\MsgHandler as MsgH;
 use libs\Exceptions\ExceptionHandlerFactory;
 use libs\Exceptions\BaseExceptionCollection;
+use app\Servies\ArticlesServie;
 use app\Factories\ArticlesFactory;
+use app\Factories\ArticlesTagsFactory;
 use app\Models\Articles;
+use app\Models\ArticlesTags;
 
 class ArticlesController
 {
@@ -16,10 +19,18 @@ class ArticlesController
     /* 查詢單一資料 Articles id = ? */
     public function find($request, $response, $args)
     {
-        $ArticlesModel = new Articles();
+        $Articles = new Articles();
+        $ArticlesTags = new ArticlesTags();
 
         try {
-            $result = $ArticlesModel->find($args['id']);            
+            $result = $Articles->find($args['id']);
+            $result['articles_tags']['values'] = $ArticlesTags->findByArticlesID($args['id']);
+            if(isset($result['articles_tags']['values']) && count($result['articles_tags']['values']) > 0){
+                $result['articles_tags']['array'] = array();
+                foreach($result['articles_tags']['values'] as $item){
+                    array_push($result['articles_tags']['array'], (string)$item['ts_id']);                    
+                }
+            }   
         } catch (Exception $e) {
             return MsgH::ServerError($response);
         }
@@ -30,10 +41,26 @@ class ArticlesController
     /* 查詢所有資料 Articles */
     public function findAll($request, $response, $args)
     {
-        $ArticlesModel = new Articles();
+        $Articles = new Articles();      
 
         try {
-            $result = $ArticlesModel->findAll();            
+            $result = $Articles->findAll();
+            $i = 0;
+            foreach($result as $item){                
+                if($item['articles_tags'] != null){
+                    $result[$i]['articles_tags'] = json_decode($item['articles_tags'], true);
+                    if (isset($result[$i]['articles_tags']['values']) && count($result[$i]['articles_tags']['values']) > 0 ) {
+                        $result[$i]['articles_tags']['array'] = array();
+                        foreach($result[$i]['articles_tags']['values'] as $row){
+                            array_push($result[$i]['articles_tags']['array'], (string)$row['ts_id']); 
+                        }                      
+                    }else{
+                        $result[$i]['articles_tags']['array'] = array();
+                    }                   
+                }              
+                $i++;  
+            }
+                    
         } catch (Exception $e) {    
             return MsgH::ServerError($response);
         }
@@ -45,14 +72,27 @@ class ArticlesController
     public function add($request, $response, $args)
     {
         $data = $request->getParsedBody();
+        $ArticlesServie = new ArticlesServie();  
         $ArticlesFactory = new ArticlesFactory();        
+        $ArticlesTagsFactory = new ArticlesTagsFactory(); 
         $ExceptionHF = new ExceptionHandlerFactory();
-        $ArticlesModel = new Articles();     
+        $Articles = new Articles();     
+        $ArticlesTags = new ArticlesTags();
 
         try {
-            $data = $ArticlesFactory->createFactory($data, null);
-            R::begin();
-            $ArticlesModel->add($data);
+            $dataRow = $ArticlesFactory->createFactory($data, null);
+            $ts_id_Array = $ArticlesServie->createServie($data);
+            R::begin();            
+            $id = $Articles->add($dataRow);            
+            if($ts_id_Array){
+                foreach($ts_id_Array as $item){
+                    $new = array();
+                    $new['arti_id'] = $id;
+                    $new['ts_id'] = $item;
+                    $new = $ArticlesTagsFactory->createFactory($new, null);                   
+                    $ArticlesTags->add($new);
+                }                
+            } 
             R::commit();            
         } catch (BaseExceptionCollection $e) {  
             return $ExceptionHF->createChain()->handle($e, $response);
@@ -68,16 +108,29 @@ class ArticlesController
     public function edit($request, $response, $args)
     {
         $data = $request->getParsedBody();
-        $ArticlesFactory = new ArticlesFactory();        
+        $ArticlesServie = new ArticlesServie();
+        $ArticlesFactory = new ArticlesFactory();
+        $ArticlesTagsFactory = new ArticlesTagsFactory(); 
         $ExceptionHF = new ExceptionHandlerFactory();
-        $ArticlesModel = new Articles();  
+        $Articles = new Articles();
+        $ArticlesTags = new ArticlesTags();
         
         try {
-            $data = $ArticlesFactory->createFactory($data, $args['id']);
+            $dataRow = $ArticlesFactory->createFactory($data, $args['id']);
+            $ts_id_Array = $ArticlesServie->createServie($data);           
             R::begin();
-            $ArticlesModel->edit($data, $args['id']);
-            R::commit();
-            // Transaction --結束--  
+            $ArticlesTags->deleteByArtiID($args['id']);         
+            if($ts_id_Array){                
+                foreach($ts_id_Array as $item){    
+                    $new = array();
+                    $new['arti_id'] = $args['id'];
+                    $new['ts_id'] = $item;
+                    $new = $ArticlesTagsFactory->createFactory($new, null);               
+                    $ArticlesTags->add($new);
+                }                
+            }           
+            $Articles->edit($dataRow, $args['id']);
+            R::commit();         
         } catch (BaseExceptionCollection $e) {  
             return $ExceptionHF->createChain()->handle($e, $response);
         } catch (Exception $e) {

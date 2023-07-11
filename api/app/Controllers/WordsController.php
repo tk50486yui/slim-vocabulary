@@ -8,6 +8,7 @@ use libs\Responses\MsgHandler as MsgH;
 use libs\Exceptions\ExceptionHandlerFactory;
 use libs\Exceptions\BaseExceptionCollection;
 use app\Factories\WordsFactory;
+use app\Factories\WordsTagsFactory;
 use app\Servies\WordsServie;
 use app\Models\Words;
 use app\Models\WordsTags;
@@ -70,21 +71,26 @@ class WordsController
     /* 新增 words 綜合式新增 包含(WordsTags) */
     public function add($request, $response, $args)
     {       
-        $data = $request->getParsedBody();       
-        $WordsServie = new WordsServie();      
-        $WordsFactory = new WordsFactory();        
-        $WordsTags = new WordsTags();
+        $data = $request->getParsedBody();
+        $WordsServie = new WordsServie();
+        $WordsFactory = new WordsFactory();
+        $WordsTagsFactory = new WordsTagsFactory();
         $ExceptionHF = new ExceptionHandlerFactory();
-        $WordsModel = new Words();      
+        $WordsModel = new Words();        
+        $WordsTags = new WordsTags();
 
         try { 
             $dataRow = $WordsFactory->createFactory($data, null); 
+            $array_ts_id = $WordsServie->createServie($data);
             R::begin();
-            $id = $WordsModel->add($dataRow);
-            $dataWordsTags = $WordsServie->createServie($data, $id);
-            if($dataWordsTags){
-                foreach($dataWordsTags as $item){                   
-                   $WordsTags->add($item);
+            $id = $WordsModel->add($dataRow);         
+            if($array_ts_id){
+                foreach($array_ts_id as $item){   
+                    $new = array();
+                    $new['ws_id'] = $id;
+                    $new['ts_id'] = $item;
+                    $new = $WordsTagsFactory->createFactory($new, null);                   
+                    $WordsTags->add($item);
                 }                
             }      
             R::commit();       
@@ -102,14 +108,28 @@ class WordsController
     public function edit($request, $response, $args)
     {      
         $data = $request->getParsedBody();
-        $WordsFactory = new WordsFactory();        
+        $WordsServie = new WordsServie();
+        $WordsFactory = new WordsFactory();  
+        $WordsTagsFactory = new WordsTagsFactory();
         $ExceptionHF = new ExceptionHandlerFactory();
         $WordsModel = new Words();
+        $WordsTags = new WordsTags();
 
         try {
-            $data = $WordsFactory->createFactory($data, $args['id']);            
+            $dataRow = $WordsFactory->createFactory($data, $args['id']);
+            $array_ts_id = $WordsServie->createServie($data);
             R::begin();
-            $WordsModel->edit($data, $args['id']);
+            $WordsTags->deleteByWsID($args['id']);
+            if($array_ts_id){                
+                foreach($array_ts_id as $item){       
+                    $new = array();
+                    $new['ws_id'] = $args['id'];
+                    $new['ts_id'] = $item;
+                    $new = $WordsTagsFactory->createFactory($new, null);                    
+                    $WordsTags->add($new);
+                }                
+            }            
+            $WordsModel->edit($dataRow, $args['id']);
             R::commit();
         } catch (BaseExceptionCollection $e) {  
             return $ExceptionHF->createChain()->handle($e, $response);
