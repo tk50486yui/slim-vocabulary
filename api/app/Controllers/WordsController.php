@@ -68,7 +68,7 @@ class WordsController
         return $response->withJson($result, 200);
     }
 
-    /* 新增 words 綜合式新增 包含(WordsTags) */
+    /* 新增 words 綜合式新增 包含WordsTags */
     public function add($request, $response, $args)
     {       
         $data = $request->getParsedBody();
@@ -91,10 +91,11 @@ class WordsController
                     $new['ts_id'] = $item;
                     $new = $WordsTagsFactory->createFactory($new, null);                   
                     $WordsTags->add($item);
-                }                
-            }      
-            R::commit();       
-        } catch (BaseExceptionCollection $e) {  
+                }
+            }
+            R::commit();
+        } catch (BaseExceptionCollection $e) {
+            R::rollback();
             return $ExceptionHF->createChain()->handle($e, $response);
         } catch (Exception $e) {
             R::rollback();         
@@ -104,7 +105,7 @@ class WordsController
         return MsgH::Success($response);
     }
 
-    /* 修改 edit 資料 words */
+    /* 修改 words 綜合式修改 包含WordsTags */
     public function edit($request, $response, $args)
     {      
         $data = $request->getParsedBody();
@@ -132,6 +133,7 @@ class WordsController
             $WordsModel->edit($dataRow, $args['id']);
             R::commit();
         } catch (BaseExceptionCollection $e) {  
+            R::rollback();
             return $ExceptionHF->createChain()->handle($e, $response);
         } catch (Exception $e) {
             R::rollback();

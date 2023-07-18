@@ -7,13 +7,14 @@ use \RedBeanPHP\R as R;
 use libs\Responses\MsgHandler as MsgH;
 use libs\Exceptions\ExceptionHandlerFactory;
 use libs\Exceptions\BaseExceptionCollection;
+use app\Servies\WordsGroupsServie;
 use app\Factories\WordsGroupsFactory;
+use app\Factories\WordsGroupsDetailsFactory;
 use app\Models\WordsGroups;
+use app\Models\WordsGroupsDetails;
 
 class WordsGroupsController
-{
-
-    /* 查詢單一資料 WordsGroups id = ? */
+{ 
     public function find($request, $response, $args)
     {
         $WordsGroupsModel = new WordsGroups();
@@ -27,7 +28,6 @@ class WordsGroupsController
         return $response->withJson($result, 200);
     }
 
-    /* 查詢所有資料 WordsGroups */
     public function findAll($request, $response, $args)
     {
         $WordsGroupsModel = new WordsGroups();
@@ -40,21 +40,34 @@ class WordsGroupsController
 
         return $response->withJson($result, 200);
     }
-
-    /* 新增單一資料 WordsGroups */
+ 
     public function add($request, $response, $args)
     {
         $data = $request->getParsedBody();
-        $WordsGroupsFactory = new WordsGroupsFactory();        
+        $WordsGroupsServie = new WordsGroupsServie();
+        $WordsGroupsFactory = new WordsGroupsFactory();      
+        $WordsGroupsDetailsFactory = new WordsGroupsDetailsFactory();    
         $ExceptionHF = new ExceptionHandlerFactory();
         $WordsGroupsModel = new WordsGroups(); 
+        $WordsGroupsDetailsModel = new WordsGroupsDetails();
 
         try {
-            $data = $WordsGroupsFactory->createFactory($data, null);
-            R::begin();
-            $WordsGroupsModel->add($data);
+            $dataRow = $WordsGroupsFactory->createFactory($data, null);
+            $wgd_array = $WordsGroupsServie->createServie($data);
+            R::begin();            
+            $wg_id = $WordsGroupsModel->add($dataRow);
+            if($wgd_array){
+                foreach($wgd_array as $item){       
+                    $new = array();
+                    $new['wg_id'] = $wg_id;
+                    $new['ws_id'] = $item;
+                    $new = $WordsGroupsDetailsFactory->createFactory($new, null);                    
+                    $WordsGroupsDetailsModel->add($new);
+                }
+            }
             R::commit();          
         } catch (BaseExceptionCollection $e) {  
+            R::rollback();
             return $ExceptionHF->createChain()->handle($e, $response);
         } catch (Exception $e) {
             R::rollback();         
@@ -64,7 +77,6 @@ class WordsGroupsController
         return MsgH::Success($response);
     }
 
-    /* 修改 edit 資料 WordsGroups */
     public function edit($request, $response, $args)
     {
         $data = $request->getParsedBody();

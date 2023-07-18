@@ -31,7 +31,8 @@ class WordsGroups
         // 使用自訂義 xdispense
         $words_groups = R::xdispense('words_groups');
         $words_groups->wg_name = $data['wg_name'];
-        R::store($words_groups);
+        $id = R::store($words_groups);
+        return $id;
     }
 
     public function edit($data, $id)
