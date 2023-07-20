@@ -18,9 +18,10 @@ class WordsGroupsController
     public function find($request, $response, $args)
     {
         $WordsGroupsModel = new WordsGroups();
+        $WordsGroupsDetails = new WordsGroupsDetails();
 
         try {
-            $result = $WordsGroupsModel->find($args['id']);
+            $result = $WordsGroupsDetails->findByWgID($args['id']);
         } catch (Exception $e) {
             return MsgH::ServerError($response);
         }
@@ -31,9 +32,18 @@ class WordsGroupsController
     public function findAll($request, $response, $args)
     {
         $WordsGroupsModel = new WordsGroups();
+        $WordsGroupsDetails = new WordsGroupsDetails();
 
         try {
             $result = $WordsGroupsModel->findAll();
+            $i=0;
+            if(count($result) > 0){
+                foreach($result as $item){
+                    $result[$i]['details'] = $WordsGroupsDetails->findByWgID($item['id']);
+                    $i++;
+                }
+            }
+            
         } catch (Exception $e) {
             return MsgH::ServerError($response);
         }

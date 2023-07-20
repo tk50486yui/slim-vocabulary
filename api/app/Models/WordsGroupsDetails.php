@@ -13,9 +13,28 @@ class WordsGroupsDetails
         $result = R::findOne('words_groups_details', ' id = ? ', array($id));
         return $result;
     }
+
+    public function findByWgID($wg_id)
+    {
+        $query = "SELECT 
+                    ws.ws_name as ws_name, wgd.*
+                FROM 
+                    words_groups_details wgd
+                LEFT JOIN 
+                    words ws ON wgd.ws_id =  ws.id
+                WHERE 
+                    wgd.wg_id = ? 
+                ORDER BY
+                    ws.created_at DESC";
+
+        $result = R::getAll($query, array($wg_id));
+
+        return $result;
+       
+    }
   
     public function findAll()
-    {
+    {        
         $result = R::findAll('words_groups_details');
         return $result;
     }

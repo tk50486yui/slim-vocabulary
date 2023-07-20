@@ -16,7 +16,15 @@ class WordsGroups
 
     public function findAll()
     {
-        $result = R::findAll('words_groups');
+        $query = "SELECT 
+                    *
+                FROM 
+                    words_groups              
+                ORDER BY
+                    created_at DESC";
+
+        $result = R::getAll($query);
+      
         return $result;
     }
 
