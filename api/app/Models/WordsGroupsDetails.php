@@ -73,4 +73,8 @@ class WordsGroupsDetails
         $words_groups_details = R::load('words_groups_details', $id);
         R::trash($words_groups_details);
     }
+    public function deleteByWgID($wg_id)
+    {       
+        R::hunt('words_groups_details', 'wg_id = ?', array($wg_id));
+    }
 }

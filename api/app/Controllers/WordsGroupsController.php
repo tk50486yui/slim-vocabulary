@@ -16,8 +16,7 @@ use app\Models\WordsGroupsDetails;
 class WordsGroupsController
 { 
     public function find($request, $response, $args)
-    {
-        $WordsGroupsModel = new WordsGroups();
+    {        
         $WordsGroupsDetails = new WordsGroupsDetails();
 
         try {
@@ -90,14 +89,28 @@ class WordsGroupsController
     public function edit($request, $response, $args)
     {
         $data = $request->getParsedBody();
-        $WordsGroupsFactory = new WordsGroupsFactory();        
+        $WordsGroupsServie = new WordsGroupsServie();     
+        $WordsGroupsFactory = new WordsGroupsFactory();    
+        $WordsGroupsDetailsFactory = new WordsGroupsDetailsFactory();       
         $ExceptionHF = new ExceptionHandlerFactory();
         $WordsGroupsModel = new WordsGroups();      
+        $WordsGroupsDetailsModel = new WordsGroupsDetails();
 
         try {
-            $data = $WordsGroupsFactory->createFactory($data, $args['id']); 
+            $dataRow = $WordsGroupsFactory->createFactory($data, $args['id']);
+            $wgd_array = $WordsGroupsServie->createServie($data);
             R::begin();
-            $WordsGroupsModel->edit($data, $args['id']);
+            $WordsGroupsModel->edit($dataRow, $args['id']);
+            $WordsGroupsDetailsModel->deleteByWgID($args['id']);
+            if($wgd_array){
+                foreach($wgd_array as $item){       
+                    $new = array();
+                    $new['wg_id'] = $args['id'];
+                    $new['ws_id'] = $item;
+                    $new = $WordsGroupsDetailsFactory->createFactory($new, null);                    
+                    $WordsGroupsDetailsModel->add($new);
+                }
+            }
             R::commit();          
         } catch (BaseExceptionCollection $e) {  
             return $ExceptionHF->createChain()->handle($e, $response);
