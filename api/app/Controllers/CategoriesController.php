@@ -102,5 +102,19 @@ class CategoriesController
 
         return $response->withJson($result, 200);       
     }
+
+     /*  查詢近期新增  */
+     public function findRecent($request, $response, $args)
+     {
+         $CategoriesModel = new Categories();
+ 
+         try {
+             $result = $CategoriesModel->findRecent();     
+         } catch (Exception $e) {
+             return MsgH::ServerError($response);
+         }
+ 
+         return $response->withJson($result, 200);        
+     }
     
 }

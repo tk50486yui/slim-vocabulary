@@ -51,6 +51,14 @@ class Categories
         $categories = R::load('categories', $id);
         R::trash($categories);
     }
+
+    public function findRecent()
+    {       
+        $query = "SELECT * FROM categories ORDER BY created_at DESC, updated_at DESC";
+        $result = R::getAll($query);
+
+        return $result;
+    }
   
     public function findWordsByID($id)
     {

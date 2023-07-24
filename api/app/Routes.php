@@ -17,6 +17,8 @@ $app->group('/categories', function() {
     $this->put('/{id}', 'CategoriesController:edit');
 
     $this->get('/words/{id}', 'CategoriesController:findWordsByID');
+
+    $this->get('/recent/', 'CategoriesController:findRecent');
   
 });
 
