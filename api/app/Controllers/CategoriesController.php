@@ -52,7 +52,23 @@ class CategoriesController
         $CategoriesModel = new Categories();
      
         try {
-            $data = $CategoriesFactory->createFactory($data, null); 
+            $data = $CategoriesFactory->createFactory($data, null);
+            if($data['cate_parent_id'] != null){
+                $parent = $CategoriesModel->find($data['cate_parent_id']);
+                $data['cate_level'] = $parent['cate_level'] + 1;
+                $children = $CategoriesModel->findMaxOrderByParent($data['cate_parent_id']);
+                if($children['sibling_count'] == 0){
+                    $data['cate_order'] = 0;
+                }else{
+                    $data['cate_order'] = $children['max_cate_order'] + 1;                 
+                }               
+                
+            }else{
+                $sibling = $CategoriesModel->findOrderInFirstLevel();
+                if($sibling && $sibling != null){
+                    $data['cate_order'] = $sibling['max_cate_order'] + 1;                  
+                }                
+            }
             R::begin();         
             $CategoriesModel->add($data);
             R::commit();    
@@ -66,7 +82,7 @@ class CategoriesController
         return MsgH::Success($response);
     }
 
-    /* 修改 edit 資料 Categories */
+    /* 修改 edit 資料 Categories  不包含層級順序 */
     public function edit($request, $response, $args)
     {
         $data = $request->getParsedBody();        

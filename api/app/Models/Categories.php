@@ -13,15 +13,48 @@ class Categories
         return $result;
     }
  
-    public function findAll()
-    {
-        $result = R::findAll('categories');
+    public function findAll()    {
+      
+
+        $query = "SELECT * FROM categories ORDER BY cate_order ASC";
+
+        $result = R::getAll($query);
+
         return $result;
     }
   
     public function findByName($cate_name)
     {
         $result = R::findOne('categories', ' cate_name = ? ', array($cate_name));
+        return $result;
+    }
+
+    public function findMaxOrderByParent($cate_parent_id)
+    {
+        $query = "SELECT 
+                    MAX(cate_order) as max_cate_order,
+                    COUNT(id) as sibling_count
+                FROM 
+                    categories           
+                WHERE 
+                    cate_parent_id = ?";
+
+        $result = R::getRow($query, array($cate_parent_id));
+      
+        return $result;
+    }
+
+    public function findOrderInFirstLevel()
+    {
+        $query = "SELECT 
+                    MAX(cate_order) as max_cate_order
+                FROM 
+                    categories           
+                WHERE 
+                    cate_level = 1";
+
+        $result = R::getRow($query);
+      
         return $result;
     }
   
@@ -39,9 +72,9 @@ class Categories
     {
         $categories = R::load('categories', $id);
         $categories->cate_name = $data['cate_name'];
-        $categories->cate_parent_id = $data['cate_parent_id'];
+        /*$categories->cate_parent_id = $data['cate_parent_id'];
         $categories->cate_level = $data['cate_level'];
-        $categories->cate_order = $data['cate_order'];
+        $categories->cate_order = $data['cate_order'];*/
         $categories->updated_at = Time::getNow();
         R::store($categories);
     }

@@ -33,7 +33,7 @@ class CategoriesFactory
             throw new InvalidDataException();
         }
         
-        $CategoriesEntity->setDefault();
+        $CategoriesEntity->setDefault();       
      
         return $CategoriesEntity->toArray();
     }

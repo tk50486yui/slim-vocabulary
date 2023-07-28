@@ -62,9 +62,9 @@ class CategoriesEntity
    
     public function setDefault()
     {
-        $this->cate_parent_id = is_numeric($this->cate_parent_id) ? (int)$this->cate_parent_id : null;
+        $this->cate_parent_id = is_numeric($this->cate_parent_id) ? (int)$this->cate_parent_id : null;       
         $this->cate_level = is_numeric($this->cate_level) ? (int)$this->cate_level : 1;
-        $this->cate_order = is_numeric($this->cate_order) ? (int)$this->cate_order : 1;
+        $this->cate_order = is_numeric($this->cate_order) ? (int)$this->cate_order : 0;
     }
 
     public function toArray()
