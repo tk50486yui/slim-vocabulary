@@ -13,7 +13,7 @@ class Categories
         return $result;
     }
  
-    public function findAll()    {
+    public function findAll(){
       
 
         $query = "SELECT * FROM categories ORDER BY cate_order ASC";
@@ -73,8 +73,15 @@ class Categories
         $categories = R::load('categories', $id);
         $categories->cate_name = $data['cate_name'];
         /*$categories->cate_parent_id = $data['cate_parent_id'];
-        $categories->cate_level = $data['cate_level'];
-        $categories->cate_order = $data['cate_order'];*/
+        $categories->cate_level = $data['cate_level']; */
+        $categories->updated_at = Time::getNow();
+        R::store($categories);
+    }
+
+    public function editOrder($cate_order, $id)
+    {
+        $categories = R::load('categories', $id);  
+        $categories->cate_order = $cate_order;
         $categories->updated_at = Time::getNow();
         R::store($categories);
     }

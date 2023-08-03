@@ -7,6 +7,7 @@ use \RedBeanPHP\R as R;
 use libs\Responses\MsgHandler as MsgH;
 use libs\Exceptions\ExceptionHandlerFactory;
 use libs\Exceptions\BaseExceptionCollection;
+use app\Servies\CategoriesServie;
 use app\Factories\CategoriesFactory;
 use app\Models\Categories;
 
@@ -94,6 +95,34 @@ class CategoriesController
             $data = $CategoriesFactory->createFactory($data, $args['id']);           
             R::begin();         
             $CategoriesModel->edit($data, $args['id']);
+            R::commit();       
+        } catch (BaseExceptionCollection $e) {  
+            return $ExceptionHF->createChain()->handle($e, $response);
+        } catch (Exception $e) {
+            R::rollback();         
+            return $ExceptionHF->createDefault()->handle($e, $response);
+        }
+
+        return MsgH::Success($response); 
+    }
+
+    /* 修改順序 */
+    public function editOrder($request, $response, $args)
+    {
+        $data = $request->getParsedBody();        
+        $CategoriesServie = new CategoriesServie();
+        $ExceptionHF = new ExceptionHandlerFactory();
+        $CategoriesModel = new Categories();
+
+        try {          
+            $NewData = $CategoriesServie->createServie($data);           
+            R::begin();         
+            foreach($NewData as $item){
+                if(is_numeric($item['id']) && is_numeric($item['cate_order'])){
+                    $CategoriesModel->editOrder((int)$item['cate_order'], (int)$item['id']);                   
+                }                
+                
+            }           
             R::commit();       
         } catch (BaseExceptionCollection $e) {  
             return $ExceptionHF->createChain()->handle($e, $response);
