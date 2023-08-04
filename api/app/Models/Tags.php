@@ -15,7 +15,7 @@ class Tags
 
     public function findAll()
     {       
-        $query = "SELECT * FROM tags ORDER BY id ASC";
+        $query = "SELECT * FROM tags ORDER BY ts_order ASC";
         $result = R::getAll($query);
 
         return $result;
@@ -43,11 +43,19 @@ class Tags
     {
         $tags = R::load('tags', $id);
         $tags->ts_name = $data['ts_name'];
-        $tags->ts_storage = $data['ts_storage'];
         $tags->ts_parent_id = $data['ts_parent_id'];
         $tags->ts_level = $data['ts_level'];
-        $tags->ts_order =$data['ts_order'];
+        $tags->ts_storage = $data['ts_storage'];
         $tags->ts_description = $data['ts_description'];
+        $tags->updated_at = Time::getNow();
+        R::store($tags);
+    }
+
+    public function editParent($data, $id)
+    {
+        $tags = R::load('tags', $id);  
+        $tags->ts_parent_id = $data['ts_parent_id'];
+        $tags->ts_level = $data['ts_level'];
         $tags->updated_at = Time::getNow();
         R::store($tags);
     }

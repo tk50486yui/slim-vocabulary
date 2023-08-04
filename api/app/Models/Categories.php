@@ -17,7 +17,6 @@ class Categories
       
 
         $query = "SELECT * FROM categories ORDER BY cate_order ASC";
-
         $result = R::getAll($query);
 
         return $result;
@@ -72,8 +71,17 @@ class Categories
     {
         $categories = R::load('categories', $id);
         $categories->cate_name = $data['cate_name'];
-        /*$categories->cate_parent_id = $data['cate_parent_id'];
-        $categories->cate_level = $data['cate_level']; */
+        $categories->cate_parent_id = $data['cate_parent_id'];
+        $categories->cate_level = $data['cate_level'];
+        $categories->updated_at = Time::getNow();
+        R::store($categories);
+    }
+
+    public function editParent($data, $id)
+    {
+        $categories = R::load('categories', $id);  
+        $categories->cate_parent_id = $data['cate_parent_id'];
+        $categories->cate_level = $data['cate_level'];
         $categories->updated_at = Time::getNow();
         R::store($categories);
     }
