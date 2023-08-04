@@ -51,6 +51,14 @@ class Tags
         $tags->updated_at = Time::getNow();
         R::store($tags);
     }
+
+    public function editOrder($ts_order, $id)
+    {
+        $tags = R::load('tags', $id);  
+        $tags->ts_order = $ts_order;
+        $tags->updated_at = Time::getNow();
+        R::store($tags);
+    }
   
     public function delete($id)
     {

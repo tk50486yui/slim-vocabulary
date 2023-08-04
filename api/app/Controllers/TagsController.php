@@ -7,6 +7,7 @@ use \RedBeanPHP\R as R;
 use libs\Responses\MsgHandler as MsgH;
 use libs\Exceptions\ExceptionHandlerFactory;
 use libs\Exceptions\BaseExceptionCollection;
+use app\Servies\TagsServie;
 use app\Factories\TagsFactory;
 use app\Models\Tags;
 
@@ -89,6 +90,34 @@ class TagsController
 
         return MsgH::Success($response);
     }
+
+     /* 修改順序 */
+     public function editOrder($request, $response, $args)
+     {
+         $data = $request->getParsedBody();     
+         $TagsServie = new TagsServie();   
+         $ExceptionHF = new ExceptionHandlerFactory();             
+         $TagsModel = new Tags();
+ 
+         try {          
+             $NewData = $TagsServie->createServie($data);           
+             R::begin();         
+             foreach($NewData as $item){
+                 if(is_numeric($item['id']) && is_numeric($item['ts_order'])){
+                    $TagsModel->editOrder((int)$item['ts_order'], (int)$item['id']);                   
+                 }                
+                 
+             }           
+             R::commit();       
+         } catch (BaseExceptionCollection $e) {  
+             return $ExceptionHF->createChain()->handle($e, $response);
+         } catch (Exception $e) {
+             R::rollback();         
+             return $ExceptionHF->createDefault()->handle($e, $response);
+         }
+ 
+         return MsgH::Success($response); 
+     }
 
     /*  查詢近期新增  */
     public function findRecent($request, $response, $args)
