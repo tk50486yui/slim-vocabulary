@@ -104,7 +104,7 @@ class TagsController
              R::begin();         
              foreach($NewData as $item){
                  if(is_numeric($item['id']) && is_numeric($item['ts_order'])){
-                    $TagsModel->editOrder((int)$item['ts_order'], (int)$item['id']);                   
+                    $TagsModel->editOrder((int)$item['ts_order'], (int)$item['id']);                          
                  }                
                  
              }           
