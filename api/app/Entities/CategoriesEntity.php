@@ -38,22 +38,22 @@ class CategoriesEntity
     public function validate()
     {
         // NOT NULL TEXT欄位
-        if (!VH::notNullText($this->cate_name)) {
+        if (!VH::notNullText($this->cate_name)) {         
             return false;
         }
 
         // 允許 null 的 int
-        if (!VH::acceptNullInt($this->cate_level)) {
+        if (!VH::acceptNullInt($this->cate_level)) {         
             return false;
         }
 
-        // 允許 null 的 int
-        if (!VH::acceptNullInt($this->cate_order)) {
+        // 允許 null 0 的 int
+        if (!VH::acceptNullZeroInt($this->cate_order)) {           
             return false;
         }
 
         // 外鍵格式檢查
-        if (!VH::idType($this->cate_parent_id)) {
+        if (!VH::idType($this->cate_parent_id)) {        
             return false;
         }
 

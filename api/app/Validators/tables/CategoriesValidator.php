@@ -47,15 +47,19 @@ class CategoriesValidator
         $CategoriesModel = new Categories();
         $all = $CategoriesModel->findAll();
         // 建立樹狀結構資料
-        $tree = $CategoriesModel->buildCategoriesTree($all);
-        if ($cate_parent_id === $id) {
+        // $tree = $CategoriesModel->buildCategoriesTree($all);
+        if ($cate_parent_id == $id) {
             return false;
         }
         // 檢查所新增之 cate_parent_id 是否為自己的子節點 有值才做
-        if ($cate_parent_id != null || $cate_parent_id != '') {
-            if ($this->validateParent($tree, $id, $cate_parent_id)) {
+        if ($cate_parent_id != null || $cate_parent_id != '') {         
+            $result = $CategoriesModel->findCheckParent($id, $cate_parent_id);
+            if($result != null || count($result) > 0){
                 return false;
-            }
+            }          
+            /*if ($this->validateParent($tree, $id, $cate_parent_id)) {
+                return false;
+            }*/
         }
 
         return true;

@@ -26,6 +26,44 @@ class Tags
         $result = R::findOne('tags', ' ts_name = ? ', array($ts_name));
         return $result;
     }
+
+    public function findCheckParent($id, $ts_parent_id){
+      
+
+        $query = "SELECT * FROM tags WHERE ts_parent_id = ? AND id = ?";
+        $result = R::getAll($query, array($id, $ts_parent_id));
+
+        return $result;
+    }
+
+    public function findMaxOrderByParent($ts_parent_id)
+    {
+        $query = "SELECT 
+                    MAX(cate_order) as max_ts_order,
+                    COUNT(id) as sibling_count
+                FROM 
+                    tags           
+                WHERE 
+                    ts_parent_id = ?";
+
+        $result = R::getRow($query, array($ts_parent_id));
+      
+        return $result;
+    }
+
+    public function findOrderInFirstLevel()
+    {
+        $query = "SELECT 
+                    MAX(ts_order) as max_ts_order
+                FROM 
+                    tags           
+                WHERE 
+                    ts_parent_id IS NULL";
+
+        $result = R::getRow($query);
+      
+        return $result;
+    }
     
     public function add($data)
     {
@@ -49,16 +87,7 @@ class Tags
         $tags->ts_description = $data['ts_description'];
         $tags->updated_at = Time::getNow();
         R::store($tags);
-    }
-
-    public function editParent($data, $id)
-    {
-        $tags = R::load('tags', $id);  
-        $tags->ts_parent_id = $data['ts_parent_id'];
-        $tags->ts_level = $data['ts_level'];
-        $tags->updated_at = Time::getNow();
-        R::store($tags);
-    }
+    }   
 
     public function editOrder($ts_order, $id)
     {

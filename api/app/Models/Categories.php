@@ -28,6 +28,15 @@ class Categories
         return $result;
     }
 
+    public function findCheckParent($id, $cate_parent_id){
+      
+
+        $query = "SELECT * FROM categories WHERE cate_parent_id = ? AND id = ?";
+        $result = R::getAll($query, array($id, $cate_parent_id));
+
+        return $result;
+    }
+
     public function findMaxOrderByParent($cate_parent_id)
     {
         $query = "SELECT 
@@ -48,9 +57,9 @@ class Categories
         $query = "SELECT 
                     MAX(cate_order) as max_cate_order
                 FROM 
-                    categories           
+                    categories
                 WHERE 
-                    cate_level = 1";
+                    cate_parent_id IS NULL";
 
         $result = R::getRow($query);
       
@@ -75,16 +84,7 @@ class Categories
         $categories->cate_level = $data['cate_level'];
         $categories->updated_at = Time::getNow();
         R::store($categories);
-    }
-
-    public function editParent($data, $id)
-    {
-        $categories = R::load('categories', $id);  
-        $categories->cate_parent_id = $data['cate_parent_id'];
-        $categories->cate_level = $data['cate_level'];
-        $categories->updated_at = Time::getNow();
-        R::store($categories);
-    }
+    }   
 
     public function editOrder($cate_order, $id)
     {

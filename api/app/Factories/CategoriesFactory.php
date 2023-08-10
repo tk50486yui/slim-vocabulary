@@ -17,7 +17,7 @@ class CategoriesFactory
 
         $CategoriesEntity->populate($data);
         
-        if (!$CategoriesEntity->validate()) {
+        if (!$CategoriesEntity->validate()) {        
             throw new InvalidDataException();
         }
       
@@ -25,11 +25,11 @@ class CategoriesFactory
             throw new InvalidForeignKeyException();
         }
      
-        if(!$CategoriesValidator->dupName($CategoriesEntity, $id)){                 
+        if(!$CategoriesValidator->dupName($CategoriesEntity, $id)){ 
             throw new DuplicateException();
         }
      
-        if($id !== null && !$CategoriesValidator->validateTree($CategoriesEntity, $id)){
+        if($id !== null && !$CategoriesValidator->validateTree($CategoriesEntity, $id)){          
             throw new InvalidDataException();
         }
         

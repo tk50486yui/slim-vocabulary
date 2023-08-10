@@ -62,8 +62,7 @@ class CategoriesController
                     $data['cate_order'] = 0;
                 }else{
                     $data['cate_order'] = $children['max_cate_order'] + 1;                 
-                }               
-                
+                }                
             }else{
                 $sibling = $CategoriesModel->findOrderInFirstLevel();
                 if($sibling && $sibling != null){
@@ -93,8 +92,18 @@ class CategoriesController
 
         try {
             $data = $CategoriesFactory->createFactory($data, $args['id']);           
-            R::begin();         
+            R::begin();           
+            $row = $CategoriesModel->find($args['id']);        
+            if($data['cate_parent_id'] != $row['cate_parent_id']){
+                $children = $CategoriesModel->findMaxOrderByParent($data['cate_parent_id']);
+                if($children['sibling_count'] == 0){
+                    $data['cate_order'] = 0;
+                }else{
+                    $data['cate_order'] = $children['max_cate_order'] + 1;                 
+                }
+            }
             $CategoriesModel->edit($data, $args['id']);
+            $CategoriesModel->editOrder($data['cate_order'], $args['id']);           
             R::commit();       
         } catch (BaseExceptionCollection $e) {  
             return $ExceptionHF->createChain()->handle($e, $response);
@@ -121,7 +130,6 @@ class CategoriesController
                 if(is_numeric($item['id']) && is_numeric($item['cate_order'])){
                     $CategoriesModel->editOrder((int)$item['cate_order'], (int)$item['id']);                   
                 }                
-                
             }           
             R::commit();       
         } catch (BaseExceptionCollection $e) {  

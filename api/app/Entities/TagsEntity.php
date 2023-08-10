@@ -51,8 +51,8 @@ class TagsEntity
             return false;
         }
 
-        // 允許 null 的 int
-        if (!VH::acceptNullInt($this->ts_order)) {
+        // 允許 null 0 的 int
+        if (!VH::acceptNullZeroInt($this->ts_order)) {
             return false;
         }
 
