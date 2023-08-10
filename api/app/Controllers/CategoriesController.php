@@ -95,12 +95,19 @@ class CategoriesController
             R::begin();           
             $row = $CategoriesModel->find($args['id']);        
             if($data['cate_parent_id'] != $row['cate_parent_id']){
-                $children = $CategoriesModel->findMaxOrderByParent($data['cate_parent_id']);
-                if($children['sibling_count'] == 0){
-                    $data['cate_order'] = 0;
+                if($data['cate_parent_id'] == null){
+                    $sibling = $CategoriesModel->findOrderInFirstLevel();
+                    if($sibling && $sibling != null){
+                        $data['cate_order'] = $sibling['max_cate_order'] + 1;                  
+                    } 
                 }else{
-                    $data['cate_order'] = $children['max_cate_order'] + 1;                 
-                }
+                    $children = $CategoriesModel->findMaxOrderByParent($data['cate_parent_id']);
+                    if($children['sibling_count'] == 0){
+                        $data['cate_order'] = 0;
+                    }else{
+                        $data['cate_order'] = $children['max_cate_order'] + 1;                 
+                    }
+                }               
             }
             $CategoriesModel->edit($data, $args['id']);
             $CategoriesModel->editOrder($data['cate_order'], $args['id']);           

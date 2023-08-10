@@ -94,11 +94,18 @@ class TagsController
             $data = $TagsFactory->createFactory($data, $args['id']);
             $row = $TagsModel->find($args['id']);        
             if($data['ts_parent_id'] != $row['ts_parent_id']){
-                $children = $TagsModel->findMaxOrderByParent($data['ts_parent_id']);
-                if($children['sibling_count'] == 0){
-                    $data['ts_order'] = 0;
+                if($data['ts_parent_id'] == null){
+                    $sibling = $TagsModel->findOrderInFirstLevel();
+                    if($sibling && $sibling != null){
+                        $data['ts_order'] = $sibling['max_ts_order'] + 1;                  
+                    }  
                 }else{
-                    $data['ts_order'] = $children['max_ts_order'] + 1;                 
+                    $children = $TagsModel->findMaxOrderByParent($data['ts_parent_id']);
+                    if($children['sibling_count'] == 0){
+                        $data['ts_order'] = 0;
+                    }else{
+                        $data['ts_order'] = $children['max_ts_order'] + 1;                 
+                    } 
                 }
             }
             R::begin();
