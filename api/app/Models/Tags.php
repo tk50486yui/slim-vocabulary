@@ -39,7 +39,7 @@ class Tags
     public function findMaxOrderByParent($ts_parent_id)
     {
         $query = "SELECT 
-                    MAX(cate_order) as max_ts_order,
+                    MAX(ts_order) as max_ts_order,
                     COUNT(id) as sibling_count
                 FROM 
                     tags           

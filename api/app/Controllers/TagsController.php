@@ -88,10 +88,9 @@ class TagsController
         $data = $request->getParsedBody();
         $TagsFactory = new TagsFactory();        
         $ExceptionHF = new ExceptionHandlerFactory();
-        $TagsModel = new Tags();
-
+        $TagsModel = new Tags();        
         try {
-            $data = $TagsFactory->createFactory($data, $args['id']);
+            $data = $TagsFactory->createFactory($data, $args['id']);          
             $row = $TagsModel->find($args['id']);        
             if($data['ts_parent_id'] != $row['ts_parent_id']){
                 if($data['ts_parent_id'] == null){
@@ -107,7 +106,7 @@ class TagsController
                         $data['ts_order'] = $children['max_ts_order'] + 1;                 
                     } 
                 }
-            }
+            }           
             R::begin();
             $TagsModel->edit($data, $args['id']);
             $TagsModel->editOrder($data['ts_order'], $args['id']);
