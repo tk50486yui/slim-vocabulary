@@ -70,7 +70,7 @@ class WordsEntity
         }
 
         return true;
-    }
+    }   
 
     public function setDefault()
     {

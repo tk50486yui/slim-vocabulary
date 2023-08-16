@@ -6,6 +6,9 @@ $app->group('/words', function() {
     $this->get('/{id}', 'WordsController:find');
     $this->post('', 'WordsController:add');
     $this->put('/{id}', 'WordsController:edit');
+
+    $this->put('/common/{id}', 'WordsController:editCommon');
+    $this->put('/important/{id}', 'WordsController:editImportant');
   
 });
 

@@ -142,4 +142,50 @@ class WordsController
 
         return MsgH::Success($response);
     }
+
+    /* 只修改 common */
+    public function editCommon($request, $response, $args)
+    {      
+        $data = $request->getParsedBody();      
+        $WordsFactory = new WordsFactory();         
+        $ExceptionHF = new ExceptionHandlerFactory();
+        $WordsModel = new Words();      
+
+        try {
+            $dataRow = $WordsFactory->createFactory($data, $args['id']);               
+            R::begin();
+            $WordsModel->edit($dataRow, $args['id']);
+            R::commit();
+        } catch (BaseExceptionCollection $e) {              
+            return $ExceptionHF->createChain()->handle($e, $response);
+        } catch (Exception $e) {
+            R::rollback();
+            return $ExceptionHF->createDefault()->handle($e, $response);
+        }
+
+        return MsgH::Success($response);
+    }
+
+    /* 只修改 important */
+    public function editImportant($request, $response, $args)
+    {      
+        $data = $request->getParsedBody();      
+        $WordsFactory = new WordsFactory();         
+        $ExceptionHF = new ExceptionHandlerFactory();
+        $WordsModel = new Words();      
+
+        try {
+            $dataRow = $WordsFactory->createFactory($data, $args['id']);          
+            R::begin();
+            $WordsModel->edit($dataRow, $args['id']);
+            R::commit();
+        } catch (BaseExceptionCollection $e) {              
+            return $ExceptionHF->createChain()->handle($e, $response);
+        } catch (Exception $e) {
+            R::rollback();
+            return $ExceptionHF->createDefault()->handle($e, $response);
+        }
+
+        return MsgH::Success($response);
+    }
 }
