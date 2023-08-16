@@ -7,8 +7,8 @@ $app->group('/words', function() {
     $this->post('', 'WordsController:add');
     $this->put('/{id}', 'WordsController:edit');
 
-    $this->put('/common/{id}', 'WordsController:editCommon');
-    $this->put('/important/{id}', 'WordsController:editImportant');
+    $this->patch('/common/{id}', 'WordsController:editCommon');
+    $this->patch('/important/{id}', 'WordsController:editImportant');
   
 });
 
