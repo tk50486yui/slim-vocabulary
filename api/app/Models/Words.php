@@ -90,23 +90,7 @@ class Words
         $words->cate_id = $data['cate_id'];
         $words->updated_at = Time::getNow();
         R::store($words);
-    }
-
-    public function editCommon($data, $id)
-    {        
-        $words = R::load('words', $id);  
-        $words->ws_is_common = $data['ws_is_common'];      
-        $words->updated_at = Time::getNow();      
-        R::store($words);   
-    }
-
-    public function editImportant($data, $id)
-    {
-        $words = R::load('words', $id);
-        $words->ws_is_important = $data['ws_is_important'];
-        $words->updated_at = Time::getNow();
-        R::store($words);
-    }
+    }   
    
     public function delete($id)
     {
