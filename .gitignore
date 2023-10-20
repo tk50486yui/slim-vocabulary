@@ -4,6 +4,8 @@
 /api/composer.lock
 /api/core/Config.php
 
+/api/.env
+
 # 但排除 vendor/autoload.php 這個檔案
 !/api/vendor/autoload.php
 
