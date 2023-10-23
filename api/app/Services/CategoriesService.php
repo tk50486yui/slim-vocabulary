@@ -1,6 +1,6 @@
 <?php
 
-namespace app\Servies;
+namespace app\Services;
 
 use libs\Exceptions\Collection\InvalidDataException;
 
@@ -9,7 +9,7 @@ use libs\Exceptions\Collection\InvalidDataException;
  *  判斷前端資料是否有問題，與表格驗證無關
  **/
 
-class CategoriesServie
+class CategoriesService
 {   
     private $categoriesOrderArray;
 
@@ -23,7 +23,7 @@ class CategoriesServie
         $this->$name = $value;
     }
 
-    public function createServie($data){
+    public function createService($data){
         $this->categoriesOrderArray = $data;
         if($this->categoriesOrderArray == null && !is_array($this->categoriesOrderArray)){
             throw new InvalidDataException();

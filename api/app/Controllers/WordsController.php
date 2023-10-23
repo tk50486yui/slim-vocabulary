@@ -9,7 +9,7 @@ use libs\Exceptions\ExceptionHandlerFactory;
 use libs\Exceptions\BaseExceptionCollection;
 use app\Factories\WordsFactory;
 use app\Factories\WordsTagsFactory;
-use app\Servies\WordsServie;
+use app\Services\WordsService;
 use app\Models\Words;
 use app\Models\WordsTags;
 
@@ -72,7 +72,7 @@ class WordsController
     public function add($request, $response, $args)
     {       
         $data = $request->getParsedBody();
-        $WordsServie = new WordsServie();
+        $WordsService = new WordsService();
         $WordsFactory = new WordsFactory();
         $WordsTagsFactory = new WordsTagsFactory();
         $ExceptionHF = new ExceptionHandlerFactory();
@@ -81,7 +81,7 @@ class WordsController
 
         try { 
             $dataRow = $WordsFactory->createFactory($data, null); 
-            $array_ts_id = $WordsServie->createServie($data);
+            $array_ts_id = $WordsService->createService($data);
             R::begin();
             $id = $WordsModel->add($dataRow);         
             if($array_ts_id){
@@ -109,7 +109,7 @@ class WordsController
     public function edit($request, $response, $args)
     {      
         $data = $request->getParsedBody();
-        $WordsServie = new WordsServie();
+        $WordsService = new WordsService();
         $WordsFactory = new WordsFactory();  
         $WordsTagsFactory = new WordsTagsFactory();
         $ExceptionHF = new ExceptionHandlerFactory();
@@ -118,7 +118,7 @@ class WordsController
 
         try {
             $dataRow = $WordsFactory->createFactory($data, $args['id']);
-            $array_ts_id = $WordsServie->createServie($data);
+            $array_ts_id = $WordsService->createService($data);
             R::begin();
             $WordsTags->deleteByWsID($args['id']);
             if($array_ts_id){                

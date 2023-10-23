@@ -1,6 +1,6 @@
 <?php
 
-namespace app\Servies;
+namespace app\Services;
 
 use libs\Exceptions\Collection\InvalidDataException;
 
@@ -9,7 +9,7 @@ use libs\Exceptions\Collection\InvalidDataException;
  *  判斷前端資料是否有問題，與表格驗證無關
  **/
 
-class WordsGroupsServie
+class WordsGroupsService
 {   
    
     private $wordsGroupsDetails;
@@ -24,7 +24,7 @@ class WordsGroupsServie
         $this->$name = $value;
     }
 
-    public function createServie($data){
+    public function createService($data){
         $this->validateWordsGroupsDetails($data);
         if($this->wordsGroupsDetails == null){
             throw new InvalidDataException();

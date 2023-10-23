@@ -7,7 +7,7 @@ use \RedBeanPHP\R as R;
 use libs\Responses\MsgHandler as MsgH;
 use libs\Exceptions\ExceptionHandlerFactory;
 use libs\Exceptions\BaseExceptionCollection;
-use app\Servies\CategoriesServie;
+use app\Services\CategoriesService;
 use app\Factories\CategoriesFactory;
 use app\Models\Categories;
 
@@ -126,12 +126,12 @@ class CategoriesController
     public function editOrder($request, $response, $args)
     {
         $data = $request->getParsedBody();        
-        $CategoriesServie = new CategoriesServie();
+        $CategoriesService = new CategoriesService();
         $ExceptionHF = new ExceptionHandlerFactory();
         $CategoriesModel = new Categories();
 
         try {          
-            $NewData = $CategoriesServie->createServie($data);           
+            $NewData = $CategoriesService->createService($data);           
             R::begin();         
             foreach($NewData as $item){
                 if(is_numeric($item['id']) && is_numeric($item['cate_order'])){

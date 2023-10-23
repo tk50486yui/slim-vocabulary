@@ -1,15 +1,15 @@
 <?php
 
-namespace app\Servies;
+namespace app\Services;
 
 /**   
  *  組織前端所傳入的資料，通常是用來處理多對多關係或客製化的綜合資料
  *  判斷前端資料是否有問題，與表格驗證無關
  **/
 
-class WordsServie
+class ArticlesService
 {   
-    private $wordsTags;
+    private $articlesTags;
 
     public function __get($name)
     {
@@ -21,32 +21,32 @@ class WordsServie
         $this->$name = $value;
     }
 
-    public function createServie($data){
-        $this->validateWordsTags($data);
-        if($this->wordsTags == null){
+    public function createService($data){
+        $this->validateArticlesTags($data);
+        if($this->articlesTags == null){
             return false;
         }
-        return $this->FilterDupArray($this->wordsTags);
+        return $this->FilterDupArray($this->articlesTags);
     }
 
-    public function validateWordsTags($data)
+    public function validateArticlesTags($data)
     {
-        if(isset($data['words_tags']['array']) && !is_bool($data['words_tags']['array'])){
-            if(!is_array($data['words_tags']['array']) || empty($data['words_tags']['array'])){
-                $this->wordsTags = null;
+        if(isset($data['articles_tags']['array']) && !is_bool($data['articles_tags']['array'])){
+            if(!is_array($data['articles_tags']['array']) || empty($data['articles_tags']['array'])){
+                $this->articlesTags = null;
             }else{
-                $this->wordsTags = $data['words_tags']['array'];
+                $this->articlesTags = $data['articles_tags']['array'];
             }
         }else{
-            $this->wordsTags = null;
+            $this->articlesTags = null;
         }   
     }
     
     public function FilterDupArray($data)
-    {  
+    {    
         $output = array();
-        $seen = array();
-        foreach($data as $item){          
+        $seen = array();     
+        foreach($data as $item){ 
             // 避免重複資料         
             if (!in_array($item, $seen)) {
                 array_push($output, $item);   

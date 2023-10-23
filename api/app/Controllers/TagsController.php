@@ -7,7 +7,7 @@ use \RedBeanPHP\R as R;
 use libs\Responses\MsgHandler as MsgH;
 use libs\Exceptions\ExceptionHandlerFactory;
 use libs\Exceptions\BaseExceptionCollection;
-use app\Servies\TagsServie;
+use app\Services\TagsService;
 use app\Factories\TagsFactory;
 use app\Models\Tags;
 
@@ -126,12 +126,12 @@ class TagsController
      public function editOrder($request, $response, $args)
      {
          $data = $request->getParsedBody();     
-         $TagsServie = new TagsServie();   
+         $TagsService = new TagsService();   
          $ExceptionHF = new ExceptionHandlerFactory();             
          $TagsModel = new Tags();
  
          try {          
-             $NewData = $TagsServie->createServie($data);           
+             $NewData = $TagsService->createService($data);           
              R::begin();         
              foreach($NewData as $item){
                  if(is_numeric($item['id']) && is_numeric($item['ts_order'])){

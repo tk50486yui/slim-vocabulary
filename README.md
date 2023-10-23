@@ -41,7 +41,7 @@
     │   ├─ Factories     //  處理資料格式 實際執行 Entity 及 Validator
     │   ├─ Middlewares   //  中介層 
     │   ├─ Models        //  執行 ORM 與 SQL 語法    
-    │   ├─ Servies       //  處理前端輸入資料（多對多、複雜欄位）
+    │   ├─ Services       //  處理前端輸入資料（多對多、複雜欄位）
     │   └─ Validators    //  驗證資料完整性
     ├─ core     //  資料庫相關設定
     ├─ libs     //  自定義函式庫

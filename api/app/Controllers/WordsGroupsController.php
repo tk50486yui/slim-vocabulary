@@ -7,7 +7,7 @@ use \RedBeanPHP\R as R;
 use libs\Responses\MsgHandler as MsgH;
 use libs\Exceptions\ExceptionHandlerFactory;
 use libs\Exceptions\BaseExceptionCollection;
-use app\Servies\WordsGroupsServie;
+use app\Services\WordsGroupsService;
 use app\Factories\WordsGroupsFactory;
 use app\Factories\WordsGroupsDetailsFactory;
 use app\Models\WordsGroups;
@@ -53,7 +53,7 @@ class WordsGroupsController
     public function add($request, $response, $args)
     {
         $data = $request->getParsedBody();
-        $WordsGroupsServie = new WordsGroupsServie();
+        $WordsGroupsService = new WordsGroupsService();
         $WordsGroupsFactory = new WordsGroupsFactory();      
         $WordsGroupsDetailsFactory = new WordsGroupsDetailsFactory();    
         $ExceptionHF = new ExceptionHandlerFactory();
@@ -62,7 +62,7 @@ class WordsGroupsController
 
         try {
             $dataRow = $WordsGroupsFactory->createFactory($data, null);
-            $wgd_array = $WordsGroupsServie->createServie($data);
+            $wgd_array = $WordsGroupsService->createService($data);
             R::begin();            
             $wg_id = $WordsGroupsModel->add($dataRow);
             if($wgd_array){
@@ -89,7 +89,7 @@ class WordsGroupsController
     public function edit($request, $response, $args)
     {
         $data = $request->getParsedBody();
-        $WordsGroupsServie = new WordsGroupsServie();     
+        $WordsGroupsService = new WordsGroupsService();     
         $WordsGroupsFactory = new WordsGroupsFactory();    
         $WordsGroupsDetailsFactory = new WordsGroupsDetailsFactory();       
         $ExceptionHF = new ExceptionHandlerFactory();
@@ -98,7 +98,7 @@ class WordsGroupsController
 
         try {
             $dataRow = $WordsGroupsFactory->createFactory($data, $args['id']);
-            $wgd_array = $WordsGroupsServie->createServie($data);
+            $wgd_array = $WordsGroupsService->createService($data);
             R::begin();
             $WordsGroupsModel->edit($dataRow, $args['id']);
             $WordsGroupsDetailsModel->deleteByWgID($args['id']);

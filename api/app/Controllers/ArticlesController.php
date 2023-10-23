@@ -7,7 +7,7 @@ use \RedBeanPHP\R as R;
 use libs\Responses\MsgHandler as MsgH;
 use libs\Exceptions\ExceptionHandlerFactory;
 use libs\Exceptions\BaseExceptionCollection;
-use app\Servies\ArticlesServie;
+use app\Services\ArticlesService;
 use app\Factories\ArticlesFactory;
 use app\Factories\ArticlesTagsFactory;
 use app\Models\Articles;
@@ -72,7 +72,7 @@ class ArticlesController
     public function add($request, $response, $args)
     {
         $data = $request->getParsedBody();
-        $ArticlesServie = new ArticlesServie();  
+        $ArticlesService = new ArticlesService();  
         $ArticlesFactory = new ArticlesFactory();        
         $ArticlesTagsFactory = new ArticlesTagsFactory(); 
         $ExceptionHF = new ExceptionHandlerFactory();
@@ -81,7 +81,7 @@ class ArticlesController
 
         try {
             $dataRow = $ArticlesFactory->createFactory($data, null);
-            $ts_id_Array = $ArticlesServie->createServie($data);
+            $ts_id_Array = $ArticlesService->createService($data);
             R::begin();            
             $id = $Articles->add($dataRow);            
             if($ts_id_Array){
@@ -108,7 +108,7 @@ class ArticlesController
     public function edit($request, $response, $args)
     {
         $data = $request->getParsedBody();
-        $ArticlesServie = new ArticlesServie();
+        $ArticlesService = new ArticlesService();
         $ArticlesFactory = new ArticlesFactory();
         $ArticlesTagsFactory = new ArticlesTagsFactory(); 
         $ExceptionHF = new ExceptionHandlerFactory();
@@ -117,7 +117,7 @@ class ArticlesController
         
         try {
             $dataRow = $ArticlesFactory->createFactory($data, $args['id']);
-            $ts_id_Array = $ArticlesServie->createServie($data);           
+            $ts_id_Array = $ArticlesService->createService($data);           
             R::begin();
             $ArticlesTags->deleteByArtiID($args['id']);         
             if($ts_id_Array){                
