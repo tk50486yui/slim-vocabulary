@@ -20,7 +20,7 @@ class WordsGroupsFactory
             throw new InvalidDataException();
         }
     
-        if(!$WordsGroupsValidator->dupName($WordsGroupsEntity, $id)){          
+        if(!$WordsGroupsValidator->dupName($WordsGroupsEntity, $id)){
             throw new DuplicateException();
         }     
      

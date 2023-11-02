@@ -152,7 +152,7 @@ class WordsController
         $WordsModel = new Words();      
 
         try {
-            $dataRow = $WordsFactory->createFactory($data, $args['id']);               
+            $dataRow = $WordsFactory->createFactory($data, $args['id']);
             R::begin();
             $WordsModel->edit($dataRow, $args['id']);
             R::commit();

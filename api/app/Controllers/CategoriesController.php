@@ -132,7 +132,7 @@ class CategoriesController
 
         try {          
             $NewData = $CategoriesService->createService($data);           
-            R::begin();         
+            R::begin();
             foreach($NewData as $item){
                 if(is_numeric($item['id']) && is_numeric($item['cate_order'])){
                     $CategoriesModel->editOrder((int)$item['cate_order'], (int)$item['id']);                   

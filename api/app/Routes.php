@@ -19,7 +19,7 @@ $app->group('/categories', function() {
     $this->post('', 'CategoriesController:add');
     $this->put('/{id}', 'CategoriesController:edit');
 
-    $this->put('/order/', 'CategoriesController:editOrder');
+    $this->put('/order/all', 'CategoriesController:editOrder');
 
     $this->get('/words/{id}', 'CategoriesController:findWordsByID');
 
@@ -34,7 +34,7 @@ $app->group('/tags', function() {
     $this->post('', 'TagsController:add');
     $this->put('/{id}', 'TagsController:edit');   
 
-    $this->put('/order/', 'TagsController:editOrder');
+    $this->put('/order/all', 'TagsController:editOrder');
     
     $this->get('/recent/', 'TagsController:findRecent');
     $this->get('/popular/', 'TagsController:findPopular');
