@@ -2,11 +2,12 @@
 
 使用 PHP Slim 3 來建立後端 API
 
-搭配前端：[VuePoject](https://github.com/tk50486yui/VueProject.git)
+搭配前端：[VueProject](https://github.com/tk50486yui/VueProject.git)
+
+Laravel 版本：[LaravelProject](https://github.com/tk50486yui/laravel-project.git)
 
 ---
 ## PHP 7.2.12
-
 
 ---
 ## Slim 3
