@@ -1,10 +1,10 @@
-# SlimProject
+# slim-vocabulary
 
 使用 PHP Slim 3 來建立後端 API
 
-搭配前端：[VueProject](https://github.com/tk50486yui/VueProject.git)
+搭配前端：[vue-vocabulary](https://github.com/tk50486yui/vue-vocabulary.git)
 
-Laravel 版本：[LaravelProject](https://github.com/tk50486yui/laravel-project.git)
+Laravel 版本：[laravel-vocabulary](https://github.com/tk50486yui/laravel-vocabulary.git)
 
 ---
 ## PHP 7.2.12
