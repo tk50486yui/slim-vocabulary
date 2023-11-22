@@ -15,7 +15,7 @@ class DisConnectedMiddleware {
         }
         $response = $response               
                         ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-                        ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');                       
+                        ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
         $response = $next($request, $response);    
         // after 
         R::close();
