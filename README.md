@@ -10,8 +10,11 @@
 ## 開發工具
 
 主要語言：PHP 7.2.12
+
 框架：[Slim 3](https://www.slimframework.com/docs/v3/)
+
 資料庫：PostgreSQL 9.6.24
+
 ORM：[Redbean](https://www.redbeanphp.com/index.php)
 
 ---
