@@ -9,7 +9,7 @@ class CheckConnectedMiddleware {
     
     public function __invoke($request, $response, $next) {
 
-        // before      
+        // before 
         if (!R::testConnection()) {
             return MsgH::ConnetFaild($response);
         }

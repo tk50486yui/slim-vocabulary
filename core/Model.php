@@ -4,6 +4,8 @@ namespace core;
 
 use \RedBeanPHP\R as R;
 use Dotenv\Dotenv;
+use PDO;
+use PDOException;
 
 class Model
 {
@@ -17,7 +19,7 @@ class Model
         $dbUser = $_ENV['DB_USER'];
         $dbPassword = $_ENV['DB_PASSWORD'];
         R::setup(
-            'pgsql:host=' . $dbHost . 
+            'pgsql:host=' . $dbHost .
             ';port='.$dbPort.
             ';dbname=' .$dbName,
             $dbUser,

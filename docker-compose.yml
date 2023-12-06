@@ -1,0 +1,42 @@
+version: '3'
+
+services:
+  slim-web:
+    build:
+      context: ./apache
+    ports:
+      - "8080:80"
+    depends_on:
+      - pgsql
+    environment:
+      DB_HOST: pgsql
+      DB_PORT: 5432
+    volumes:
+      - .:/var/www/html/slim-vocabulary
+    networks:
+      - serviceNetwork
+  composer:
+    image: composer:2.3
+    command: ["install"]
+    working_dir: /var/www/html/slim-vocabulary
+    depends_on:
+      - slim-web
+    volumes:
+      - .:/var/www/html/slim-vocabulary
+  pgsql:
+    image: postgres:9.6.24
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    restart: always
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./pgsql/tables.sql:/docker-entrypoint-initdb.d/tables.sql
+    networks:
+      - serviceNetwork
+
+networks:
+    serviceNetwork:
+      driver: bridge
