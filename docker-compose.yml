@@ -13,7 +13,7 @@ services:
       DB_HOST: pgsql
       DB_PORT: 5432
       #DB_HOST: host.docker.internal
-      #DB_HOST: 5466
+      #DB_PORT: 5466
     volumes:
       - .:/var/www/html/slim-vocabulary
     networks:
