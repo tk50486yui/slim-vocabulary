@@ -4,6 +4,7 @@ services:
   slim-web:
     build:
       context: ./apache
+    container_name: slim-web
     ports:
       - "8080:80"
     depends_on:
@@ -11,12 +12,15 @@ services:
     environment:
       DB_HOST: pgsql
       DB_PORT: 5432
+      #DB_HOST: host.docker.internal
+      #DB_HOST: 5466
     volumes:
       - .:/var/www/html/slim-vocabulary
     networks:
       - serviceNetwork
   composer:
     image: composer:2.3
+    container_name: composer
     command: ["install"]
     working_dir: /var/www/html/slim-vocabulary
     depends_on:
@@ -25,6 +29,7 @@ services:
       - .:/var/www/html/slim-vocabulary
   pgsql:
     image: postgres:9.6.24
+    container_name: pgsql
     environment:
       POSTGRES_DB: ${DB_NAME}
       POSTGRES_USER: ${DB_USER}
