@@ -6,7 +6,7 @@ services:
       context: ./apache
     container_name: slim-web
     ports:
-      - "8080:80"
+      - "8081:80"
     depends_on:
       - pgsql
     environment:
