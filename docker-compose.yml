@@ -10,19 +10,10 @@ services:
     depends_on:
       - pgsql
     environment:
-      DB_HOST: pgsql
-      DB_PORT: 5432
-      #DB_HOST: host.docker.internal
-      #DB_PORT: 5466
-    volumes:
-      - .:/var/www/html
-  composer:
-    image: composer:2.3
-    container_name: composer
-    command: ["install"]
-    working_dir: /var/www/html
-    depends_on:
-      - slim-web
+      #DB_HOST: pgsql
+      #DB_PORT: 5432
+      DB_HOST: host.docker.internal
+      DB_PORT: 5466
     volumes:
       - .:/var/www/html
   pgsql:
