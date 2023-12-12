@@ -4,8 +4,6 @@ namespace core;
 
 use \RedBeanPHP\R as R;
 use Dotenv\Dotenv;
-use PDO;
-use PDOException;
 
 class Model
 {
