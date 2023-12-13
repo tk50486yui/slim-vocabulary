@@ -11,8 +11,5 @@
             "core\\": "core/",
             "libs\\": "libs/"
         }
-    },
-    "config": {
-        "vendor-dir": "vendor"
     }
 }

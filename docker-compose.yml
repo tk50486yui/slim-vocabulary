@@ -14,8 +14,6 @@ services:
       #DB_PORT: 5432
       DB_HOST: host.docker.internal
       DB_PORT: 5466
-    volumes:
-      - .:/var/www/html
   pgsql:
     image: postgres:9.6.24
     container_name: pgsql
